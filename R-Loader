@@ -80,7 +80,7 @@ local CURRENT_GAME_ID = game.GameId
 -- List of all supported game IDs
 local GameList = {
     Arsenal = 286090429,
-    Rivals = 4538293829,
+    Rivals = 6035872082,
     Baseplate = 80461030,
     Emote_RNG = 8313824597,
     Blade_Ball = 4777817887,
@@ -1013,10 +1013,11 @@ local function CreateSupportTab(pageData)
     createInfoLine("Discord Invite: discord.gg/LoaderCommunity", "https://discord.gg/fveV8thB", THEME.Green)
     createInfoLine("Why tf dont you have this: https://ublockorigin.com", "https://ublockorigin.com", THEME.Red)
     createInfoLine("Avoid increasing suicide rates: https://bypass.vip", "https://bypass.vip", THEME.Red)
-    createInfoLine("Support Email: UNAVAILABLE", "UNAVAILABLE", THEME.SubText)
 
     createInfoLine("Right-Click Tab to Pin/Unpin", nil, THEME.SubText)
     createInfoLine("Config Tab to Save/Load Pin States", nil, THEME.SubText)
+    local DevBot2 = CURRENT_GAME_ID
+    createInfoLine("GameID: "..DevBot2, DevBot2, THEME.Accent)
 end
 
 local SupportPage = CreateTab("Help/Support")
@@ -1224,7 +1225,6 @@ local function CreateMainTab(name)
     local RLoaderCommunity = "R-Loader Community"
     local DiscordInvite = "https://discord.gg/8UNFGpyn"
     local DevBot = CURRENT_GAME_ID
-    
     createInfoLine("--- CONTACT INFO ---", nil, THEME.SubText).Font = Enum.Font.GothamBold
     createInfoLine("👤Dev-Tag: "..DiscordTag, DiscordTag, THEME.Green)
     createInfoLine("👑King's-Tag: "..KingsTab, KingsTab, THEME.Green)
