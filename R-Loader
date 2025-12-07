@@ -84,6 +84,7 @@ local GameList = {
     Baseplate = 80461030,
     Emote_RNG = 8313824597,
     Blade_Ball = 4777817887,
+    Valley_Prison = 5456952508,
     Universal = 0 -- fallback for unsupported games
 }
 
@@ -141,10 +142,20 @@ local FullScriptCatalog = {
         },
     },
 
-     ["Baseplate"] = {
+    ["Baseplate"] = {
         {
             Name = "Baseplate",
             TargetGame = "Baseplate",
+            Image = "",
+            Loadable = false,
+            scripload = test_lua
+        },
+    },
+
+    ["Valley_Prison"] = {
+        {
+            Name = "Valley Prison",
+            TargetGame = "Valley_Prison",
             Image = "",
             Loadable = false,
             scripload = test_lua
