@@ -86,6 +86,7 @@ local GameList = {
     Blade_Ball = 4777817887,
     Valley_Prison = 5456952508,
     Lucky_Blocks = 279565647,
+    AOTR=4658598196,
     Universal = 0 -- fallback for unsupported games
 }
 
@@ -160,6 +161,16 @@ local FullScriptCatalog = {
             Image = "",
             Loadable = true,
             scripload = "loadstring(game:HttpGet('https://raw.githubusercontent.com/Veaquach/LBBattlegroundsscript/refs/heads/main/Universal%20Lucky%20Block%20Battle%20Grounds%20Script.txt'))()"
+        },
+    },
+
+        ["AOTR"] = {
+        {
+            Name = "Attack on Titan Revolution",
+            TargetGame = "AOTR",
+            Image = "",
+            Loadable = true,
+            scripload = 'loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/705e7fe7aa288f0fe86900cedb1119b1.lua"))()'
         },
     },
 
