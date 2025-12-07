@@ -1285,3 +1285,4 @@ if Tabs[1] then
     Tabs[1].Indicator.BackgroundTransparency = 0
     Tabs[1].Page.Visible = true
 end
+
