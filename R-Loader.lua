@@ -101,7 +101,7 @@ local SpecialUsers = {
     [2335971665] = {
         FirstTime = "Greetings 👑",
         Returning = "Welcome Back!! 👑",
-        UserURl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-9yEh8wiTWNzXCdz1bY2RbpU_0UcUL4rKHA&s"
+        UserURl = "https://www.avezano.com/cdn/shop/products/AN-2278.jpg"
     },
 
     -- mixxgaurdian
@@ -110,13 +110,13 @@ local SpecialUsers = {
         Returning = "Welcome Back, sir ",
         UserURl = "https://www.avezano.com/cdn/shop/products/AN-2278.jpg"
 
-    }
+    },
     [4520375383] = {
         FirstTime = "Welcome, sir 👤",
         Returning = "Welcome Back, 👤",
         UserURl = "https://photoshop-kopona.com/uploads/posts/2019-11/1573806076_pic-1.jpg"
 
-    }
+    },
 
 }
 
