@@ -1130,7 +1130,8 @@ local function CreateMainTab(name)
     PinIndicator.Parent = Btn
 
     local player = game.Players.LocalPlayer
-    local thumbUrl = game.Players:GetUserThumbnailAsync(player.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size48x48)
+    -- refined to use rbxthumb (instant load, higher quality, no yielding)
+    local thumbUrl = "rbxthumb://type=AvatarHeadShot&id=" .. player.UserId .. "&w=150&h=150"
 
     -- Profile Picture (Tab Button)
     local AvatarImage = Instance.new("ImageLabel")
