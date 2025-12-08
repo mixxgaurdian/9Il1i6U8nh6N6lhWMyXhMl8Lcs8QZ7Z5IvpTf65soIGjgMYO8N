@@ -86,7 +86,8 @@ local GameList = {
     Blade_Ball = 4777817887,
     Valley_Prison = 5456952508,
     Lucky_Blocks = 279565647,
-    AOTR=4658598196,
+    AOTR= 4658598196,
+    ERLC = 903807016,
     Universal = 0 -- fallback for unsupported games
 }
 
@@ -154,13 +155,23 @@ local FullScriptCatalog = {
         },
     },
 
-        ["Lucky_Blocks"] = {
+    ["Lucky_Blocks"] = {
         {
             Name = "Lucky Blocks",
             TargetGame = "Lucky_Blocks",
             Image = "",
             Loadable = true,
             scripload = "loadstring(game:HttpGet('https://raw.githubusercontent.com/Veaquach/LBBattlegroundsscript/refs/heads/main/Universal%20Lucky%20Block%20Battle%20Grounds%20Script.txt'))()"
+        },
+    },
+
+    ["ERLC"] = {
+        {
+            Name = "Emergency Response: Liberty County",
+            TargetGame = "ERLC",
+            Image = "",
+            Loadable = true,
+            scripload = "loadstring(game:HttpGet('https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/xkJ8rtl85wxTZ9apvlfQPx7U88r5E3WVZGMoP.lua'))()"
         },
     },
 
