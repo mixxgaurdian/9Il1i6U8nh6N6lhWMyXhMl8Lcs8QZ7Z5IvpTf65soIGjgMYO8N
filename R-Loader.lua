@@ -112,8 +112,8 @@ local SpecialUsers = {
 
     },
     [4520375383] = {
-        FirstTime = "Welcome, sir 👤",
-        Returning = "Welcome Back, 👤",
+        FirstTime = "Welcome, dev👤",
+        Returning = "Welcome Back dev, 👤",
         UserURl = "https://photoshop-kopona.com/uploads/posts/2019-11/1573806076_pic-1.jpg"
 
     },
