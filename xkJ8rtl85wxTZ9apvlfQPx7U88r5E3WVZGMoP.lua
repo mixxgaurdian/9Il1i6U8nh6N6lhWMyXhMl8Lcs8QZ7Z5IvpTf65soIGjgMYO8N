@@ -28,7 +28,7 @@ local Config = {
         SavedCFrame = nil, 
         IntervalSpeed = 0.05,
         FlySpeed = 50,
-        WalkSSpeed = 16,
+        WalkSpeed = 16,
         SprintSpeed = 24,
         JumpPower = 50
     },
@@ -40,13 +40,16 @@ local Config = {
         Fly = Enum.KeyCode.V,
         Noclip = Enum.KeyCode.B,
         InvisibleTG = Enum.KeyCode.Y,
+
     },
     Toggles = {
         Fly = false,
         Noclip = false,
         InvisibleTG = false,
         InfiniteJump = false,
-        Safe_Teleport = false
+        Safe_Teleport = false,
+        WalkSpeed=false,
+        SprintSpeedT=false,
     }
 }
 
@@ -887,7 +890,7 @@ CreateSlider(MiscPage, "Fly Speed", 10, 200, Config.Movement.FlySpeed, function(
     Config.Movement.FlySpeed = v 
 end)
 
-Config.Movement.WalkSSpeed = Config.Movement.WalkSSpeed or 16
+Config.Movement.WalkSpeed = Config.Movement.WalkSSpeed or 16
 CreateSlider(MiscPage, "WalkS Speed", 10, 200, Config.Movement.WalkSSpeed, function(v) 
     Config.Movement.WalkSSpeed = v 
 end)
@@ -910,6 +913,17 @@ CreateToggle(MiscPage, "Infinite Jump", Config.Toggles.InfiniteJump, function(v)
     Config.Toggles.InfiniteJump = v 
     SaveConfig()
 end)
+
+CreateToggle(MiscPage, "Walk Speed", Config.Toggles.InfiniteJump, function(v) 
+    Config.Toggles.WalkSpeedT = v 
+    SaveConfig()
+end)
+
+CreateToggle(MiscPage, "Sprint Speed", Config.Toggles.Fly, function(v) 
+    Config.Toggles.SprintSpeedT = v 
+    SaveConfig()
+end)
+
 CreateToggle(MiscPage, "Noclip", Config.Toggles.Noclip, function(v) 
     Config.Toggles.Noclip = v 
     SaveConfig()
