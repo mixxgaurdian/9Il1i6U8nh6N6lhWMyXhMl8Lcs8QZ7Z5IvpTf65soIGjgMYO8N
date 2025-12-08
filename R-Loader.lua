@@ -494,24 +494,6 @@ local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "R-Loader"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.Parent = pcall(function() return CoreGui end) and CoreGui or LocalPlayer:WaitForChild("PlayerGui")
--- // BACKGROUND CONFIGURATION //
-local BackgroundConfig = {
-    Enabled = true, 
-    Url = _G.UserURl(), -- calling the function gets the correct link
-    Transparency = 0.5 
-}
-
--- // MAIN FRAME //
-local MainFrame = Instance.new("Frame")
-MainFrame.Name = "MainFrame"
-MainFrame.Size = UDim2.new(0, 0, 0, 0) -- START CLOSED FOR ANIMATION
-MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0) -- CENTERED
-MainFrame.AnchorPoint = Vector2.new(0.5, 0.5) -- CENTER ANCHOR
-MainFrame.BorderSizePixel = 0
-MainFrame.ClipsDescendants = true
-MainFrame.Parent = ScreenGui
-MainFrame.Visible = false -- Start invisible
-Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 6)
 
 -- // BACKGROUND CONFIGURATION //
 local BackgroundConfig = {
