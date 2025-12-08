@@ -816,10 +816,10 @@ local function ToggleUI(state)
     Debounce = false
 end
 
--- // RIGHT CTRL LISTENER
+-- // RIGHT Right Shift LISTENER
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
-    -- Only toggle if Right Ctrl pressed AND not typing in chat
-    if input.KeyCode == Enum.KeyCode.RightControl and not UserInputService:GetFocusedTextBox() then
+    -- Only toggle if Right Shift pressed AND not typing in chat
+    if input.KeyCode == Enum.KeyCode.RightShift and not UserInputService:GetFocusedTextBox() then
         ToggleUI(not UI_Open) -- Toggle opposite of current state
     end
 end)
@@ -827,7 +827,7 @@ end)
 -- // MINIMIZE BUTTON (-)
 AddWinButton("-", THEME.Text, -60, function()
     ToggleUI(false) -- Trigger Smooth Close
-    SendNotification("Hidden", "Press Right Ctrl to open the menu.", 4)
+    SendNotification("Hidden", "Press Right Shift to open the menu.", 4)
 end)
 
 -- // CLOSE BUTTON (X)
