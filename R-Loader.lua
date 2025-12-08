@@ -12,6 +12,7 @@ local LocalPlayer = Players.LocalPlayer
 
 -- PATH DEFINITIONS
 local SETTINGS_FOLDER = "R-Loader" 
+
 local SCRIPT_FOLDER_PATH = SETTINGS_FOLDER .. "/scripts"
 local CONFIGS_FOLDER = SETTINGS_FOLDER .. "/configs"
 local DEFAULT_CONFIG_NAME = "default_config.json"
@@ -303,6 +304,7 @@ local GameList = {
     Lucky_Blocks = 279565647,
     AOTR= 4658598196,
     ERLC = 903807016,
+    BB_Legends=4931927012,
     Universal = 0 -- fallback for unsupported games
 }
 
@@ -372,8 +374,18 @@ local FullScriptCatalog = {
             Name = "Baseplate",
             TargetGame = "Baseplate",
             Image = "",
-            Loadable = false,
+            Loadable = true,
             scripload = test_lua
+        },
+    },
+
+    ["BB_Legends"] = {
+        {
+            Name = "absence-mini",
+            TargetGame = "BB_Legends",
+            Image = "",
+            Loadable = true,
+            scripload = "loadstring(game:HttpGet('https://raw.githubusercontent.com/vnausea/absence-mini/refs/heads/main/absencemini.lua'))()"
         },
     },
 
@@ -397,7 +409,7 @@ local FullScriptCatalog = {
         },
     },
 
-        ["AOTR"] = {
+    ["AOTR"] = {
         {
             Name = "Attack on Titan Revolution",
             TargetGame = "AOTR",
@@ -417,7 +429,8 @@ local FullScriptCatalog = {
         },
     },
 
-         ["Emote_RNG"] = {
+
+    ["Emote_RNG"] = {
         {
             Name = "Emote RNG BETA",
             TargetGame = "Emote_RNG_BETA",
@@ -427,7 +440,7 @@ local FullScriptCatalog = {
         },
     },
 
-        ["Blade_Ball"] = {
+    ["Blade_Ball"] = {
         {
             Name = "Akashial",
             TargetGame = "Blade_Ball",
@@ -444,7 +457,6 @@ local FullScriptCatalog = {
         },
 
     },
-
 
     ["Rivals"] = {
         {
@@ -1566,7 +1578,7 @@ local function CreateMainTab(name)
         pcall(function()
             local NotifyLabel = Instance.new("TextLabel")
             NotifyLabel.Text = text
-            NotifyLabel.Size = UDim2.new(0.6, 0, 0, 30)
+            NotifyLabel.Size = UDim2.new(0.6, 0, 0, 10)
             NotifyLabel.Position = UDim2.new(0.5, -(MainFrame.Size.X.Offset * 0.3), 1, -40)
             NotifyLabel.BackgroundTransparency = 1
             NotifyLabel.TextColor3 = color
