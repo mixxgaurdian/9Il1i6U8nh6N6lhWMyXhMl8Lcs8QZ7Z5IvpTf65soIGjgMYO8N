@@ -18,6 +18,9 @@ local CONFIGS_FOLDER = SETTINGS_FOLDER .. "/configs"
 local DEFAULT_CONFIG_NAME = "default_config.json"
 local LAST_LOADED_FILE = SETTINGS_FOLDER .. "/last_config.txt" 
 
+--Version
+RLoaderV="Version: beta-3faeg45A"
+
 -- Placeholder functions for file operations (Requires Executor Support)
 local makefolder = makefolder or function(path) warn("makefolder not defined in environment:", path) end
 local isfolder = isfolder or function(path) warn("isfolder not defined in environment:", path); return false end
@@ -133,7 +136,7 @@ local FullScriptCatalog = {
             scripload = Infinite_yield
         },
         {
-            Name = "Emergency Response: Liberty County",
+            Name = "R-Loader/Universal",
             Image = "",
             Loadable = true,
             scripload = "loadstring(game:HttpGet('https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/xkJ8rtl85wxTZ9apvlfQPx7U88r5E3WVZGMoP.lua'))()"
@@ -1051,12 +1054,11 @@ local function CreateSupportTab(pageData)
 
         return Button
     end
-
     -- Title Section
     createInfoLine("🛠️ R-Loader Support Information", nil, THEME.Accent).Font = Enum.Font.GothamBold
     
     -- Version Info
-    createInfoLine("Version: beta-3faeg45A", "beta-3faeg45a")
+    createInfoLine(RLoaderV)
         createInfoLine("Config-status(❌)")
     -- Developer Contacts
     createInfoLine("Developer: Mix/R-Loader", "Mix/R-Loader")
@@ -1227,7 +1229,7 @@ local function CreateMainTab(name)
     
     -- Welcome Label (Updated to just a simple label)
     local WelcomeLabel = Instance.new("TextLabel")
-    WelcomeLabel.Text = "Welcome to R-Loader V3.0"
+    WelcomeLabel.Text = "Welcome to "..RLoaderV
     WelcomeLabel.Size = UDim2.new(1, 0, 0, 30)
     WelcomeLabel.BackgroundTransparency = 1
     WelcomeLabel.TextColor3 = THEME.Text
@@ -1266,20 +1268,19 @@ local function CreateMainTab(name)
 
     -- Description
     createInfoLine("--- DESCRIPTION ---", nil, THEME.SubText).Font = Enum.Font.GothamBold
-    createInfoLine("R-Loader V3.0 is a stable, persistent, and modular scripting solution.", nil, THEME.SubText).TextSize = 12
-    createInfoLine("Use the tabs for game-specific scripts and the Config tab to save pin layouts.", nil, THEME.SubText).TextSize = 12
+    createInfoLine("R-Loader "..RLoaderV.." is a stable, persistent, and modular scripting solution.", nil, THEME.SubText).TextSize = 10
+    createInfoLine("Use the tabs for game-specific scripts and the Config tab to save pin layouts.", nil, THEME.SubText).TextSize = 10
 
     -- Contact Info (Using createInfoLine)
     local DiscordTag = "mixapire"
     local KingsTab = "ewkobe"
     local RLoaderCommunity = "R-Loader Community"
     local DiscordInvite = "https://discord.gg/8UNFGpyn"
-    local DevBot = CURRENT_GAME_ID
     createInfoLine("--- CONTACT INFO ---", nil, THEME.SubText).Font = Enum.Font.GothamBold
-    createInfoLine("👤Dev-Tag: "..DiscordTag, DiscordTag, THEME.Green)
-    createInfoLine("👑King's-Tag: "..KingsTab, KingsTab, THEME.Green)
-    createInfoLine("Discord Invite: "..RLoaderCommunity, DiscordInvite, THEME.Accent)
-    createInfoLine("GameID: "..DevBot, DevBot, THEME.Accent)
+    createInfoLine("👤Dev-Tag: "..DiscordTag, DiscordTag, THEME.Green).TextSize = 13
+    createInfoLine("👑King's-Tag: "..KingsTab, KingsTab, THEME.Green).TextSize = 13
+    createInfoLine("Discord Invite: "..RLoaderCommunity, DiscordInvite, THEME.Accent).TextSize = 13
+
 
 
     ----------------------------------------------------------
