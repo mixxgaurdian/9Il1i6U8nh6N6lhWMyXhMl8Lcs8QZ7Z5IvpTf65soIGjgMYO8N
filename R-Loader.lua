@@ -1,4 +1,5 @@
--- // ULTRA-ADVANCED GUI V3 (GUI Only) //
+-- // ULTRA-ADVANCED GUI V3 (With Intro Animation) //
+
 -- [[ 1. SERVICE, REFERENCE, AND FILE SYSTEM SETUP ]] --
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -9,8 +10,6 @@ local HttpService = game:GetService("HttpService")
 
 local LocalPlayer = Players.LocalPlayer
 
-
-
 -- PATH DEFINITIONS
 local SETTINGS_FOLDER = "R-Loader" 
 local SCRIPT_FOLDER_PATH = SETTINGS_FOLDER .. "/scripts"
@@ -18,8 +17,214 @@ local CONFIGS_FOLDER = SETTINGS_FOLDER .. "/configs"
 local DEFAULT_CONFIG_NAME = "default_config.json"
 local LAST_LOADED_FILE = SETTINGS_FOLDER .. "/last_config.txt" 
 
+-- // --- INTRO ANIMATION LOGIC (ADDED) ---
+-- This runs before the rest of the script loads
+local function PlayIntro()
+    local IntroGui = Instance.new("ScreenGui")
+    IntroGui.Name = "RLoader_Intro"
+    IntroGui.Parent = CoreGui
+    IntroGui.IgnoreGuiInset = true
+    IntroGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+    -- Background
+    local IntroBG = Instance.new("Frame")
+    IntroBG.Size = UDim2.new(1, 0, 1, 0)
+    IntroBG.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+    IntroBG.BackgroundTransparency = 1
+    IntroBG.Parent = IntroGui
+
+    -- Center Container
+    local Container = Instance.new("Frame")
+    Container.Size = UDim2.new(0, 300, 0, 300)
+    Container.Position = UDim2.new(0.5, 0, 0.5, -175)
+    Container.AnchorPoint = Vector2.new(0.5, 0.5)
+    Container.BackgroundTransparency = 1
+    Container.Parent = IntroBG
+
+    -- 1. Profile Picture (Starts Invisible)
+    local PFP = Instance.new("ImageLabel")
+    PFP.Size = UDim2.new(0, 100, 0, 100)
+    PFP.Position = UDim2.new(0.5, -50, 0.3, 0)
+    PFP.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    PFP.BackgroundTransparency = 1
+    PFP.ImageTransparency = 1 -- Hidden initially
+    -- Instant load thumbnail
+    PFP.Image = "rbxthumb://type=AvatarHeadShot&id=" .. LocalPlayer.UserId .. "&w=150&h=150"
+    PFP.Parent = Container
+    
+    local PFPCorner = Instance.new("UICorner")
+    PFPCorner.CornerRadius = UDim.new(1, 0)
+    PFPCorner.Parent = PFP
+    
+    local PFPStroke = Instance.new("UIStroke")
+    PFPStroke.Parent = PFP
+    PFPStroke.Transparency = 1
+    PFPStroke.Color = Color3.fromRGB(0, 150, 255) -- Accent Blue
+    PFPStroke.Thickness = 2
+
+    -- 2. Username Text (Starts Empty for Typewriter)
+    local NameLabel = Instance.new("TextLabel")
+    NameLabel.Size = UDim2.new(1, 0, 0, 30)
+    NameLabel.Position = UDim2.new(0, 0, 0.65, 0)
+    NameLabel.BackgroundTransparency = 1
+    NameLabel.TextColor3 = Color3.fromRGB(240, 240, 240)
+    NameLabel.TextSize = 24
+    NameLabel.Font = Enum.Font.GothamBold
+    NameLabel.Text = "" -- Empty start
+    NameLabel.Parent = Container
+
+    local MsgLabel = Instance.new("TextLabel")
+    MsgLabel.Size = UDim2.new(1, 0, 0, 40)
+    MsgLabel.Position = UDim2.new(0, 0, 0.75, 0)
+    MsgLabel.BackgroundTransparency = 1
+    MsgLabel.TextColor3 = Color3.fromRGB(240, 240, 240)
+    MsgLabel.TextSize = 24
+    MsgLabel.Font = Enum.Font.GothamBold
+    MsgLabel.Text = "" -- Empty start
+    MsgLabel.Parent = Container
+    
+    -- 3. Accent Line (Starts Invisible/Small)
+    local Line = Instance.new("Frame")
+    Line.Size = UDim2.new(0, 0, 0, 2) -- Start width 0
+    Line.Position = UDim2.new(0.5, 0, 0.75, 0)
+    Line.AnchorPoint = Vector2.new(0.5, 0)
+    Line.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+    Line.BorderSizePixel = 0
+    Line.BackgroundTransparency = 1
+    Line.Parent = Container
+
+--Urls deprecated:
+--https://www.avezano.com/cdn/shop/products/AN-2278.jpg
+
+local SpecialUsers = {
+    -- clix
+    [2335971665] = {
+        FirstTime = "Greetings 👑",
+        Returning = "Welcome Back!! 👑",
+        UserURl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-9yEh8wiTWNzXCdz1bY2RbpU_0UcUL4rKHA&s"
+    },
+
+    -- mixxgaurdian
+    [1104273577] = {
+        FirstTime = "Welcome, sir ",
+        Returning = "Welcome Back, sir ",
+        UserURl = "https://www.avezano.com/cdn/shop/products/AN-2278.jpg"
+
+    }
+    [4520375383] = {
+        FirstTime = "Welcome, sir 👤",
+        Returning = "Welcome Back, 👤",
+        UserURl = "https://photoshop-kopona.com/uploads/posts/2019-11/1573806076_pic-1.jpg"
+
+    }
+
+}
+
+-- 2. Create the Global Function
+
+_G.UserURl = function()
+    local player = game:GetService("Players").LocalPlayer
+    
+    -- Check if the player exists and is in the table
+    if player and SpecialUsers[player.UserId] then
+        -- Return their specific URL
+        return SpecialUsers[player.UserId].UserURl
+    end
+end
+
+    local fullText = ""
+    local greetingPrefix = ""
+    local userFolderExists = false
+
+    -- 1. Check if the folder exists (Status Check)
+    if isfolder and isfolder(SETTINGS_FOLDER) then
+        userFolderExists = true
+    end
+
+    -- 2. Determine the Prefix (Custom vs Default)
+    local userData = SpecialUsers[LocalPlayer.UserId]
+
+    if userData then
+        -- >> USER IS SPECIAL
+        if userFolderExists then
+            greetingPrefix = userData.Returning
+        else
+            greetingPrefix = userData.FirstTime
+        end
+    else
+        -- >> USER IS NORMAL
+        if userFolderExists then
+            greetingPrefix = "Welcome Back "
+        else
+            greetingPrefix = "Welcome "
+        end
+    end
+
+    -- 3. Handle Folder Creation (If they are new, regardless of if they are special)
+    if not userFolderExists and makefolder then
+        makefolder(SETTINGS_FOLDER)
+    end
+
+    -- Construct the final message
+    fullText = greetingPrefix .. LocalPlayer.Name .. "!"
+    LoadingText="Loading Background..."
+
+
+    for i = 1, #fullText do
+        NameLabel.Text = string.sub(fullText, 1, i)
+        -- Randomize typing speed slightly for realism
+        task.wait(math.random(5, 10) / 150) 
+    end
+    
+    task.wait(0.2)
+
+
+    -- Step 2: Fade In PFP
+    TweenService:Create(PFP, TweenInfo.new(0.5), {ImageTransparency = 0}):Play()
+    TweenService:Create(PFPStroke, TweenInfo.new(0.5), {Transparency = 0}):Play()
+    task.wait(0.1)
+
+    -- Step 3: Expand & Fade Line
+    local lineTween = TweenService:Create(Line, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, 150, 0, 2), BackgroundTransparency = 0})
+    lineTween:Play()
+    lineTween.Completed:Wait()
+
+    task.wait(0.5) -- Hold the visual for a moment
+
+    
+    task.wait(0.2)
+
+        for i = 1, #LoadingText do
+        NameLabel.Text = string.sub(LoadingText, 1, i)
+        -- Randomize typing speed slightly for realism
+        task.wait(math.random(5, 10) / 500) 
+    end
+    
+    task.wait(0.2)
+
+    -- Step 4: Fade Out Everything
+    local fadeInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+    
+    TweenService:Create(PFP, fadeInfo, {ImageTransparency = 1}):Play()
+    TweenService:Create(PFPStroke, fadeInfo, {Transparency = 1}):Play()
+    TweenService:Create(NameLabel, fadeInfo, {TextTransparency = 1}):Play()
+    TweenService:Create(Line, fadeInfo, {BackgroundTransparency = 1, Size = UDim2.new(0, 0, 0, 2)}):Play()
+    
+    -- Fade background last
+    local bgFade = TweenService:Create(IntroBG, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {BackgroundTransparency = 1})
+    bgFade:Play()
+    bgFade.Completed:Wait()
+
+    IntroGui:Destroy()
+end
+
+-- PLAY THE INTRO
+PlayIntro()
+-- // --- END OF INTRO ---
+
 --Version
 RLoaderV="Version: beta-3faeg45A"
+RLoaderStatus=" Status: 🟢"
 
 -- Placeholder functions for file operations (Requires Executor Support)
 local makefolder = makefolder or function(path) warn("makefolder not defined in environment:", path) end
@@ -62,18 +267,25 @@ SetupFilesystem()
 
 -- // THEME //
 local THEME = {
+    -- Colors
     Main = Color3.fromRGB(25, 25, 30),
     Sidebar = Color3.fromRGB(35, 35, 40),
     TopBar = Color3.fromRGB(40, 40, 45),
     Accent = Color3.fromRGB(0, 150, 255),
     Text = Color3.fromRGB(240, 240, 240),
-    SubText = Color3.fromRGB(150, 150, 150),
+    SubText = Color3.fromRGB(240, 240, 240),
     Red = Color3.fromRGB(235, 60, 60),
     Green = Color3.fromRGB(60, 235, 100),
-    Pin = Color3.fromRGB(255, 215, 0), -- Added Pin color
-    Input = Color3.fromRGB(20, 20, 25)
-}
+    Pin = Color3.fromRGB(255, 215, 0),
+    Input = Color3.fromRGB(20, 20, 25),
 
+    -- Transparency Settings (0.0 = Solid, 1.0 = Invisible)
+    Transparency = {
+        Sidebar = 0.7, -- Make sidebar slightly see-through
+        TopBar = 0.7,  -- Make top bar slightly see-through
+        Content = 0.5  -- Background for content areas (if used)
+    }
+}
 
 -- // SCRIPT-LOAD1 //  
 
@@ -102,6 +314,7 @@ for gameName, gameId in pairs(GameList) do
         break
     end
 end
+
 
 -- Current target variables
 local TARGET_GAME_ID = CURRENT_GAME_ID
@@ -269,22 +482,118 @@ local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "R-Loader"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.Parent = pcall(function() return CoreGui end) and CoreGui or LocalPlayer:WaitForChild("PlayerGui")
+-- // BACKGROUND CONFIGURATION //
+local BackgroundConfig = {
+    Enabled = true, 
+    Url = _G.UserURl(), -- calling the function gets the correct link
+    Transparency = 0.5 
+}
 
 -- // MAIN FRAME //
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
-MainFrame.Size = UDim2.new(0, 550, 0, 350)
-MainFrame.Position = UDim2.new(0.5, -275, 0.5, -175)
-MainFrame.BackgroundColor3 = THEME.Main
+MainFrame.Size = UDim2.new(0, 0, 0, 0) -- START CLOSED FOR ANIMATION
+MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0) -- CENTERED
+MainFrame.AnchorPoint = Vector2.new(0.5, 0.5) -- CENTER ANCHOR
 MainFrame.BorderSizePixel = 0
 MainFrame.ClipsDescendants = true
 MainFrame.Parent = ScreenGui
+MainFrame.Visible = false -- Start invisible
 Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 6)
+
+-- // BACKGROUND CONFIGURATION //
+local BackgroundConfig = {
+    Enabled = true, 
+    Url = _G.UserURl(), -- Dynamically gets the URL
+    Transparency = 0.5 
+}
+
+-- // MAIN FRAME //
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Size = UDim2.new(0, 0, 0, 0) -- START CLOSED FOR ANIMATION
+MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0) -- CENTERED
+MainFrame.AnchorPoint = Vector2.new(0.5, 0.5) -- CENTER ANCHOR
+MainFrame.BorderSizePixel = 0
+MainFrame.ClipsDescendants = true
+MainFrame.Parent = ScreenGui
+MainFrame.Visible = false -- Start invisible
+Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 6)
+
+-- // --- UI BACKGROUND LOGIC (FORCE RELOAD) --- //
+if BackgroundConfig.Enabled then
+    MainFrame.BackgroundColor3 = THEME.Main 
+    MainFrame.BackgroundTransparency = 1 -- Make transparent for image
+
+    task.spawn(function()
+        -- 1. Check for Exploit Support
+        local getAsset = getgenv().getcustomasset or getgenv().getsynasset
+        if not getAsset or not makefolder then 
+            MainFrame.BackgroundTransparency = 0 -- Fallback to solid color
+            return 
+        end
+
+        local BackgroundFileName = "R_Loader_BG_Image.png"
+        local filePath = SETTINGS_FOLDER .. "/" .. BackgroundFileName
+
+        -- 2. CLEANUP: Delete the old file if it exists (Forces a refresh)
+        if isfile(filePath) then
+            delfile(filePath)
+        end
+
+        -- 3. DOWNLOAD: Fetch the new image based on the current URL
+        if BackgroundConfig.Url and BackgroundConfig.Url ~= "" then
+            local success, response = pcall(function() return game:HttpGet(BackgroundConfig.Url) end)
+            if success and response then
+                writefile(filePath, response)
+            end
+        end
+
+        -- 4. APPLY: Load the newly downloaded image
+        if isfile(filePath) then
+            local BG = Instance.new("ImageLabel")
+            BG.Name = "UI_Background"
+            BG.Size = UDim2.new(1, 0, 1, 0) -- Fills entire frame
+            BG.Position = UDim2.new(0, 0, 0, 0)
+            BG.BackgroundTransparency = 1
+            BG.BorderSizePixel = 0
+            BG.ZIndex = 0 
+            
+            -- THIS IS THE AUTO-RESIZE MAGIC
+            BG.ScaleType = Enum.ScaleType.Crop 
+            -- Crop: Zooms in to fill space (No black bars, correct aspect ratio)
+            
+            BG.Parent = MainFrame
+
+            -- Load via custom asset
+            local success, assetId = pcall(function() return getAsset(filePath) end)
+            if success then
+                BG.Image = assetId
+            end
+
+            -- 5. Dark Overlay (Tint)
+            local Overlay = Instance.new("Frame")
+            Overlay.Name = "Tint"
+            Overlay.Size = UDim2.new(1, 0, 1, 0)
+            Overlay.BackgroundColor3 = THEME.Main 
+            Overlay.BackgroundTransparency = BackgroundConfig.Transparency
+            Overlay.ZIndex = 0
+            Overlay.Parent = MainFrame
+        else
+            -- Fallback if download failed
+            MainFrame.BackgroundTransparency = 0
+        end
+    end)
+else
+    MainFrame.BackgroundColor3 = THEME.Main
+    MainFrame.BackgroundTransparency = 0
+end
 
 -- // TOP BAR //
 local TopBar = Instance.new("Frame")
 TopBar.Size = UDim2.new(1, 0, 0, 30)
 TopBar.BackgroundColor3 = THEME.TopBar
+TopBar.BackgroundTransparency = THEME.Transparency.TopBar -- <--- ADD THIS LINE
 TopBar.BorderSizePixel = 0
 TopBar.Parent = MainFrame
 Instance.new("UICorner", TopBar).CornerRadius = UDim.new(0, 6)
@@ -293,13 +602,12 @@ local TopPatch = Instance.new("Frame")
 TopPatch.Size = UDim2.new(1, 0, 0, 10)
 TopPatch.Position = UDim2.new(0, 0, 1, -10)
 TopPatch.BackgroundColor3 = THEME.TopBar
+TopPatch.BackgroundTransparency = THEME.Transparency.TopBar -- <--- ADD THIS LINE (Must match TopBar)
 TopPatch.BorderSizePixel = 0
 TopPatch.Parent = TopBar
 
 local Title = Instance.new("TextLabel")
-Title.Text = "  R-Loader | Target: "..TARGET_GAME_NAME.." [Game-ID: "..CURRENT_GAME_ID.."]"
-
-
+Title.Text = "  R-Loader | Target: "..TARGET_GAME_NAME.." [Game-ID: "..CURRENT_GAME_ID..RLoaderStatus.."]"
 
 
 Title.Size = UDim2.new(1, -60, 1, 0)
@@ -341,17 +649,189 @@ local function AddWinButton(text, color, posOffset, callback)
     btn.MouseButton1Click:Connect(callback)
 end
 
-AddWinButton("X", THEME.Red, -30, function() ScreenGui:Destroy() end)
-local Minimized = false
-local PreMinSize = MainFrame.Size
-local MinimizedBtn = AddWinButton("-", THEME.Text, -60, function()
-    Minimized = not Minimized
-    if Minimized then
-        PreMinSize = MainFrame.Size
-        MainFrame:TweenSize(UDim2.new(0, 550, 0, 30), "Out", "Quad", 0.3)
+-- // --- MODERN NOTIFICATION SYSTEM (SLIDE VARIANT) ---
+local NotificationHolder = Instance.new("Frame")
+NotificationHolder.Name = "NotificationHolder"
+NotificationHolder.Size = UDim2.new(0, 300, 1, -20)
+-- POSITION CHANGED: Locked to the Right Side
+NotificationHolder.Position = UDim2.new(1, -310, 0, 20) 
+NotificationHolder.AnchorPoint = Vector2.new(0, 0)
+NotificationHolder.BackgroundTransparency = 1
+NotificationHolder.Parent = ScreenGui 
+
+local NoteLayout = Instance.new("UIListLayout")
+NoteLayout.Parent = NotificationHolder
+NoteLayout.SortOrder = Enum.SortOrder.LayoutOrder
+NoteLayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
+NoteLayout.Padding = UDim.new(0, 10)
+
+local function SendNotification(title, text, duration)
+    local duration = duration or 3
+    
+    -- 1. THE CONTAINER (Invisible - Handles the List Layout spacing)
+    local Container = Instance.new("Frame")
+    Container.Name = "Container"
+    Container.Size = UDim2.new(1, 0, 0, 0) -- Starts with 0 height
+    Container.BackgroundTransparency = 1
+    Container.ClipsDescendants = false -- Crucial: Allows the slide animation to be seen outside the box
+    Container.Parent = NotificationHolder
+
+    -- 2. THE VISUAL FRAME (Visible - Handles the Slide Animation)
+    local Note = Instance.new("Frame")
+    Note.Name = "VisualFrame"
+    Note.Size = UDim2.new(1, 0, 1, 0) -- Fills the Container
+    Note.Position = UDim2.new(1.5, 0, 0, 0) -- Starts OFF SCREEN (Right side)
+    Note.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    Note.BorderSizePixel = 0
+    Note.Parent = Container
+    
+    local NoteCorner = Instance.new("UICorner")
+    NoteCorner.CornerRadius = UDim.new(0, 6)
+    NoteCorner.Parent = Note
+    
+    -- Accent Line
+    local Accent = Instance.new("Frame")
+    Accent.Size = UDim2.new(0, 4, 1, 0)
+    Accent.BackgroundColor3 = THEME.Accent -- Uses your script's Blue Accent
+    Accent.BorderSizePixel = 0
+    Accent.Parent = Note
+    
+    local AccentCorner = Instance.new("UICorner")
+    AccentCorner.CornerRadius = UDim.new(0, 6)
+    AccentCorner.Parent = Accent
+    
+    -- Title
+    local NoteTitle = Instance.new("TextLabel")
+    NoteTitle.Size = UDim2.new(1, -20, 0, 20)
+    NoteTitle.Position = UDim2.new(0, 12, 0, 5)
+    NoteTitle.BackgroundTransparency = 1
+    NoteTitle.Text = title
+    NoteTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    NoteTitle.TextSize = 14
+    NoteTitle.Font = Enum.Font.GothamBold
+    NoteTitle.TextXAlignment = Enum.TextXAlignment.Left
+    NoteTitle.Parent = Note
+    
+    -- Text
+    local NoteText = Instance.new("TextLabel")
+    NoteText.Size = UDim2.new(1, -20, 0, 30)
+    NoteText.Position = UDim2.new(0, 12, 0, 25)
+    NoteText.BackgroundTransparency = 1
+    NoteText.Text = text
+    NoteText.TextColor3 = Color3.fromRGB(200, 200, 200)
+    NoteText.TextSize = 12
+    NoteText.Font = Enum.Font.Gotham
+    NoteText.TextXAlignment = Enum.TextXAlignment.Left
+    NoteText.TextWrapped = true
+    NoteText.Parent = Note
+
+    -- // ANIMATION LOGIC //
+    -- 1. Expand Container Height (Push other notes up)
+    game:GetService("TweenService"):Create(Container, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(1, 0, 0, 60)}):Play()
+    
+    -- 2. Slide Visual Frame In (From Right to Left)
+    game:GetService("TweenService"):Create(Note, TweenInfo.new(0.4, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position = UDim2.new(0, 0, 0, 0)}):Play()
+    
+    -- Auto Remove
+    task.delay(duration, function()
+        if Container and Container.Parent then
+            -- Slide Out to the Right
+            game:GetService("TweenService"):Create(Note, TweenInfo.new(0.4, Enum.EasingStyle.Quint, Enum.EasingDirection.In), {Position = UDim2.new(1.5, 0, 0, 0)}):Play()
+            
+            -- Collapse Height
+            local closeTween = game:GetService("TweenService"):Create(Container, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {Size = UDim2.new(1, 0, 0, 0)})
+            
+            task.wait(0.2) -- Slight delay so we see the slide start before it shrinks
+            closeTween:Play()
+            closeTween.Completed:Wait()
+            
+            Container:Destroy()
+        end
+    end)
+end
+
+-- // CALLABLE WRAPPER (Global Access) //
+getgenv().Notification = function(arg1, arg2, arg3)
+    if not arg2 then
+        -- Called as Notification("Text Only")
+        SendNotification("R-Loader", tostring(arg1), 3)
     else
-        MainFrame:TweenSize(PreMinSize, "Out", "Quad", 0.3)
+        -- Called as Notification("Title", "Text", Duration)
+        SendNotification(tostring(arg1), tostring(arg2), arg3 or 3)
     end
+end
+
+-- // --- MINIMIZE & TOGGLE LOGIC (SMOOTH ANIMATIONS) ---
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+
+-- 1. PREPARE MAINFRAME FOR ANIMATION
+-- We set AnchorPoint to 0.5, 0.5 so it scales from the center
+MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0) 
+MainFrame.ClipsDescendants = true -- Ensures content hides when shrinking
+
+local UI_Open = false -- Start closed, let the startup anim open it
+local Debounce = false -- Prevents spamming keys breaking animations
+
+-- Animation Settings
+local OpenTweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out) -- "Bouncy" pop open
+local CloseTweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In) -- Smooth shrink close
+
+-- // TOGGLE FUNCTION
+local function ToggleUI(state)
+    if Debounce then return end
+    Debounce = true
+    
+    if state then
+        -- OPENING
+        MainFrame.Visible = true
+        MainFrame.Size = UDim2.new(0, 0, 0, 0) -- Start tiny
+        
+        local openAnim = TweenService:Create(MainFrame, OpenTweenInfo, {Size = UDim2.new(0, 550, 0, 350)}) -- Target Size
+        openAnim:Play()
+        openAnim.Completed:Wait()
+        UI_Open = true
+    else
+        -- CLOSING/MINIMIZING
+        local closeAnim = TweenService:Create(MainFrame, CloseTweenInfo, {Size = UDim2.new(0, 0, 0, 0)}) -- Shrink to 0
+        closeAnim:Play()
+        closeAnim.Completed:Wait()
+        MainFrame.Visible = false
+        UI_Open = false
+    end
+    
+    Debounce = false
+end
+
+-- // RIGHT CTRL LISTENER
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    -- Only toggle if Right Ctrl pressed AND not typing in chat
+    if input.KeyCode == Enum.KeyCode.RightControl and not UserInputService:GetFocusedTextBox() then
+        ToggleUI(not UI_Open) -- Toggle opposite of current state
+    end
+end)
+
+-- // MINIMIZE BUTTON (-)
+AddWinButton("-", THEME.Text, -60, function()
+    ToggleUI(false) -- Trigger Smooth Close
+    SendNotification("Hidden", "Press Right Ctrl to open the menu.", 4)
+end)
+
+-- // CLOSE BUTTON (X)
+AddWinButton("X", THEME.Red, -30, function()
+    if Debounce then return end
+    Debounce = true
+    
+    -- Smooth Close Animation
+    local closeAnim = TweenService:Create(MainFrame, CloseTweenInfo, {Size = UDim2.new(0, 0, 0, 0)})
+    closeAnim:Play()
+    closeAnim.Completed:Wait()
+    
+    -- Destroy GUI after animation finishes
+    ScreenGui:Destroy()
+    shared.Mana = nil 
+    getgenv().Notification = nil
 end)
 
 -- // TABS & CONTAINERS //
@@ -1326,3 +1806,6 @@ if Tabs[1] then
     Tabs[1].Indicator.BackgroundTransparency = 0
     Tabs[1].Page.Visible = true
 end
+
+-- // --- TRIGGER OPEN ANIMATION AFTER INTRO FINISHES ---
+ToggleUI(true)
