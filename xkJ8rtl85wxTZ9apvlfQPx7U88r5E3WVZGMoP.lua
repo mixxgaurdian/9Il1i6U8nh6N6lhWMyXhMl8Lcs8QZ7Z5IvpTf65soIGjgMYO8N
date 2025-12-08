@@ -1,10 +1,3 @@
---[[ 
-    R-LOADER FOR ERLC/UNIVERSAL
-    - Aimbot, ESP, Phase, Fly, Noclip
-    - Config Saving System
-    - Player Dropdown Whitelist
-    - Full Keybind Support
-]]
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -15,9 +8,8 @@ local HttpService = game:GetService("HttpService")
 local Camera = workspace.CurrentCamera
 local LocalPlayer = Players.LocalPlayer
 
---------------------------------------------------------------------------------
--- CONFIGURATION & SAVING
---------------------------------------------------------------------------------
+
+
 local Config = {
     Aimbot = {
         Enabled = false,
