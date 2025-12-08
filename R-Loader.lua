@@ -101,7 +101,7 @@ local SpecialUsers = {
     [2335971665] = {
         FirstTime = "Greetings 👑",
         Returning = "Welcome Back!! 👑",
-        UserURl = "https://www.avezano.com/cdn/shop/products/AN-2278.jpg"
+        UserURl = "https://4kwallpapers.com/images/walls/thumbs_3t/14452.jpg"
     },
 
     -- mixxgaurdian
@@ -114,7 +114,7 @@ local SpecialUsers = {
     [4520375383] = {
         FirstTime = "Welcome, dev👤",
         Returning = "Welcome Back dev, 👤",
-        UserURl = "https://photoshop-kopona.com/uploads/posts/2019-11/1573806076_pic-1.jpg"
+        UserURl = "https://4kwallpapers.com/images/walls/thumbs_3t/14452.jpg"
 
     },
 
