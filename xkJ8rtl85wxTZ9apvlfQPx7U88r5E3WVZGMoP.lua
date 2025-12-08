@@ -28,8 +28,6 @@ local Config = {
         SavedCFrame = nil, 
         IntervalSpeed = 0.05,
         FlySpeed = 50,
-        WalkSpeed = 16,
-        SprintSpeed = 24,
         JumpPower = 50
     },
     Binds = {
@@ -48,8 +46,6 @@ local Config = {
         InvisibleTG = false,
         InfiniteJump = false,
         Safe_Teleport = false,
-        WalkSpeed=false,
-        SprintSpeedT=false,
     }
 }
 
@@ -890,15 +886,6 @@ CreateSlider(MiscPage, "Fly Speed", 10, 200, Config.Movement.FlySpeed, function(
     Config.Movement.FlySpeed = v 
 end)
 
-Config.Movement.WalkSpeed = Config.Movement.WalkSSpeed or 16
-CreateSlider(MiscPage, "WalkS Speed", 10, 200, Config.Movement.WalkSSpeed, function(v) 
-    Config.Movement.WalkSSpeed = v 
-end)
-
-Config.Movement.SprintSpeed = Config.Movement.SprintSpeed or 24
-CreateSlider(MiscPage, "Sprint Speed", 10, 200, Config.Movement.SprintSpeed, function(v) 
-    Config.Movement.SprintSpeed = v 
-end)
 
 Config.Movement.JumpPower = Config.Movement.JumpPower or 50
 CreateSlider(MiscPage, "Jump Power", 10, 200, Config.Movement.JumpPower, function(v) 
@@ -911,16 +898,6 @@ CreateToggle(MiscPage, "Fly", Config.Toggles.Fly, function(v)
 end)
 CreateToggle(MiscPage, "Infinite Jump", Config.Toggles.InfiniteJump, function(v) 
     Config.Toggles.InfiniteJump = v 
-    SaveConfig()
-end)
-
-CreateToggle(MiscPage, "Walk Speed", Config.Toggles.InfiniteJump, function(v) 
-    Config.Toggles.WalkSpeedT = v 
-    SaveConfig()
-end)
-
-CreateToggle(MiscPage, "Sprint Speed", Config.Toggles.Fly, function(v) 
-    Config.Toggles.SprintSpeedT = v 
     SaveConfig()
 end)
 
