@@ -1050,7 +1050,7 @@ local function CreateSupportTab(pageData)
     createInfoLine("🛠️ R-Loader Support Information", nil, THEME.Accent).Font = Enum.Font.GothamBold
     
     -- Version Info
-    createInfoLine("Version: beta-3faeg45a", "beta-3faeg45a")
+    createInfoLine("Version: beta-3faeg45A", "beta-3faeg45a")
         createInfoLine("Config-status(❌)")
     -- Developer Contacts
     createInfoLine("Developer: Mix/R-Loader", "Mix/R-Loader")
