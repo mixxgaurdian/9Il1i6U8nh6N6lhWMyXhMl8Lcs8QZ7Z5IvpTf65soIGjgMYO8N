@@ -511,7 +511,7 @@ MainFrame.AnchorPoint = Vector2.new(0.5, 0.5) -- CENTER ANCHOR
 MainFrame.BorderSizePixel = 0
 MainFrame.ClipsDescendants = true
 MainFrame.Parent = ScreenGui
-MainFrame.Visible = false -- Start invisible
+MainFrame.Visible = true -- Start invisible
 Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 6)
 
 -- // --- UI BACKGROUND LOGIC (FORCE RELOAD) --- //
