@@ -689,7 +689,8 @@ local function TeleportToPlayer(targetPlayer)
         return
     end
     isTPingToPlayer = true
-    Notify("Going to: " .. targetPlayer.Name.."Press users name to cancel")
+    Notify("Press users name to cancel")
+    Notify("Going to: " .. targetPlayer.Name)
     task.spawn(function()
         local char = LocalPlayer.Character
         local root = char and char:FindFirstChild("HumanoidRootPart")
