@@ -311,6 +311,7 @@ local GameList = {
     Build_A_Boat = 210851291,
     FNAF_Eternal_Nights = 4053293514,
     Doors = 2440500124,
+    Legends_Of_Sd=1119466531,
     Universal = 0 -- fallback for unsupported games
 }
 
@@ -455,6 +456,18 @@ local FullScriptCatalog = {
             Loadable = true,
             scripload = "loadstring(game:HttpGet('https://raw.githubusercontent.com/Veaquach/LBBattlegroundsscript/refs/heads/main/Universal%20Lucky%20Block%20Battle%20Grounds%20Script.txt'))()"
         },
+    },
+
+    ["Legends_Of_Sd"] = {
+        {
+            Name = "Legends Of Speed",
+            TargetGame = "Legends_Of_Sd",
+            Image = "",
+            Loadable = true,
+            scripload = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/jokerbiel13/FourHub/refs/heads/main/Speed%20legendsFh.lua",true))()'
+        },
+
+        
     },
     ["FNAF_Eternal_Nights"] = {
         {

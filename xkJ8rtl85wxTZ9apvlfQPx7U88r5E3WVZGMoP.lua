@@ -821,7 +821,7 @@ CreateSlider(MiscPage, "Fly Speed", 10, 150, Config.Movement.FlySpeed, function(
     Config.Movement.FlySpeed = v 
 end)
 
-CreateToggle(MiscPage, "Fly 50 Recommended", Config.Toggles.Fly, function(v) 
+CreateToggle(MiscPage, "Fly", Config.Toggles.Fly, function(v) 
     Config.Toggles.Fly = v 
     SaveConfig()
 end)
