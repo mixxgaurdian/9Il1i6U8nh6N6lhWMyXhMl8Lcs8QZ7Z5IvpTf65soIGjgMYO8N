@@ -284,7 +284,21 @@ function UILibrary:CreateWindow(config)
 		Parent = Header
 	})
 
-	local logoSize = isMobile and 0 or 0
+	local logoSize = isMobile and 32 or 40
+	local Logo = create("TextLabel", {
+		Name = "Logo",
+		Size = UDim2.new(0, logoSize, 0, logoSize),
+		Position = UDim2.new(0, 10, 0, (headerHeight - logoSize) / 2),
+		BackgroundColor3 = Color3.fromRGB(138, 100, 255),
+		BackgroundTransparency = 0.3,
+		Text = "Hi",
+		TextColor3 = Color3.fromRGB(255, 255, 255),
+		Font = Enum.Font.GothamBold,
+		TextSize = isMobile and 18 or 22,
+		Parent = Header
+	})
+	roundify(Logo, 8)
+	addStroke(Logo, Color3.fromRGB(180, 140, 255), 2)
 
 	local TitleLabel = create("TextLabel", {
 		Name = "Title",
