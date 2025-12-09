@@ -345,7 +345,7 @@ function UILibrary:CreateWindow(config)
 		Name = "CloseBtn",
 		Size = UDim2.new(0, closeBtnSize, 0, closeBtnSize),
 		Position = UDim2.new(1, -closeBtnSize - 8, 0, (headerHeight - closeBtnSize) / 2),
-		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+		BackgroundColor3 = Color3.fromRGB(60, 235, 100),
 		BackgroundTransparency = 0.9,
 		Text = "×",
 		TextColor3 = Color3.fromRGB(255, 255, 255),
