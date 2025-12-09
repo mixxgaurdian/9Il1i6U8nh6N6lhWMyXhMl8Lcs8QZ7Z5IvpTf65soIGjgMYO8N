@@ -295,7 +295,7 @@ local CURRENT_GAME_ID = game.GameId
 
 -- List of all supported game IDs
 local GameList = {
-    Arsenal = 286090429,
+    Arsenal = 111958650,
     Rivals = 6035872082,
     Baseplate = 80461030,
     Emote_RNG = 8313824597,
@@ -307,6 +307,10 @@ local GameList = {
     BB_Legends = 4931927012,
     The_Forge = 7671049560,
     Prison_Life = 73885730,
+    Flick=8795154789,
+    Build_A_Boat = 210851291,
+    FNAF_Eternal_Nights = 4053293514,
+    Doors = 2440500124,
     Universal = 0 -- fallback for unsupported games
 }
 
@@ -363,22 +367,53 @@ local FullScriptCatalog = {
 
     ["Arsenal"] = {
         {
-            Name = "Z3US",
+            Name = "Z3US: partially Detected",
             TargetGame = "Arsenal",
             Image = "",
             Loadable = true,
             scripload = "loadstring(game:HttpGet('https://raw.githubusercontent.com/blackowl1231/Z3US/refs/heads/main/Games/Z3US%20Arsenal%20Beta.lua'))()"
         },
-    },
-
-    ["Baseplate"] = {
         {
-            Name = "Baseplate",
-            TargetGame = "Baseplate",
+            Name = "Vapa-v2",
+            TargetGame = "Arsenal",
             Image = "",
             Loadable = true,
-            scripload = test_lua
+            scripload = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/Nickyangtpe/Vapa-v2/refs/heads/main/Vapav2-Arsenal.lua", true))()'
         },
+    },
+
+    ["Rivals"] = {
+        {
+            Name = "Z3US Rivals",
+            TargetGame = "Rivals",
+            Image = "",
+            Loadable = true,
+            scripload = [[
+                getgenv().autoload = autoloadEnabled
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/blackowl1231/Z3US/refs/heads/main/Games/Z3US%20Rivals%20Beta.lua"))()
+            ]]
+        },
+    },
+
+    ["Flick"] = {
+        {
+            Name = "Coming Soon...",
+            TargetGame = "Flick",
+            Image = "",
+            Loadable = false,
+            scripload = ""
+
+        },
+    },
+
+    ["Prison_Life"] = {
+        {
+            Name = "DP-HUB",
+            TargetGame = "Prison_Life",
+            Image = "",
+            Loadable = true,
+            scripload = "loadstring(game:HttpGet('https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/LOK83u70UdGWBhj3LwexaiKVy5Q8MJTrxhM6KUz.lua'))()"
+        }
     },
 
     ["BB_Legends"] = {
@@ -391,6 +426,27 @@ local FullScriptCatalog = {
         },
     },
 
+    ["Build_A_Boat"] = {
+        {
+            Name = "Uniqu Hub",
+            TargetGame = "Build_A_Boat",
+            Image = "",
+            Loadable = true,
+            scripload = 'loadstring(game:HttpGet("https://rawscripts.net/raw/Unique-Hub-(14-Gmes)_521"))()'
+
+           
+
+        },
+        {
+            Name = "Lexus Hub: partially working/laggy",
+            TargetGame = "Build_A_Boat",
+            Image = "",
+            Loadable = true,
+            scripload = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/102KIRA/Best-Babft-script/refs/heads/main/Actually%20Best%20babft%20script"))()'
+
+        },
+    },
+
     ["Lucky_Blocks"] = {
         {
             Name = "Lucky Blocks",
@@ -398,6 +454,31 @@ local FullScriptCatalog = {
             Image = "",
             Loadable = true,
             scripload = "loadstring(game:HttpGet('https://raw.githubusercontent.com/Veaquach/LBBattlegroundsscript/refs/heads/main/Universal%20Lucky%20Block%20Battle%20Grounds%20Script.txt'))()"
+        },
+    },
+    ["FNAF_Eternal_Nights"] = {
+        {
+            Name = "FNAF Eternal Nights",
+            TargetGame = "FNAF_Eternal_Nights",
+            Image = "",
+            Loadable = true,
+            scripload = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/Snipez-Dev/Rbx-Scripts/refs/heads/main/Eternal%20Nights"))()'
+        },
+    },
+    ["Doors"] = {
+        {
+            Name = "Rloader Doors",
+            TargetGame = "Doors",
+            Image = "",
+            Loadable = true,
+            scripload = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/Doors_RLoader.lua"))()'
+        },
+            {
+            Name = "zynlope-no-ui",
+            TargetGame = "Doors",
+            Image = "",
+            Loadable = true,
+            scripload = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/rolezeay/doors/refs/heads/main/hmmmmm"))()'
         },
     },
 
@@ -439,15 +520,6 @@ local FullScriptCatalog = {
 
         
     },
-    ["Prison_Life"] = {
-        {
-            Name = "DP-HUB",
-            TargetGame = "Prison_Life",
-            Image = "",
-            Loadable = true,
-            scripload = "loadstring(game:HttpGet('https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/LOK83u70UdGWBhj3LwexaiKVy5Q8MJTrxhM6KUz.lua'))()"
-        }
-    },
 
     ["Valley_Prison"] = {
         {
@@ -487,20 +559,6 @@ local FullScriptCatalog = {
         },
 
     },
-
-    ["Rivals"] = {
-        {
-            Name = "Z3US Rivals",
-            TargetGame = "Rivals",
-            Image = "",
-            Loadable = true,
-            scripload = [[
-                getgenv().autoload = autoloadEnabled
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/blackowl1231/Z3US/refs/heads/main/Games/Z3US%20Rivals%20Beta.lua"))()
-            ]]
-        },
-    },
-
 
 }
 
