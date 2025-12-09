@@ -534,6 +534,14 @@ local FullScriptCatalog = {
             Loadable = true,
             scripload = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/jokerbiel13/FourHub/refs/heads/main/TheForgeFH.lua",true))()'
         },
+        {
+            Name = "pepehook-loader",
+            TargetGame = "The_Forge",
+            Image = "",
+            Loadable = true,
+            scripload = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/GiftStein1/pepehook-loader/refs/heads/main/loader.lua"))()'
+        },
+
 
         
     },
