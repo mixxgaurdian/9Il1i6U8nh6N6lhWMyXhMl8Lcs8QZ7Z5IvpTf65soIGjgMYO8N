@@ -284,6 +284,8 @@ function UILibrary:CreateWindow(config)
 		Parent = Header
 	})
 
+	local logoSize = isMobile and 0 or 0
+
 	local TitleLabel = create("TextLabel", {
 		Name = "Title",
 		Size = UDim2.new(1, -150, 1, 0),
