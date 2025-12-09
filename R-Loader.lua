@@ -446,7 +446,7 @@ local FullScriptCatalog = {
             Image = "",
             Loadable = true,
             scripload = "loadstring(game:HttpGet('https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/LOK83u70UdGWBhj3LwexaiKVy5Q8MJTrxhM6KUz.lua'))()"
-        
+        }
     },
 
     ["Valley_Prison"] = {
