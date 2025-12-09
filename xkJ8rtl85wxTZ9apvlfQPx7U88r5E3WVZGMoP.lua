@@ -889,7 +889,26 @@ UserInputService.InputBegan:Connect(function(input, gpe)
         end
     elseif input.KeyCode == Config.Binds.Fly then
         Config.Toggles.Fly = not Config.Toggles.Fly
-        Notify("Fly: " .. tostring(Config.Toggles.Fly)) -- Fixed syntax error here
+        Notify("Fly: " .. tostring(Config.Toggles.Fly))
+        
+        local char = LocalPlayer.Character
+        if char then
+            local root = char:FindFirstChild("HumanoidRootPart")
+            local hum = char:FindFirstChild("Humanoid")
+            
+            if root and hum then
+                -- When disabling, we MUST unanchor or you will be stuck in mid-air
+                if not Config.Toggles.Fly then
+                    root.Anchored = false
+                    hum.PlatformStand = false
+                    root.Velocity = Vector3.zero -- Reset velocity on stop to prevent flinging
+                else
+                    root.Anchored = true
+                    hum.PlatformStand = true
+                end
+            end
+        end
+        
     elseif input.KeyCode == Config.Binds.Noclip then
         Config.Toggles.Noclip = not Config.Toggles.Noclip
         Notify("Noclip: " .. tostring(Config.Toggles.Noclip))
@@ -923,20 +942,41 @@ UserInputService.InputBegan:Connect(function(input, gpe)
     end
 end)
 
-RunService.RenderStepped:Connect(function()
-    if Config.Toggles.Fly and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-        local root = LocalPlayer.Character.HumanoidRootPart
-        local vel = Vector3.zero
+-- Updated RenderStepped to use DeltaTime for smooth CFrame movement
+RunService.RenderStepped:Connect(function(deltaTime)
+    if Config.Toggles.Fly and LocalPlayer.Character then
+        local char = LocalPlayer.Character
+        local root = char:FindFirstChild("HumanoidRootPart")
+        local hum = char:FindFirstChild("Humanoid")
         
-        if UserInputService:IsKeyDown(Enum.KeyCode.W) then vel = vel + Camera.CFrame.LookVector end
-        if UserInputService:IsKeyDown(Enum.KeyCode.S) then vel = vel - Camera.CFrame.LookVector end
-        if UserInputService:IsKeyDown(Enum.KeyCode.A) then vel = vel - Camera.CFrame.RightVector end
-        if UserInputService:IsKeyDown(Enum.KeyCode.D) then vel = vel + Camera.CFrame.RightVector end
-        if UserInputService:IsKeyDown(Enum.KeyCode.Space) then vel = vel + Vector3.new(0, 1, 0) end
-        if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then vel = vel - Vector3.new(0, 1, 0) end
-        
-        root.Velocity = vel * Config.Movement.FlySpeed
-        root.AssemblyLinearVelocity = vel * Config.Movement.FlySpeed 
+        if root and hum then
+            -- Force Anchored/PlatformStand every frame just in case a game script tries to unanchor you
+            root.Anchored = true
+            hum.PlatformStand = true 
+            
+            local moveDir = Vector3.zero
+            local camCFrame = Camera.CFrame
+            
+            -- Calculate Direction
+            if UserInputService:IsKeyDown(Enum.KeyCode.W) then moveDir = moveDir + camCFrame.LookVector end
+            if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - camCFrame.LookVector end
+            if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - camCFrame.RightVector end
+            if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveDir = moveDir + camCFrame.RightVector end
+            if UserInputService:IsKeyDown(Enum.KeyCode.Space) then moveDir = moveDir + Vector3.new(0, 1, 0) end
+            if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then moveDir = moveDir - Vector3.new(0, 1, 0) end
+            
+            -- Normalize vector so diagonal movement isn't faster
+            if moveDir.Magnitude > 0 then
+                moveDir = moveDir.Unit
+            end
+            
+            -- CFrame Move: Position + (Direction * Speed * TimeSinceLastFrame)
+            root.CFrame = root.CFrame + (moveDir * (Config.Movement.FlySpeed * deltaTime))
+            
+            -- Zero out velocity just to be safe (so physics don't build up)
+            root.Velocity = Vector3.zero
+            root.AssemblyLinearVelocity = Vector3.zero
+        end
     end
 end)
 
