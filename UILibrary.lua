@@ -291,7 +291,7 @@ function UILibrary:CreateWindow(config)
 		Position = UDim2.new(0, 10, 0, (headerHeight - logoSize) / 2),
 		BackgroundColor3 = Color3.fromRGB(138, 100, 255),
 		BackgroundTransparency = 1,
-		Text = "Ran",
+		Text = "Change",
 		TextColor3 = Color3.fromRGB(255, 255, 255),
 		Font = Enum.Font.GothamBold,
 		TextSize = isMobile and 18 or 22,
@@ -471,6 +471,16 @@ function UILibrary:CreateWindow(config)
 	roundify(ToggleBtn, 12)
 	addStroke(ToggleBtn, Color3.fromRGB(180, 140, 255), 2)
 	addGradient(ToggleBtn, {theme.Accent, theme.AccentBlue}, 45)
+
+	create("TextLabel", {
+		Size = UDim2.new(1, 0, 1, 0),
+		BackgroundTransparency = 1,
+		Text = "Del",
+		TextColor3 = Color3.fromRGB(255, 255, 255),
+		Font = Enum.Font.GothamBold,
+		TextSize = isMobile and 24 or 28,
+		Parent = ToggleBtn
+	})
 
 	local function toggleUI()
 		open = not open
