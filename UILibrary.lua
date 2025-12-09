@@ -456,69 +456,7 @@ function UILibrary:CreateWindow(config)
 		Parent = Container
 	})
 
-	--// Toggle Button
-	local toggleSize = isMobile and 50 or 55
-	local toggleOffset = isMobile and 15 or 20
-	local ToggleBtn = create("TextButton", {
-		Name = "ToggleBtn",
-		Size = UDim2.new(0, toggleSize, 0, toggleSize),
-		Position = UDim2.new(1, -toggleSize - toggleOffset, 1, -toggleSize - toggleOffset),
-		BackgroundColor3 = theme.Accent,
-		Text = "",
-		AutoButtonColor = false,
-		Parent = ScreenGui
-	})
-	roundify(ToggleBtn, 12)
-	addStroke(ToggleBtn, Color3.fromRGB(180, 140, 255), 2)
-	addGradient(ToggleBtn, {theme.Accent, theme.AccentBlue}, 45)
 
-	create("TextLabel", {
-		Size = UDim2.new(1, 0, 1, 0),
-		BackgroundTransparency = 1,
-		Text = "",
-		Parent = ToggleBtn
-	})
-
-	local function toggleUI()
-		open = not open
-		Container.Visible = open
-		ModalBtn.Visible = open
-
-		if open then
-			Container.Size = UDim2.new(0, 0, 0, 0)
-			tween(Container, {Size = UDim2.new(0, size.X, 0, size.Y)}, 0.35, Enum.EasingStyle.Back)
-		else
-			tween(Container, {Size = UDim2.new(0, 0, 0, 0)}, 0.25)
-			task.wait(0.25)
-			Container.Visible = false
-		end
-	end
-
-	ToggleBtn.MouseButton1Click:Connect(toggleUI)
-
-	if not isMobile then
-		UserInputService.InputBegan:Connect(function(input, gameProcessed)
-			if not gameProcessed and input.KeyCode == keybind then
-				toggleUI()
-			end
-		end)
-	end
-
-	if isMobile then
-		ToggleBtn.MouseButton1Down:Connect(function()
-			tween(ToggleBtn, {Size = UDim2.new(0, toggleSize + 5, 0, toggleSize + 5)}, 0.1)
-		end)
-		ToggleBtn.MouseButton1Up:Connect(function()
-			tween(ToggleBtn, {Size = UDim2.new(0, toggleSize, 0, toggleSize)}, 0.1)
-		end)
-	else
-		ToggleBtn.MouseEnter:Connect(function()
-			tween(ToggleBtn, {Size = UDim2.new(0, 60, 0, 60)}, 0.2)
-		end)
-		ToggleBtn.MouseLeave:Connect(function()
-			tween(ToggleBtn, {Size = UDim2.new(0, 55, 0, 55)}, 0.2)
-		end)
-	end
 
 	--// Notification Container
 	local notifWidth = isMobile and 280 or 320
