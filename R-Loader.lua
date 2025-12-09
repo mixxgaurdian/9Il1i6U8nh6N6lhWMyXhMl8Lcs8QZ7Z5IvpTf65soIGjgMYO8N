@@ -304,7 +304,9 @@ local GameList = {
     Lucky_Blocks = 279565647,
     AOTR= 4658598196,
     ERLC = 903807016,
-    BB_Legends=4931927012,
+    BB_Legends = 4931927012,
+    The_Forge = 7671049560,
+    Prison_Life = 73885730,
     Universal = 0 -- fallback for unsupported games
 }
 
@@ -417,6 +419,34 @@ local FullScriptCatalog = {
             Loadable = true,
             scripload = 'loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/705e7fe7aa288f0fe86900cedb1119b1.lua"))()'
         },
+    },
+    
+    ["The_Forge"] = {
+        {
+            Name = "Rayfield",
+            TargetGame = "The_Forge",
+            Image = "",
+            Loadable = true,
+            scripload = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/LioK251/RbScripts/refs/heads/main/lazyuhub_theforge.lua"))()'
+        },
+        {
+            Name = "ForgeHub",
+            TargetGame = "The_Forge",
+            Image = "",
+            Loadable = true,
+            scripload = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/jokerbiel13/FourHub/refs/heads/main/TheForgeFH.lua",true))()'
+        },
+
+        
+    },
+    ["Prison_Life"] = {
+        {
+            Name = "DP-HUB",
+            TargetGame = "Prison_Life",
+            Image = "",
+            Loadable = true,
+            scripload = "loadstring(game:HttpGet('https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/LOK83u70UdGWBhj3LwexaiKVy5Q8MJTrxhM6KUz.lua'))()"
+        
     },
 
     ["Valley_Prison"] = {
