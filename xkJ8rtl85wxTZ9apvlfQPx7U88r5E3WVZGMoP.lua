@@ -817,7 +817,7 @@ AddLog("Logger Active...", Color3.fromRGB(200, 200, 200))
 RefreshPlayerList()
 
 -- [[ MISC TAB ]] --
-CreateSlider(MiscPage, "Fly Speed", 10, 200, Config.Movement.FlySpeed, function(v) 
+CreateSlider(MiscPage, "Fly Speed", 10, 50, Config.Movement.FlySpeed, function(v) 
     Config.Movement.FlySpeed = v 
 end)
 
@@ -887,7 +887,7 @@ UserInputService.InputBegan:Connect(function(input, gpe)
         end
     elseif input.KeyCode == Config.Binds.Fly then
         Config.Toggles.Fly = not Config.Toggles.Fly
-        Notify("Fly: " .. tostring(Config.Toggles.Fly))
+        Notify("Fly: " .. tostring(Config.Toggles.))
     elseif input.KeyCode == Config.Binds.Noclip then
         Config.Toggles.Noclip = not Config.Toggles.Noclip
         Notify("Noclip: " .. tostring(Config.Toggles.Noclip))
@@ -954,6 +954,7 @@ RunService.Stepped:Connect(function()
         lastNoclipState = false
     end
 end)
+
 local ESPFolder = Instance.new("Folder")
 ESPFolder.Name = "RLoaderESP"
 ESPFolder.Parent = CoreGui
