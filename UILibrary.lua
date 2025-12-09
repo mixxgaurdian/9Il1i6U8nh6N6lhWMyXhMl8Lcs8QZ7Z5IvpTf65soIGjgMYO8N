@@ -472,16 +472,6 @@ function UILibrary:CreateWindow(config)
 	addStroke(ToggleBtn, Color3.fromRGB(180, 140, 255), 2)
 	addGradient(ToggleBtn, {theme.Accent, theme.AccentBlue}, 45)
 
-	create("TextLabel", {
-		Size = UDim2.new(1, 0, 1, 0),
-		BackgroundTransparency = 1,
-		Text = "testpe",
-		TextColor3 = Color3.fromRGB(255, 255, 255),
-		Font = Enum.Font.GothamBold,
-		TextSize = isMobile and 24 or 28,
-		Parent = ToggleBtn
-	})
-
 	local function toggleUI()
 		open = not open
 		Container.Visible = open
