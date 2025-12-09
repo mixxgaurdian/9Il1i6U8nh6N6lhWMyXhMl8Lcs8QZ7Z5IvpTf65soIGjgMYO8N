@@ -19,6 +19,9 @@ local Config = {
     },
     ESP = {
         Enabled = false,
+
+        Fullbrightness = 0,
+
         Fill = {R=175, G=25, B=25},
         Outline = {R=255, G=255, B=255},
         ShowNames = true
@@ -42,6 +45,7 @@ local Config = {
         Fly = false,
         Noclip = false,
         ShowObjects=false,
+        Fullbright=false,
     }
 }
 
@@ -447,6 +451,62 @@ local function CreateDropdown(page, text, callback)
 end
 
 --------------------------------------------------------------------------------
+-- BRIGHTNESS
+--------------------------------------------------------------------------------
+
+local Lighting = game:GetService("Lighting")
+local RunService = game:GetService("RunService")
+-- 1. Store the original lighting state so we can restore it later
+local OriginalLighting = {
+    Brightness = Lighting.Brightness,
+    ClockTime = Lighting.ClockTime,
+    FogEnd = Lighting.FogEnd,
+    GlobalShadows = Lighting.GlobalShadows,
+    OutdoorAmbient = Lighting.OutdoorAmbient
+}
+
+local FullbrightLoop = nil
+
+-- 2. Function to apply your custom brightness
+local function UpdateLighting()
+    Lighting.Brightness = Config.ESP.Fullbrightness
+    Lighting.ClockTime = 14 -- Noon is usually best for visibility
+    Lighting.FogEnd = 100000 -- Removes fog so you can see infinitely
+    Lighting.GlobalShadows = false -- Removes dark shadows
+    Lighting.OutdoorAmbient = Color3.fromRGB(128, 128, 128) -- Makes shadows grey instead of black
+end
+
+-- 3. The Logic Handler
+local function ToggleFullbright(state)
+    if state then
+        -- BEFORE we start, save the game's current look
+        OriginalLighting.Brightness = Lighting.Brightness
+        OriginalLighting.ClockTime = Lighting.ClockTime
+        OriginalLighting.FogEnd = Lighting.FogEnd
+        OriginalLighting.GlobalShadows = Lighting.GlobalShadows
+        OriginalLighting.OutdoorAmbient = Lighting.OutdoorAmbient
+
+        -- Start the loop (We loop it because games often try to force day/night cycles)
+        if not FullbrightLoop then
+            FullbrightLoop = RunService.RenderStepped:Connect(UpdateLighting)
+        end
+    else
+        -- Stop forcing brightness
+        if FullbrightLoop then
+            FullbrightLoop:Disconnect()
+            FullbrightLoop = nil
+        end
+
+        -- Restore the game's original look
+        Lighting.Brightness = OriginalLighting.Brightness
+        Lighting.ClockTime = OriginalLighting.ClockTime
+        Lighting.FogEnd = OriginalLighting.FogEnd
+        Lighting.GlobalShadows = OriginalLighting.GlobalShadows
+        Lighting.OutdoorAmbient = OriginalLighting.OutdoorAmbient
+    end
+end
+
+--------------------------------------------------------------------------------
 -- TABS CONSTRUCTION
 --------------------------------------------------------------------------------
 local InfoPage, InfoTab = CreateTab("Main")
@@ -509,6 +569,17 @@ CreateToggle(VisualsPage, "Show Objects", Config.ESP.ShowObjects, function(v)
     Config.ESP.ShowObjects = v 
     SaveConfig()
 end)
+
+CreateSlider(VisualsPage, "Fullbright Strength", 0, 250, Config.ESP.Fullbrightness, function(v) 
+    Config.ESP.Fullbrightness = v 
+    SaveConfig()
+end)
+
+CreateToggle(VisualsPage, "Fullbright", Config.ESP.Fullbright, function(v) 
+    ToggleFullbright(v)
+    SaveConfig()
+end)
+
 
 
 --------------------------------------------------------------------------------
@@ -853,6 +924,7 @@ CreateDropdown(WhitePage, "Select Player to Whitelist", function(name)
     Config.Aimbot.Whitelist[name] = true
     SaveConfig()
 end)
+
 CreateButton(WhitePage, "Clear Whitelist", function()
     Config.Aimbot.Whitelist = {}
     Notify("Whitelist Cleared")
