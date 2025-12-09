@@ -35,7 +35,7 @@ end
 
 currentFloor = detectFloor()
 
-local ExploitCategory = Window:CreateCategory("Exploits", "⚡")
+local ExploitCategory = Window:CreateCategory("Exploits", "")
 local UniversalTab = ExploitCategory:CreateTab("Universal", "🌍")
 local HotelTab = ExploitCategory:CreateTab("Hotel", "🏨")
 local MinesTab = ExploitCategory:CreateTab("Mines", "⛏️")
