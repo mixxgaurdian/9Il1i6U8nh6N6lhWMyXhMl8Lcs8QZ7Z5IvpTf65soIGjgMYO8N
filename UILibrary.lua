@@ -339,6 +339,45 @@ function UILibrary:CreateWindow(config)
 		Parent = SearchBox
 	})
 
+	
+    --// Minimize Button 
+    local MinimizeBtnSize = isMobile and 32 or 38
+	local MinimizeBtn = create("TextButton", {
+		Name = "Minimize",
+		Size = UDim2.new(0, MinimizeBtnSize, 0, MinimizeBtnSize),
+		Position = UDim2.new(1, -MinimizeBtnSize - 10, 0, (headerHeight - MinimizeBtnSize) / 2),
+		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+		BackgroundTransparency = 0.9,
+		Text = "-",
+		TextColor3 = Color3.fromRGB(255, 255, 255),
+		Font = Enum.Font.GothamBold,
+		TextSize = isMobile and 20 or 24,
+		AutoButtonColor = false,
+		Parent = Header
+	})
+
+    roundify(MinimizeBtn, 8)
+
+	local function addTouchFeedback(button, hoverColor, normalColor)
+		if isMobile then
+			button.MouseButton1Down:Connect(function()
+				tween(button, {BackgroundTransparency = 0.7, BackgroundColor3 = hoverColor or theme.Error}, 0.1)
+			end)
+			button.MouseButton1Up:Connect(function()
+				tween(button, {BackgroundTransparency = 0.9, BackgroundColor3 = normalColor or Color3.fromRGB(255, 255, 255)}, 0.1)
+			end)
+		else
+			button.MouseEnter:Connect(function()
+				tween(button, {BackgroundTransparency = 0.7, BackgroundColor3 = hoverColor or theme.Error}, 0.2)
+			end)
+			button.MouseLeave:Connect(function()
+				tween(button, {BackgroundTransparency = 0.9, BackgroundColor3 = normalColor or Color3.fromRGB(255, 255, 255)}, 0.2)
+			end)
+		end
+	end
+
+    addTouchFeedback(MinimizeBtn, theme.Error, Color3.fromRGB(255, 255, 255))
+
 	--// Close Button
 	local closeBtnSize = isMobile and 32 or 38
 	local CloseBtn = create("TextButton", {
@@ -457,8 +496,8 @@ function UILibrary:CreateWindow(config)
 	})
 
 	--// Toggle Button
-	local toggleSize = isMobile and 70 or 75
-	local toggleOffset = isMobile and 25 or 30
+	local toggleSize = isMobile and 50 or 55
+	local toggleOffset = isMobile and 15 or 20
 	local ToggleBtn = create("TextButton", {
 		Name = "ToggleBtn",
 		Size = UDim2.new(0, toggleSize, 0, toggleSize),
