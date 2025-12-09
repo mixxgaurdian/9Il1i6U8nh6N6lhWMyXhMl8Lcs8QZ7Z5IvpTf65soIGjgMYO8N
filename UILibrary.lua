@@ -456,7 +456,34 @@ function UILibrary:CreateWindow(config)
 		Parent = Container
 	})
 
+--// Toggle Logic (Button Visuals Removed)
+	
+	-- Function is kept so keybind works
+	local function toggleUI()
+		open = not open
+		Container.Visible = open
+		ModalBtn.Visible = open
 
+		if open then
+			Container.Size = UDim2.new(0, 0, 0, 0)
+			tween(Container, {Size = UDim2.new(0, size.X, 0, size.Y)}, 0.35, Enum.EasingStyle.Back)
+		else
+			tween(Container, {Size = UDim2.new(0, 0, 0, 0)}, 0.25)
+			task.wait(0.25)
+			Container.Visible = false
+		end
+	end
+
+	-- Keybind Listener (Shift Toggle)
+	if not isMobile then
+		UserInputService.InputBegan:Connect(function(input, gameProcessed)
+			if not gameProcessed and input.KeyCode == keybind then
+				toggleUI()
+			end
+		end)
+	end
+
+	-- Removed: ToggleBtn creation, visuals, click events, and animations.
 
 	--// Notification Container
 	local notifWidth = isMobile and 280 or 320
