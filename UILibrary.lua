@@ -291,7 +291,7 @@ function UILibrary:CreateWindow(config)
 		Position = UDim2.new(0, 10, 0, (headerHeight - logoSize) / 2),
 		BackgroundColor3 = Color3.fromRGB(138, 100, 255),
 		BackgroundTransparency = 0.3,
-		Text = "test",
+		Text = "testped",
 		TextColor3 = Color3.fromRGB(255, 255, 255),
 		Font = Enum.Font.GothamBold,
 		TextSize = isMobile and 18 or 22,
@@ -475,7 +475,7 @@ function UILibrary:CreateWindow(config)
 	create("TextLabel", {
 		Size = UDim2.new(1, 0, 1, 0),
 		BackgroundTransparency = 1,
-		Text = "⚡",
+		Text = "testped",
 		TextColor3 = Color3.fromRGB(255, 255, 255),
 		Font = Enum.Font.GothamBold,
 		TextSize = isMobile and 24 or 28,
