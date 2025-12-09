@@ -41,6 +41,7 @@ local Config = {
     Toggles = {
         Fly = false,
         Noclip = false,
+        ShowObjects=false,
     }
 }
 
@@ -503,6 +504,12 @@ CreateToggle(VisualsPage, "Show Names", Config.ESP.ShowNames, function(v)
     Config.ESP.ShowNames = v 
     SaveConfig()
 end)
+
+CreateToggle(VisualsPage, "Show Objects", Config.ESP.ShowObjects, function(v) 
+    Config.ESP.ShowObjects = v 
+    SaveConfig()
+end)
+
 
 --------------------------------------------------------------------------------
 -- TAB: MOVEMENT
@@ -998,28 +1005,59 @@ RunService.Stepped:Connect(function()
     end
 end)
 
+
 local ESPFolder = Instance.new("Folder")
 ESPFolder.Name = "RLoaderESP"
 ESPFolder.Parent = CoreGui
 
+-- Cache for interactable parts to prevent lag
+local InteractableCache = {}
+
+-- Function to check if an object is interactable and add it to cache
+local function CacheInteractable(obj)
+    if obj:IsA("ProximityPrompt") or obj:IsA("ClickDetector") then
+        -- We highlight the Parent (The part/model), not the prompt itself
+        if obj.Parent and (obj.Parent:IsA("BasePart") or obj.Parent:IsA("Model")) then
+            table.insert(InteractableCache, obj.Parent)
+        end
+    end
+end
+
+-- 1. Scan workspace once on load
+for _, descendant in pairs(workspace:GetDescendants()) do
+    CacheInteractable(descendant)
+end
+
+-- 2. Listen for new objects (interactables spawning in)
+workspace.DescendantAdded:Connect(CacheInteractable)
+
 RunService.RenderStepped:Connect(function()
+    
+    -- ========================================================================
+    -- BLOCK A: PLAYER ESP
+    -- ========================================================================
     if Config.ESP.Enabled then
         for _, plr in pairs(Players:GetPlayers()) do
             if plr ~= LocalPlayer and plr.Character and plr.Character:FindFirstChild("Head") then
-                local hl = ESPFolder:FindFirstChild(plr.Name .. "_Highlight")
+                
+                -- 1. Handle Highlight
+                local hlName = plr.Name .. "_Highlight"
+                local hl = ESPFolder:FindFirstChild(hlName)
+                
                 if not hl then
                     hl = Instance.new("Highlight")
-                    hl.Name = plr.Name .. "_Highlight"
+                    hl.Name = hlName
                     hl.Parent = ESPFolder
                     hl.FillTransparency = 0.5
                     hl.OutlineTransparency = 0
                 end
-                
+
                 hl.Adornee = plr.Character
                 hl.FillColor = Color3.fromRGB(Config.ESP.Fill.R, Config.ESP.Fill.G, Config.ESP.Fill.B)
                 hl.OutlineColor = Color3.fromRGB(Config.ESP.Outline.R, Config.ESP.Outline.G, Config.ESP.Outline.B)
                 hl.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
 
+                -- 2. Handle Name Tag
                 local tagName = plr.Name .. "_Tag"
                 local tag = ESPFolder:FindFirstChild(tagName)
 
@@ -1048,13 +1086,51 @@ RunService.RenderStepped:Connect(function()
                         tag.Adornee = plr.Character.Head
                     end
                 else
+                    -- If ShowNames is off but ESP is on, remove the tag
                     if tag then tag:Destroy() end
                 end
-
             end
         end
     else
-        ESPFolder:ClearAllChildren()
+        -- If Player ESP is disabled, remove ONLY player highlights/tags
+        for _, child in pairs(ESPFolder:GetChildren()) do
+            if child.Name:match("_Highlight$") or child.Name:match("_Tag$") then
+                child:Destroy()
+            end
+        end
+    end
+
+    -- ========================================================================
+    -- BLOCK B: OBJECT ESP (Independent Logic)
+    -- ========================================================================
+    if Config.ESP.ShowObjects then
+        for _, object in pairs(InteractableCache) do
+            -- Ensure object still exists in game
+            if object and object.Parent then
+                local objName = object.Name .. "_ObjHighlight"
+                local hl = ESPFolder:FindFirstChild(objName)
+
+                if not hl then
+                    hl = Instance.new("Highlight")
+                    hl.Name = objName
+                    hl.Parent = ESPFolder
+                    hl.FillTransparency = 0.5
+                    hl.OutlineTransparency = 0
+                end
+
+                hl.Adornee = object
+                hl.FillColor = Color3.fromRGB(0, 255, 0) -- Green
+                hl.OutlineColor = Color3.fromRGB(255, 255, 255)
+                hl.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+            end
+        end
+    else
+        -- If Object ESP is disabled, remove ONLY object highlights
+        for _, child in pairs(ESPFolder:GetChildren()) do
+            if child.Name:match("_ObjHighlight$") then
+                child:Destroy()
+            end
+        end
     end
 end)
 
