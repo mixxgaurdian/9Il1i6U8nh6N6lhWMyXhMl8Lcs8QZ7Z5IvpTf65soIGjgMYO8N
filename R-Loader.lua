@@ -107,9 +107,9 @@ local SpecialUsers = {
 
     -- mixxgaurdian
     [1104273577] = {
-        FirstTime = "Welcome, sir ",
-        Returning = "Welcome Back, sir ",
-        UserURl = "https://www.avezano.com/cdn/shop/products/AN-2278.jpg"
+        FirstTime = "📎:Welcome, sir ",
+        Returning = "📎:Welcome Back, sir ",
+        UserURl = "https://wallpapercave.com/wp/wp5055045.jpg"
 
     },
     [4520375383] = {
@@ -121,6 +121,7 @@ local SpecialUsers = {
 
 }
 
+local DefaultImage = "https://wallpapercave.com/wp/wp5055045.jpg"
 -- 2. Create the Global Function
 
 _G.UserURl = function()
@@ -130,6 +131,9 @@ _G.UserURl = function()
     if player and SpecialUsers[player.UserId] then
         -- Return their specific URL
         return SpecialUsers[player.UserId].UserURl
+    else
+        -- Return the default image for normal users
+        return DefaultImage
     end
 end
 
