@@ -383,6 +383,45 @@ function UILibrary:CreateWindow(config)
 		ModalBtn.Visible = false
 	end)
 
+	
+    --// Minimize Button 
+    local MinimizeBtnSize = isMobile and 32 or 38
+	local MinimizeBtn = create("TextButton", {
+		Name = "Minimize",
+		Size = UDim2.new(0, MinimizeBtnSize, 0, MinimizeBtnSize),
+		Position = UDim2.new(1, -MinimizeBtnSize - 8, 0, (headerHeight - MinimizeBtnSize) / 2),
+		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+		BackgroundTransparency = 0.9,
+		Text = "-",
+		TextColor3 = Color3.fromRGB(255, 255, 255),
+		Font = Enum.Font.GothamBold,
+		TextSize = isMobile and 20 or 24,
+		AutoButtonColor = false,
+		Parent = Header
+	})
+
+    roundify(MinimizeBtn, 8)
+
+	local function addTouchFeedback(button, hoverColor, normalColor)
+		if isMobile then
+			button.MouseButton1Down:Connect(function()
+				tween(button, {BackgroundTransparency = 0.7, BackgroundColor3 = hoverColor or theme.Error}, 0.1)
+			end)
+			button.MouseButton1Up:Connect(function()
+				tween(button, {BackgroundTransparency = 0.9, BackgroundColor3 = normalColor or Color3.fromRGB(255, 255, 255)}, 0.1)
+			end)
+		else
+			button.MouseEnter:Connect(function()
+				tween(button, {BackgroundTransparency = 0.7, BackgroundColor3 = hoverColor or theme.Error}, 0.2)
+			end)
+			button.MouseLeave:Connect(function()
+				tween(button, {BackgroundTransparency = 0.9, BackgroundColor3 = normalColor or Color3.fromRGB(255, 255, 255)}, 0.2)
+			end)
+		end
+	end
+
+    addTouchFeedback(MinimizeBtn, theme.Error, Color3.fromRGB(255, 255, 255))
+
 	--// Dragging
 	local dragging, dragInput, dragStart, startPos
 
@@ -456,9 +495,26 @@ function UILibrary:CreateWindow(config)
 		Parent = Container
 	})
 
---// Toggle Logic (Button Visuals Removed)
-	
-	-- Function is kept so keybind works
+	--// Toggle Button
+	local toggleSize = isMobile and 50 or 55
+	local toggleOffset = isMobile and 15 or 20
+	local ToggleBtn = create("TextButton", {
+		Name = "ToggleBtn",
+		Size = UDim2.new(0, toggleSize, 0, toggleSize),
+		Position = UDim2.new(1, -toggleSize - toggleOffset, 1, -toggleSize - toggleOffset),
+		BackgroundColor3 = theme.Accent,
+		Text = "",
+		AutoButtonColor = false,
+		Parent = ScreenGui
+	})
+
+	create("TextLabel", {
+		Size = UDim2.new(1, 0, 1, 0),
+		BackgroundTransparency = 1,
+		Text = "",
+		Parent = ToggleBtn
+	})
+
 	local function toggleUI()
 		open = not open
 		Container.Visible = open
@@ -474,7 +530,8 @@ function UILibrary:CreateWindow(config)
 		end
 	end
 
-	-- Keybind Listener (Shift Toggle)
+	ToggleBtn.MouseButton1Click:Connect(toggleUI)
+
 	if not isMobile then
 		UserInputService.InputBegan:Connect(function(input, gameProcessed)
 			if not gameProcessed and input.KeyCode == keybind then
@@ -483,7 +540,21 @@ function UILibrary:CreateWindow(config)
 		end)
 	end
 
-	-- Removed: ToggleBtn creation, visuals, click events, and animations.
+	if isMobile then
+		ToggleBtn.MouseButton1Down:Connect(function()
+			tween(ToggleBtn, {Size = UDim2.new(0, toggleSize + 5, 0, toggleSize + 5)}, 0.1)
+		end)
+		ToggleBtn.MouseButton1Up:Connect(function()
+			tween(ToggleBtn, {Size = UDim2.new(0, toggleSize, 0, toggleSize)}, 0.1)
+		end)
+	else
+		ToggleBtn.MouseEnter:Connect(function()
+			tween(ToggleBtn, {Size = UDim2.new(0, 60, 0, 60)}, 0.2)
+		end)
+		ToggleBtn.MouseLeave:Connect(function()
+			tween(ToggleBtn, {Size = UDim2.new(0, 55, 0, 55)}, 0.2)
+		end)
+	end
 
 	--// Notification Container
 	local notifWidth = isMobile and 280 or 320
