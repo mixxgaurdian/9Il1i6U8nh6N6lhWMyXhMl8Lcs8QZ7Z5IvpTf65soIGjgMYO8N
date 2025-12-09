@@ -340,227 +340,228 @@ function UILibrary:CreateWindow(config)
 	})
 
 	
-    --// Minimize Button 
-    local MinimizeBtnSize = isMobile and 32 or 38
-	local MinimizeBtn = create("TextButton", {
-		Name = "Minimize",
-		Size = UDim2.new(0, MinimizeBtnSize, 0, MinimizeBtnSize),
-		Position = UDim2.new(1, -MinimizeBtnSize - 10, 0, (headerHeight - MinimizeBtnSize) / 2),
-		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-		BackgroundTransparency = 0.9,
-		Text = "-",
-		TextColor3 = Color3.fromRGB(255, 255, 255),
-		Font = Enum.Font.GothamBold,
-		TextSize = isMobile and 20 or 24,
-		AutoButtonColor = false,
-		Parent = Header
-	})
+--// [1] Define toggleUI early so we can link it to buttons immediately
+    local open = true -- Start open
+    local function toggleUI()
+        open = not open
+        Container.Visible = open
+        ModalBtn.Visible = open
 
+        if open then
+            Container.Size = UDim2.new(0, 0, 0, 0)
+            tween(Container, {Size = UDim2.new(0, size.X, 0, size.Y)}, 0.35, Enum.EasingStyle.Back)
+        else
+            tween(Container, {Size = UDim2.new(0, 0, 0, 0)}, 0.25)
+            task.wait(0.25)
+            if not open then -- Check again in case user spammed click
+                Container.Visible = false
+            end
+        end
+    end
+
+    --// Make callable externally (Assuming 'Window' is your return table)
+    --// If your table is named 'Library', change 'Window' to 'Library'
+    if Window then 
+        Window.Toggle = toggleUI
+    end
+
+    --// Close Button (Rightmost)
+    local closeBtnSize = isMobile and 32 or 38
+    local CloseBtn = create("TextButton", {
+        Name = "CloseBtn",
+        Size = UDim2.new(0, closeBtnSize, 0, closeBtnSize),
+        -- Positioned 8 pixels from the right edge
+        Position = UDim2.new(1, -closeBtnSize - 8, 0, (headerHeight - closeBtnSize) / 2),
+        BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+        BackgroundTransparency = 0.9,
+        Text = "×",
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        Font = Enum.Font.GothamBold,
+        TextSize = isMobile and 20 or 24,
+        AutoButtonColor = false,
+        Parent = Header
+    })
+    roundify(CloseBtn, 8)
+
+    --// Minimize Button (Left of Close Button)
+    local MinimizeBtnSize = isMobile and 32 or 38
+    local MinimizeBtn = create("TextButton", {
+        Name = "Minimize",
+        Size = UDim2.new(0, MinimizeBtnSize, 0, MinimizeBtnSize),
+        -- Position logic: - (CloseButtonWidth) - (Padding 8) - (MinimizeWidth) - (Gap 4)
+        Position = UDim2.new(1, -closeBtnSize - MinimizeBtnSize - 12, 0, (headerHeight - MinimizeBtnSize) / 2),
+        BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+        BackgroundTransparency = 0.9,
+        Text = "-",
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        Font = Enum.Font.GothamBold,
+        TextSize = isMobile and 20 or 24,
+        AutoButtonColor = false,
+        Parent = Header
+    })
     roundify(MinimizeBtn, 8)
 
-	local function addTouchFeedback(button, hoverColor, normalColor)
-		if isMobile then
-			button.MouseButton1Down:Connect(function()
-				tween(button, {BackgroundTransparency = 0.7, BackgroundColor3 = hoverColor or theme.Error}, 0.1)
-			end)
-			button.MouseButton1Up:Connect(function()
-				tween(button, {BackgroundTransparency = 0.9, BackgroundColor3 = normalColor or Color3.fromRGB(255, 255, 255)}, 0.1)
-			end)
-		else
-			button.MouseEnter:Connect(function()
-				tween(button, {BackgroundTransparency = 0.7, BackgroundColor3 = hoverColor or theme.Error}, 0.2)
-			end)
-			button.MouseLeave:Connect(function()
-				tween(button, {BackgroundTransparency = 0.9, BackgroundColor3 = normalColor or Color3.fromRGB(255, 255, 255)}, 0.2)
-			end)
-		end
-	end
+    --// Button Touch/Hover Logic
+    local function addTouchFeedback(button, hoverColor, normalColor)
+        if isMobile then
+            button.MouseButton1Down:Connect(function()
+                tween(button, {BackgroundTransparency = 0.7, BackgroundColor3 = hoverColor or theme.Error}, 0.1)
+            end)
+            button.MouseButton1Up:Connect(function()
+                tween(button, {BackgroundTransparency = 0.9, BackgroundColor3 = normalColor or Color3.fromRGB(255, 255, 255)}, 0.1)
+            end)
+        else
+            button.MouseEnter:Connect(function()
+                tween(button, {BackgroundTransparency = 0.7, BackgroundColor3 = hoverColor or theme.Error}, 0.2)
+            end)
+            button.MouseLeave:Connect(function()
+                tween(button, {BackgroundTransparency = 0.9, BackgroundColor3 = normalColor or Color3.fromRGB(255, 255, 255)}, 0.2)
+            end)
+        end
+    end
 
-    addTouchFeedback(MinimizeBtn, theme.Error, Color3.fromRGB(255, 255, 255))
+    addTouchFeedback(MinimizeBtn, theme.Accent, Color3.fromRGB(255, 255, 255)) -- Uses Accent color for minimize
+    addTouchFeedback(CloseBtn, theme.Error, Color3.fromRGB(255, 255, 255))    -- Uses Error color for close
 
-	--// Close Button
-	local closeBtnSize = isMobile and 32 or 38
-	local CloseBtn = create("TextButton", {
-		Name = "CloseBtn",
-		Size = UDim2.new(0, closeBtnSize, 0, closeBtnSize),
-		Position = UDim2.new(1, -closeBtnSize - 8, 0, (headerHeight - closeBtnSize) / 2),
-		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-		BackgroundTransparency = 0.9,
-		Text = "×",
-		TextColor3 = Color3.fromRGB(255, 255, 255),
-		Font = Enum.Font.GothamBold,
-		TextSize = isMobile and 20 or 24,
-		AutoButtonColor = false,
-		Parent = Header
-	})
-	roundify(CloseBtn, 8)
+    --// Button Functionality
+    
+    -- Close completely hides/destroys (depending on your pref, here it just hides)
+    CloseBtn.MouseButton1Click:Connect(function()
+        open = false
+        Container.Visible = false
+        ModalBtn.Visible = false
+    end)
 
-	local function addTouchFeedback(button, hoverColor, normalColor)
-		if isMobile then
-			button.MouseButton1Down:Connect(function()
-				tween(button, {BackgroundTransparency = 0.7, BackgroundColor3 = hoverColor or theme.Error}, 0.1)
-			end)
-			button.MouseButton1Up:Connect(function()
-				tween(button, {BackgroundTransparency = 0.9, BackgroundColor3 = normalColor or Color3.fromRGB(255, 255, 255)}, 0.1)
-			end)
-		else
-			button.MouseEnter:Connect(function()
-				tween(button, {BackgroundTransparency = 0.7, BackgroundColor3 = hoverColor or theme.Error}, 0.2)
-			end)
-			button.MouseLeave:Connect(function()
-				tween(button, {BackgroundTransparency = 0.9, BackgroundColor3 = normalColor or Color3.fromRGB(255, 255, 255)}, 0.2)
-			end)
-		end
-	end
+    -- Minimize uses the exact same logic as ToggleUI
+    MinimizeBtn.MouseButton1Click:Connect(toggleUI)
 
-	addTouchFeedback(CloseBtn, theme.Error, Color3.fromRGB(255, 255, 255))
+    --// Dragging
+    local dragging, dragInput, dragStart, startPos
 
-	local open = false
-	CloseBtn.MouseButton1Click:Connect(function()
-		open = false
-		Container.Visible = false
-		ModalBtn.Visible = false
-	end)
+    local function startDrag(input)
+        dragging = true
+        dragStart = input.Position
+        startPos = Container.Position
 
-	--// Dragging
-	local dragging, dragInput, dragStart, startPos
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
 
-	local function startDrag(input)
-		dragging = true
-		dragStart = input.Position
-		startPos = Container.Position
+    Header.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            startDrag(input)
+        end
+    end)
 
-		input.Changed:Connect(function()
-			if input.UserInputState == Enum.UserInputState.End then
-				dragging = false
-			end
-		end)
-	end
+    UserInputService.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+            dragInput = input
+        end
 
-	Header.InputBegan:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-			startDrag(input)
-		end
-	end)
+        if dragging and input == dragInput then
+            local delta = input.Position - dragStart
+            Container.Position = UDim2.new(
+                startPos.X.Scale, 
+                startPos.X.Offset + delta.X,
+                startPos.Y.Scale, 
+                startPos.Y.Offset + delta.Y
+            )
+        end
+    end)
 
-	UserInputService.InputChanged:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-			dragInput = input
-		end
+    --// Sidebar
+    local sidebarWidth = isMobile and 100 or 130
+    local Sidebar = create("Frame", {
+        Name = "Sidebar",
+        Size = UDim2.new(0, sidebarWidth, 1, -headerHeight),
+        Position = UDim2.new(0, 0, 0, headerHeight),
+        BackgroundColor3 = theme.Sidebar,
+        BorderSizePixel = 0,
+        Parent = Container
+    })
 
-		if dragging and input == dragInput then
-			local delta = input.Position - dragStart
-			Container.Position = UDim2.new(
-				startPos.X.Scale, 
-				startPos.X.Offset + delta.X,
-				startPos.Y.Scale, 
-				startPos.Y.Offset + delta.Y
-			)
-		end
-	end)
+    create("UIListLayout", {
+        Padding = UDim.new(0, 4),
+        SortOrder = Enum.SortOrder.LayoutOrder,
+        Parent = Sidebar
+    })
 
-	--// Sidebar
-	local sidebarWidth = isMobile and 100 or 130
-	local Sidebar = create("Frame", {
-		Name = "Sidebar",
-		Size = UDim2.new(0, sidebarWidth, 1, -headerHeight),
-		Position = UDim2.new(0, 0, 0, headerHeight),
-		BackgroundColor3 = theme.Sidebar,
-		BorderSizePixel = 0,
-		Parent = Container
-	})
+    local sidebarPadding = isMobile and 6 or 10
+    create("UIPadding", {
+        PaddingTop = UDim.new(0, sidebarPadding),
+        PaddingLeft = UDim.new(0, sidebarPadding),
+        PaddingRight = UDim.new(0, sidebarPadding),
+        PaddingBottom = UDim.new(0, sidebarPadding),
+        Parent = Sidebar
+    })
 
-	create("UIListLayout", {
-		Padding = UDim.new(0, 4),
-		SortOrder = Enum.SortOrder.LayoutOrder,
-		Parent = Sidebar
-	})
+    --// Content Area
+    local contentOffset = isMobile and 8 or 13
+    local ContentFrame = create("Frame", {
+        Name = "Content",
+        Size = UDim2.new(1, -(sidebarWidth + contentOffset + 7), 1, -(headerHeight + contentOffset)),
+        Position = UDim2.new(0, sidebarWidth + contentOffset, 0, headerHeight + contentOffset),
+        BackgroundTransparency = 1,
+        Parent = Container
+    })
 
-	local sidebarPadding = isMobile and 6 or 10
-	create("UIPadding", {
-		PaddingTop = UDim.new(0, sidebarPadding),
-		PaddingLeft = UDim.new(0, sidebarPadding),
-		PaddingRight = UDim.new(0, sidebarPadding),
-		PaddingBottom = UDim.new(0, sidebarPadding),
-		Parent = Sidebar
-	})
+    --// Toggle Button (Floating)
+    local toggleSize = isMobile and 50 or 55
+    local toggleOffset = isMobile and 15 or 20
+    local ToggleBtn = create("TextButton", {
+        Name = "ToggleBtn",
+        Size = UDim2.new(0, toggleSize, 0, toggleSize),
+        Position = UDim2.new(1, -toggleSize - toggleOffset, 1, -toggleSize - toggleOffset),
+        BackgroundColor3 = theme.Accent,
+        Text = "",
+        AutoButtonColor = false,
+        Parent = ScreenGui
+    })
+    roundify(ToggleBtn, 12)
+    addStroke(ToggleBtn, Color3.fromRGB(180, 140, 255), 2)
+    addGradient(ToggleBtn, {theme.Accent, theme.AccentBlue}, 45)
 
-	--// Content Area
-	local contentOffset = isMobile and 8 or 13
-	local ContentFrame = create("Frame", {
-		Name = "Content",
-		Size = UDim2.new(1, -(sidebarWidth + contentOffset + 7), 1, -(headerHeight + contentOffset)),
-		Position = UDim2.new(0, sidebarWidth + contentOffset, 0, headerHeight + contentOffset),
-		BackgroundTransparency = 1,
-		Parent = Container
-	})
+    create("TextLabel", {
+        Size = UDim2.new(1, 0, 1, 0),
+        BackgroundTransparency = 1,
+        Text = "Open", -- Changed text to make sense
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        Font = Enum.Font.GothamBold,
+        TextSize = isMobile and 14 or 16,
+        Parent = ToggleBtn
+    })
 
-	--// Toggle Button
-	local toggleSize = isMobile and 50 or 55
-	local toggleOffset = isMobile and 15 or 20
-	local ToggleBtn = create("TextButton", {
-		Name = "ToggleBtn",
-		Size = UDim2.new(0, toggleSize, 0, toggleSize),
-		Position = UDim2.new(1, -toggleSize - toggleOffset, 1, -toggleSize - toggleOffset),
-		BackgroundColor3 = theme.Accent,
-		Text = "",
-		AutoButtonColor = false,
-		Parent = ScreenGui
-	})
-	roundify(ToggleBtn, 12)
-	addStroke(ToggleBtn, Color3.fromRGB(180, 140, 255), 2)
-	addGradient(ToggleBtn, {theme.Accent, theme.AccentBlue}, 45)
+    -- Connect floating button to toggle logic
+    ToggleBtn.MouseButton1Click:Connect(toggleUI)
 
-	create("TextLabel", {
-		Size = UDim2.new(1, 0, 1, 0),
-		BackgroundTransparency = 1,
-		Text = "testpe",
-		TextColor3 = Color3.fromRGB(255, 255, 255),
-		Font = Enum.Font.GothamBold,
-		TextSize = isMobile and 24 or 28,
-		Parent = ToggleBtn
-	})
+    --// Input Handling (Keybind: RightShift)
+    if not isMobile then
+        UserInputService.InputBegan:Connect(function(input, gameProcessed)
+            -- Ensure 'keybind' is passed as an argument (e.g. Enum.KeyCode.RightShift)
+            if not gameProcessed and input.KeyCode == keybind then
+                toggleUI()
+            end
+        end)
+    end
 
-	local function toggleUI()
-		open = not open
-		Container.Visible = open
-		ModalBtn.Visible = open
-
-		if open then
-			Container.Size = UDim2.new(0, 0, 0, 0)
-			tween(Container, {Size = UDim2.new(0, size.X, 0, size.Y)}, 0.35, Enum.EasingStyle.Back)
-		else
-			tween(Container, {Size = UDim2.new(0, 0, 0, 0)}, 0.25)
-			task.wait(0.25)
-			Container.Visible = false
-		end
-	end
-
-	ToggleBtn.MouseButton1Click:Connect(toggleUI)
-
-	if not isMobile then
-		UserInputService.InputBegan:Connect(function(input, gameProcessed)
-			if not gameProcessed and input.KeyCode == keybind then
-				toggleUI()
-			end
-		end)
-	end
-
-	if isMobile then
-		ToggleBtn.MouseButton1Down:Connect(function()
-			tween(ToggleBtn, {Size = UDim2.new(0, toggleSize + 5, 0, toggleSize + 5)}, 0.1)
-		end)
-		ToggleBtn.MouseButton1Up:Connect(function()
-			tween(ToggleBtn, {Size = UDim2.new(0, toggleSize, 0, toggleSize)}, 0.1)
-		end)
-	else
-		ToggleBtn.MouseEnter:Connect(function()
-			tween(ToggleBtn, {Size = UDim2.new(0, 60, 0, 60)}, 0.2)
-		end)
-		ToggleBtn.MouseLeave:Connect(function()
-			tween(ToggleBtn, {Size = UDim2.new(0, 55, 0, 55)}, 0.2)
-		end)
-	end
+    if isMobile then
+        ToggleBtn.MouseButton1Down:Connect(function()
+            tween(ToggleBtn, {Size = UDim2.new(0, toggleSize + 5, 0, toggleSize + 5)}, 0.1)
+        end)
+        ToggleBtn.MouseButton1Up:Connect(function()
+            tween(ToggleBtn, {Size = UDim2.new(0, toggleSize, 0, toggleSize)}, 0.1)
+        end)
+    else
+        ToggleBtn.MouseEnter:Connect(function()
+            tween(ToggleBtn, {Size = UDim2.new(0, 60, 0, 60)}, 0.2)
+        end)
+        ToggleBtn.MouseLeave:Connect(function()
+            tween(ToggleBtn, {Size = UDim2.new(0, 55, 0, 55)}, 0.2)
+        end)
+    end
 
 	--// Notification Container
 	local notifWidth = isMobile and 280 or 320
