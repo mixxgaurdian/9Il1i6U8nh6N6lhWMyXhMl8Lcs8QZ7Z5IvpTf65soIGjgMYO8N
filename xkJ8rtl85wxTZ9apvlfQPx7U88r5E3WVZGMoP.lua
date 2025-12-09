@@ -817,11 +817,11 @@ AddLog("Logger Active...", Color3.fromRGB(200, 200, 200))
 RefreshPlayerList()
 
 -- [[ MISC TAB ]] --
-CreateSlider(MiscPage, "Fly Speed", 10, 50, Config.Movement.FlySpeed, function(v) 
+CreateSlider(MiscPage, "Fly Speed", 10, 150, Config.Movement.FlySpeed, function(v) 
     Config.Movement.FlySpeed = v 
 end)
 
-CreateToggle(MiscPage, "Fly", Config.Toggles.Fly, function(v) 
+CreateToggle(MiscPage, "Fly 50 Recommended", Config.Toggles.Fly, function(v) 
     Config.Toggles.Fly = v 
     SaveConfig()
 end)
@@ -860,6 +860,7 @@ local function update(input)
     local delta = input.Position - dragStart
     MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
 end
+
 TopBar.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 then
         dragging = true; dragStart = input.Position; startPos = MainFrame.Position
@@ -867,6 +868,7 @@ TopBar.InputBegan:Connect(function(input)
         SaveConfig()
     end
 end)
+
 TopBar.InputChanged:Connect(function(input) if input.UserInputType == Enum.UserInputType.MouseMovement then dragInput = input end end)
 UserInputService.InputChanged:Connect(function(input) if input == dragInput and dragging then update(input) end end)
 
@@ -887,7 +889,7 @@ UserInputService.InputBegan:Connect(function(input, gpe)
         end
     elseif input.KeyCode == Config.Binds.Fly then
         Config.Toggles.Fly = not Config.Toggles.Fly
-        Notify("Fly: " .. tostring(Config.Toggles.))
+        Notify("Fly: " .. tostring(Config.Toggles.Fly)) -- Fixed syntax error here
     elseif input.KeyCode == Config.Binds.Noclip then
         Config.Toggles.Noclip = not Config.Toggles.Noclip
         Notify("Noclip: " .. tostring(Config.Toggles.Noclip))
