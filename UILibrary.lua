@@ -457,8 +457,8 @@ function UILibrary:CreateWindow(config)
 	})
 
 	--// Toggle Button
-	local toggleSize = isMobile and 25 or 30
-	local toggleOffset = isMobile and 15 or 20
+	local toggleSize = isMobile and 70 or 75
+	local toggleOffset = isMobile and 25 or 30
 	local ToggleBtn = create("TextButton", {
 		Name = "ToggleBtn",
 		Size = UDim2.new(0, toggleSize, 0, toggleSize),
