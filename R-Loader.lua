@@ -1174,7 +1174,6 @@ Settings:Button("Download & Save", function()
             end
             Window:Notify("Success", "Wallpaper Updated & Saved.")
         else
-            -- // FAIL - RESTORE //
             Window:Notify("Error", "Download Failed. Restoring...")
             
             -- Restore previous file if it exists
