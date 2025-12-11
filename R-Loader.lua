@@ -211,6 +211,7 @@ local SystemSettings = {
     Keybind = "RightShift",
     UIScale = 1,
     ShowWallpaper = true,
+    WallpaperURL = "", -- << ADD THIS LINE
     Toggles = {} -- Stores generic toggle states by name
 }
 
@@ -265,7 +266,7 @@ local SpecialUsers = {
     --mix
     [1104273577] = { Title = "Welcome, Developer", Background = "https://w.wallhaven.cc/full/4g/wallhaven-4gy2zd.jpg" },
     --ceyy
-    [2335971665] = { Title = "Welcome, Owner", Background = "https://w.wallhaven.cc/full/4d/wallhaven-4d39wo.jpg" }
+    [2335971665] = { Title = "Welcome, 👑King", Background = "https://w.wallhaven.cc/full/4d/wallhaven-4d39wo.jpg" }
 }
 local DEFAULT_BACKGROUND = "https://wallpapercave.com/wp/wp5055045.jpg"
 local GreetingsList = {"Hello", "Welcome", "Greetings", "Hey there", "Sup"}
@@ -1004,24 +1005,35 @@ local Window = Library:CreateWindow({
     Size = Vector2.new(700, 500)
 })
 
--- Background Preload Logic
+-- Background Preload Logic (REPLACE YOUR EXISTING BLOCK IN SECTION 6 WITH THIS)
 task.spawn(function()
-    local bgUrl = DEFAULT_BACKGROUND
     local BG_FILE_PATH = SETTINGS_FOLDER .. "/custom_bg.jpg"
     
-    if SpecialUsers[LocalPlayer.UserId] and SpecialUsers[LocalPlayer.UserId].Background ~= "" then
+    -- 1. Determine which URL to use
+    local bgUrl = DEFAULT_BACKGROUND
+    
+    -- If user has a saved custom URL, use that first
+    if SystemSettings.WallpaperURL and SystemSettings.WallpaperURL ~= "" then
+        bgUrl = SystemSettings.WallpaperURL
+    -- Otherwise check for Special User background
+    elseif SpecialUsers[LocalPlayer.UserId] and SpecialUsers[LocalPlayer.UserId].Background ~= "" then
         bgUrl = SpecialUsers[LocalPlayer.UserId].Background
     end
 
     local function LoadBG()
-        if isfile(BG_FILE_PATH) then delfile(BG_FILE_PATH) end
-        local success, response = pcall(function() return game:HttpGet(bgUrl) end)
-        if success and response then
-            writefile(BG_FILE_PATH, response)
-            local loadSuccess, _ = pcall(function()
+        -- 2. If file exists and matches our goal, just load it (faster)
+        -- Note: We re-download if the saved URL changed or file is missing
+        if isfile(BG_FILE_PATH) then
+            local asset = getcustomasset and getcustomasset(BG_FILE_PATH) or BG_FILE_PATH
+            if Window.Wallpaper then Window.Wallpaper.Image = asset end
+        else
+            -- File missing, force download
+            local success, response = pcall(function() return game:HttpGet(bgUrl) end)
+            if success and response then
+                writefile(BG_FILE_PATH, response)
                 local asset = getcustomasset and getcustomasset(BG_FILE_PATH) or BG_FILE_PATH
                 if Window.Wallpaper then Window.Wallpaper.Image = asset end
-            end)
+            end
         end
     end
     
@@ -1102,6 +1114,80 @@ Settings:Toggle("Custom Wallpaper", true, function(state)
     if Window.Wallpaper then Window.Wallpaper.Visible = state end
     -- Note: Save logic handled inside toggle function now
 end, "ShowWallpaper") 
+
+-- // WALLPAPER INPUT FIELD (UPDATED) // ---------------------------------------
+Settings:Label("--- Set Custom Background ---")
+
+local WallpaperInput = Instance.new("TextBox")
+WallpaperInput.Name = "WallpaperInput"
+WallpaperInput.Size = UDim2.new(1, 0, 0, 35)
+WallpaperInput.BackgroundColor3 = Color3.fromRGB(28, 25, 45)
+WallpaperInput.TextColor3 = Color3.fromRGB(230, 230, 240)
+WallpaperInput.Font = Enum.Font.Gotham
+WallpaperInput.TextSize = 14
+WallpaperInput.PlaceholderText = "Paste Image URL here..."
+-- Pre-fill with saved URL if it exists
+WallpaperInput.Text = SystemSettings.WallpaperURL or "" 
+WallpaperInput.ClearTextOnFocus = false
+WallpaperInput.Parent = Settings.ScrollFrame
+
+local WP_Corner = Instance.new("UICorner"); WP_Corner.CornerRadius = UDim.new(0, 6); WP_Corner.Parent = WallpaperInput
+
+Settings:Button("Download & Save", function()
+    local url = WallpaperInput.Text
+    local BG_FILE_PATH = SETTINGS_FOLDER .. "/custom_bg.jpg"
+
+    if url == "" or not url:find("http") then 
+        Window:Notify("Error", "Invalid URL.")
+        return 
+    end
+    
+    -- // 1. UNLOAD & VISUAL FEEDBACK //
+    if Window.Wallpaper then
+        Window.Wallpaper.Image = "" -- Unload current
+        Window.Wallpaper.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Dark loading screen
+        Window.Wallpaper.BackgroundTransparency = 0.5 -- Semi-transparent
+        Window.Wallpaper.Visible = true
+    end
+    
+    Window:Notify("System", "Downloading...")
+
+    task.spawn(function()
+        -- // 2. ATTEMPT DOWNLOAD //
+        local success, data = pcall(function() return game:HttpGet(url) end)
+
+        if success and data and #data > 0 then
+            -- // SUCCESS //
+            if isfile(BG_FILE_PATH) then delfile(BG_FILE_PATH) end
+            writefile(BG_FILE_PATH, data)
+            
+            -- Save the URL so it persists on reload
+            SystemSettings.WallpaperURL = url
+            SystemSettings.ShowWallpaper = true
+            SaveData() 
+            
+            -- Load new asset
+            local newAsset = getcustomasset(BG_FILE_PATH)
+            if Window.Wallpaper then
+                Window.Wallpaper.Image = newAsset
+                Window.Wallpaper.BackgroundTransparency = 1 -- Return to transparent container
+            end
+            Window:Notify("Success", "Wallpaper Updated & Saved.")
+        else
+            -- // FAIL - RESTORE //
+            Window:Notify("Error", "Download Failed. Restoring...")
+            
+            -- Restore previous file if it exists
+            if isfile(BG_FILE_PATH) then
+                local oldAsset = getcustomasset(BG_FILE_PATH)
+                if Window.Wallpaper then
+                    Window.Wallpaper.Image = oldAsset
+                    Window.Wallpaper.BackgroundTransparency = 1
+                end
+            end
+        end
+    end)
+end)
 
 Settings:Label("--- Keybinds ---")
 local keys = {"RightShift", "RightControl", "LeftControl", "LeftAlt", "Insert", "Delete", "Home", "End", "F1", "F4", "F8"}
