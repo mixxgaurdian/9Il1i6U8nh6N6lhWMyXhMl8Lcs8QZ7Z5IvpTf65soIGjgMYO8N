@@ -1,40 +1,292 @@
--- // ULTRA-ADVANCED GUI V3 (With Intro Animation) //
 
--- [[ 1. SERVICE, REFERENCE, AND FILE SYSTEM SETUP ]] --
+-- // 1. SERVICES & SETUP // ------------------------------------------------------------------
 local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
-local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
 local CoreGui = game:GetService("CoreGui")
 local HttpService = game:GetService("HttpService")
-
+local UserInputService = game:GetService("UserInputService")
 local LocalPlayer = Players.LocalPlayer
 
--- PATH DEFINITIONS
-local SETTINGS_FOLDER = "R-Loader" 
+-- Executor Safe Checks
+local makefolder = makefolder or function() end
+local isfolder = isfolder or function() return false end
+local writefile = writefile or function() end
+local readfile = readfile or function() return "" end
+local isfile = isfile or function() return false end
+local listfiles = listfiles or function() return {} end
+local delfile = delfile or function() end
+local getcustomasset = getcustomasset or function(path) return path end
 
+-- // 2. FILE SYSTEM & CONFIG LOGIC // ---------------------------------------------------------
+local SETTINGS_FOLDER = "R-Loader"
 local SCRIPT_FOLDER_PATH = SETTINGS_FOLDER .. "/scripts"
 local CONFIGS_FOLDER = SETTINGS_FOLDER .. "/configs"
-local DEFAULT_CONFIG_NAME = "default_config.json"
-local LAST_LOADED_FILE = SETTINGS_FOLDER .. "/last_config.txt" 
+local HOTRELOAD_FILE = SETTINGS_FOLDER .. "/hotreload.txt"
+local ASSETS_FOLDER = SETTINGS_FOLDER .. "/assets"
+local PINS_FILE = SETTINGS_FOLDER .. "/pinned_tabs.json"
+local UI_SETTINGS_FILE = SETTINGS_FOLDER .. "/ui_settings.json"
 
--- // --- INTRO ANIMATION LOGIC (ADDED) ---
--- This runs before the rest of the script loads
+-- // ICONS / EMOJI DICTIONARY //
+local Icons = {
+    -- Roles & Ranks (New)
+    owner = "👑",
+    admin = "🛡️",
+    mod = "👮",
+    dev = "🔨",
+    vip = "💎",
+    partner = "🤝",
+    banned = "🚫",
+
+    -- Cheat Features
+    aimbot = "🎯",
+    esp = "👁️",
+    fly = "🕊️",
+    speed = "💨",
+    jump = "🦘",
+    noclip = "🧱",
+    godmode = "💪",
+    teleport = "🌌",
+    exploit = "💉",
+    
+    -- General / UI
+    home = "🏠",
+    settings = "⚙️",
+    user = "👤",
+    search = "🔍",
+    menu = "☰",
+    star = "⭐",
+    heart = "❤️",
+    trash = "🗑️",
+    save = "💾",
+    edit = "✏️",
+    close = "❌",
+    check = "✅",
+    alert = "⚠️",
+    info = "ℹ️",
+    loading = "⏳",
+    
+    -- Actions
+    copy = "📋",
+    paste = "📋",
+    download = "📥",
+    upload = "📤",
+    refresh = "🔄",
+    link = "🔗",
+    lock = "🔒",
+    unlock = "🔓",
+    play = "▶️",
+    pause = "⏸️",
+    stop = "⏹️",
+    
+    -- Socials & Web
+    discord = "💬",
+    youtube = "📺",
+    twitter = "🐦",
+    globe = "🌐",
+    mail = "✉️",
+    announcement = "📢",
+    
+    -- Combat / Game
+    sword = "⚔️",
+    shield = "🛡️",
+    gun = "🔫",
+    skull = "💀",
+    eye = "👁️",
+    ghost = "👻",
+    fire = "🔥",
+    lightning = "⚡",
+    
+    -- System & Stats
+    server = "🖥️",
+    wifi = "📶",
+    ram = "💾",
+    cpu = "🧠",
+    fps = "🎞️",
+    
+    -- Arrows
+    left = "⬅️",
+    right = "➡️",
+    up = "⬆️",
+    down = "⬇️",
+    back = "🔙"
+}
+
+-- // COLOR DICTIONARY //
+local Colors = {
+    -- Roles & Ranks
+    owner = Color3.fromRGB(255, 215, 0),     -- Gold
+    admin = Color3.fromRGB(255, 50, 50),     -- Power Red
+    mod = Color3.fromRGB(50, 150, 255),      -- Police Blue
+    dev = Color3.fromRGB(255, 140, 0),       -- Construction Orange
+    vip = Color3.fromRGB(220, 80, 255),      -- Gem Purple
+    partner = Color3.fromRGB(255, 105, 180), -- Pink
+    banned = Color3.fromRGB(160, 0, 0),      -- Dark Red
+
+    -- Cheat Features
+    aimbot = Color3.fromRGB(255, 60, 60),    -- Target Red
+    esp = Color3.fromRGB(0, 255, 255),       -- Vision Cyan
+    fly = Color3.fromRGB(135, 206, 250),     -- Sky Blue
+    speed = Color3.fromRGB(255, 255, 0),     -- Lightning Yellow
+    jump = Color3.fromRGB(50, 255, 100),     -- Spring Green
+    noclip = Color3.fromRGB(150, 150, 150),  -- Ghost Gray
+    godmode = Color3.fromRGB(255, 223, 0),   -- God Gold
+    teleport = Color3.fromRGB(148, 0, 211),  -- Void Purple
+    exploit = Color3.fromRGB(0, 255, 0),     -- Hacker Green
+    
+    -- General / UI
+    home = Color3.fromRGB(230, 230, 240),    -- White/Off-White
+    settings = Color3.fromRGB(160, 160, 170),-- Gear Gray
+    user = Color3.fromRGB(255, 255, 255),
+    search = Color3.fromRGB(200, 200, 255),
+    menu = Color3.fromRGB(200, 200, 200),
+    star = Color3.fromRGB(255, 215, 0),
+    heart = Color3.fromRGB(255, 80, 80),
+    trash = Color3.fromRGB(255, 90, 90),
+    save = Color3.fromRGB(80, 160, 255),     -- Floppy Disk Blue
+    edit = Color3.fromRGB(255, 200, 50),     -- Pencil Yellow
+    close = Color3.fromRGB(255, 50, 50),
+    check = Color3.fromRGB(100, 255, 100),
+    alert = Color3.fromRGB(255, 200, 0),
+    info = Color3.fromRGB(100, 200, 255),
+    loading = Color3.fromRGB(200, 200, 200),
+    
+    -- Actions
+    copy = Color3.fromRGB(220, 220, 220),
+    paste = Color3.fromRGB(220, 220, 220),
+    download = Color3.fromRGB(100, 255, 150),
+    upload = Color3.fromRGB(100, 150, 255),
+    refresh = Color3.fromRGB(100, 255, 200),
+    link = Color3.fromRGB(50, 150, 255),
+    lock = Color3.fromRGB(255, 100, 100),
+    unlock = Color3.fromRGB(100, 255, 100),
+    play = Color3.fromRGB(100, 255, 100),
+    pause = Color3.fromRGB(255, 200, 100),
+    stop = Color3.fromRGB(255, 50, 50),
+    
+    -- Socials & Web
+    discord = Color3.fromRGB(88, 101, 242),  -- Official Blurple
+    youtube = Color3.fromRGB(255, 0, 0),     -- YouTube Red
+    twitter = Color3.fromRGB(29, 161, 242),  -- Twitter Blue
+    globe = Color3.fromRGB(50, 150, 255),
+    mail = Color3.fromRGB(240, 240, 200),
+    announcement = Color3.fromRGB(255, 120, 50),
+    
+    -- Combat / Game
+    sword = Color3.fromRGB(192, 192, 192),   -- Steel
+    shield = Color3.fromRGB(50, 100, 255),   -- Shield Blue
+    gun = Color3.fromRGB(128, 128, 128),     -- Gunmetal
+    skull = Color3.fromRGB(220, 220, 220),   -- Bone
+    eye = Color3.fromRGB(0, 255, 255),
+    ghost = Color3.fromRGB(200, 200, 255),
+    fire = Color3.fromRGB(255, 80, 0),
+    lightning = Color3.fromRGB(255, 255, 0),
+    
+    -- System & Stats
+    server = Color3.fromRGB(50, 255, 50),
+    wifi = Color3.fromRGB(50, 200, 255),
+    ram = Color3.fromRGB(0, 150, 255),
+    cpu = Color3.fromRGB(100, 100, 255),
+    fps = Color3.fromRGB(200, 200, 200),
+    
+    -- Arrows (Default White)
+    left = Color3.fromRGB(255, 255, 255),
+    right = Color3.fromRGB(255, 255, 255),
+    up = Color3.fromRGB(255, 255, 255),
+    down = Color3.fromRGB(255, 255, 255),
+    back = Color3.fromRGB(255, 255, 255)
+}
+
+-- Initialize Folders
+if not isfolder(SETTINGS_FOLDER) then makefolder(SETTINGS_FOLDER) end
+if not isfolder(CONFIGS_FOLDER) then makefolder(CONFIGS_FOLDER) end
+if not isfolder(SCRIPT_FOLDER_PATH) then makefolder(SCRIPT_FOLDER_PATH) end
+if not isfolder(ASSETS_FOLDER) then makefolder(ASSETS_FOLDER) end
+
+-- [[ DATA MANAGEMENT ]] --
+local PinnedTabs = {}
+
+-- Default Settings
+local SystemSettings = {
+    Keybind = "RightShift",
+    UIScale = 1,
+    ShowWallpaper = true,
+    Toggles = {} -- Stores generic toggle states by name
+}
+
+local function SaveData()
+    pcall(function()
+        writefile(PINS_FILE, HttpService:JSONEncode(PinnedTabs))
+        writefile(UI_SETTINGS_FILE, HttpService:JSONEncode(SystemSettings))
+    end)
+end
+
+local function LoadData()
+    -- Load Pins
+    if isfile(PINS_FILE) then
+        local s, r = pcall(function() return HttpService:JSONDecode(readfile(PINS_FILE)) end)
+        if s and type(r) == "table" then PinnedTabs = r end
+    end
+    -- Load System Settings
+    if isfile(UI_SETTINGS_FILE) then
+        local s, r = pcall(function() return HttpService:JSONDecode(readfile(UI_SETTINGS_FILE)) end)
+        if s and type(r) == "table" then 
+            -- Merge loaded data into default table to ensure all keys exist
+            for k, v in pairs(r) do 
+                if k == "Toggles" and type(v) == "table" then
+                    for tk, tv in pairs(v) do SystemSettings.Toggles[tk] = tv end
+                else
+                    SystemSettings[k] = v 
+                end
+            end
+        end
+    end
+end
+
+LoadData() -- Load immediately before UI construction
+
+local function GetProcessedIcon(id)
+    if not id or string.find(id, "rbxassetid://") then return id end
+    if string.find(id, "http") then
+        local fileName = string.gsub(id, "[^%w]", "") .. ".png"
+        local filePath = ASSETS_FOLDER .. "/" .. fileName
+        if isfile(filePath) then return getcustomasset(filePath) end
+        local success, data = pcall(function() return game:HttpGet(id) end)
+        if success and data then
+            writefile(filePath, data)
+            return getcustomasset(filePath)
+        end
+    end
+    return id 
+end
+
+-- // 3. SPECIAL USERS & INTRO // -------------------------------------------------------------
+local SpecialUsers = {
+    --mix
+    [1104273577] = { Title = "Welcome, Developer", Background = "https://w.wallhaven.cc/full/4g/wallhaven-4gy2zd.jpg" },
+    --ceyy
+    [2335971665] = { Title = "Welcome, Owner", Background = "https://w.wallhaven.cc/full/4d/wallhaven-4d39wo.jpg" }
+}
+local DEFAULT_BACKGROUND = "https://wallpapercave.com/wp/wp5055045.jpg"
+local GreetingsList = {"Hello", "Welcome", "Greetings", "Hey there", "Sup"}
+local RandomGreeting = GreetingsList[math.random(1, #GreetingsList)]
+
+local isSpecial = SpecialUsers[LocalPlayer.UserId]
+local introText = isSpecial and isSpecial.Title or RandomGreeting .. ", " .. LocalPlayer.Name
+
 local function PlayIntro()
     local IntroGui = Instance.new("ScreenGui")
     IntroGui.Name = "RLoader_Intro"
-    IntroGui.Parent = CoreGui
+    IntroGui.Parent = (gethui and gethui()) or CoreGui
     IntroGui.IgnoreGuiInset = true
     IntroGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-    -- Background
     local IntroBG = Instance.new("Frame")
     IntroBG.Size = UDim2.new(1, 0, 1, 0)
     IntroBG.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
     IntroBG.BackgroundTransparency = 1
     IntroBG.Parent = IntroGui
 
-    -- Center Container
     local Container = Instance.new("Frame")
     Container.Size = UDim2.new(0, 300, 0, 300)
     Container.Position = UDim2.new(0.5, 0, 0.5, -175)
@@ -42,14 +294,11 @@ local function PlayIntro()
     Container.BackgroundTransparency = 1
     Container.Parent = IntroBG
 
-    -- 1. Profile Picture (Starts Invisible)
     local PFP = Instance.new("ImageLabel")
     PFP.Size = UDim2.new(0, 100, 0, 100)
     PFP.Position = UDim2.new(0.5, -50, 0.3, 0)
-    PFP.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     PFP.BackgroundTransparency = 1
-    PFP.ImageTransparency = 1 -- Hidden initially
-    -- Instant load thumbnail
+    PFP.ImageTransparency = 1
     PFP.Image = "rbxthumb://type=AvatarHeadShot&id=" .. LocalPlayer.UserId .. "&w=150&h=150"
     PFP.Parent = Container
     
@@ -57,247 +306,482 @@ local function PlayIntro()
     PFPCorner.CornerRadius = UDim.new(1, 0)
     PFPCorner.Parent = PFP
     
-    local PFPStroke = Instance.new("UIStroke")
-    PFPStroke.Parent = PFP
-    PFPStroke.Transparency = 1
-    PFPStroke.Color = Color3.fromRGB(0, 150, 255) -- Accent Blue
-    PFPStroke.Thickness = 2
-
--- 2. Username Text (Starts Empty for Typewriter)
     local NameLabel = Instance.new("TextLabel")
     NameLabel.Size = UDim2.new(1, 0, 0, 30)
     NameLabel.Position = UDim2.new(0, 0, 0.65, 0)
     NameLabel.BackgroundTransparency = 1
     NameLabel.TextColor3 = Color3.fromRGB(240, 240, 240)
     NameLabel.TextScaled = true 
-    NameLabel.TextWrapped = true 
     NameLabel.Font = Enum.Font.GothamBold
-    NameLabel.Text = "" -- Empty start
+    NameLabel.Text = "" 
     NameLabel.Parent = Container
 
-    local MsgLabel = Instance.new("TextLabel")
-    MsgLabel.Size = UDim2.new(1, 0, 0, 40)
-    MsgLabel.Position = UDim2.new(0, 0, 0.75, 0)
-    MsgLabel.BackgroundTransparency = 1
-    MsgLabel.TextColor3 = Color3.fromRGB(240, 240, 240)
-    MsgLabel.TextScaled = true 
-    MsgLabel.TextWrapped = true
-    MsgLabel.Font = Enum.Font.GothamBold
-    MsgLabel.Text = "" -- Empty start
-    MsgLabel.Parent = Container
-    
-    -- 3. Accent Line (Starts Invisible/Small)
     local Line = Instance.new("Frame")
-    Line.Size = UDim2.new(0, 0, 0, 2) -- Start width 0
+    Line.Size = UDim2.new(0, 0, 0, 2)
     Line.Position = UDim2.new(0.5, 0, 0.75, 0)
     Line.AnchorPoint = Vector2.new(0.5, 0)
-    Line.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+    Line.BackgroundColor3 = Color3.fromRGB(138, 100, 255)
     Line.BorderSizePixel = 0
     Line.BackgroundTransparency = 1
     Line.Parent = Container
 
-local SpecialUsers = {
-    -- clix
-    [2335971665] = {
-        FirstTime = "Greetings 👑",
-        Returning = "Welcome Back!! 👑",
-        UserURl = "https://4kwallpapers.com/images/walls/thumbs_3t/14452.jpg"
-    },
-
-    -- mixxgaurdian
-    [1104273577] = {
-        FirstTime = "📎:Welcome, sir ",
-        Returning = "📎:Welcome Back, sir ",
-        UserURl = "https://wallpapercave.com/wp/wp5055045.jpg"
-
-    },
-    [4520375383] = {
-        FirstTime = "Welcome, dev👤",
-        Returning = "Welcome Back dev, 👤",
-        UserURl = "https://4kwallpapers.com/images/walls/thumbs_3t/14452.jpg"
-
-    },
-
-}
-
-local DefaultImage = "https://wallpapercave.com/wp/wp5055045.jpg"
--- 2. Create the Global Function
-
-_G.UserURl = function()
-    local player = game:GetService("Players").LocalPlayer
-    
-    -- Check if the player exists and is in the table
-    if player and SpecialUsers[player.UserId] then
-        -- Return their specific URL
-        return SpecialUsers[player.UserId].UserURl
-    else
-        -- Return the default image for normal users
-        return DefaultImage
-    end
-end
-
-    local fullText = ""
-    local greetingPrefix = ""
-    local userFolderExists = false
-
-    -- 1. Check if the folder exists (Status Check)
-    if isfolder and isfolder(SETTINGS_FOLDER) then
-        userFolderExists = true
-    end
-
-    -- 2. Determine the Prefix (Custom vs Default)
-    local userData = SpecialUsers[LocalPlayer.UserId]
-
-    if userData then
-        -- >> USER IS SPECIAL
-        if userFolderExists then
-            greetingPrefix = userData.Returning
-        else
-            greetingPrefix = userData.FirstTime
-        end
-    else
-        -- >> USER IS NORMAL
-        if userFolderExists then
-            greetingPrefix = "Welcome Back "
-        else
-            greetingPrefix = "Welcome "
-        end
-    end
-
-    -- 3. Handle Folder Creation (If they are new, regardless of if they are special)
-    if not userFolderExists and makefolder then
-        makefolder(SETTINGS_FOLDER)
-    end
-
-    -- Construct the final message
-    fullText = greetingPrefix .. LocalPlayer.Name .. "!"
-    LoadingText="Loading Background..."
-
-
-    for i = 1, #fullText do
-        NameLabel.Text = string.sub(fullText, 1, i)
-        -- Randomize typing speed slightly for realism
-        task.wait(math.random(5, 10) / 150) 
-    end
-    
-    task.wait(0.2)
-
-
-    -- Step 2: Fade In PFP
     TweenService:Create(PFP, TweenInfo.new(0.5), {ImageTransparency = 0}):Play()
-    TweenService:Create(PFPStroke, TweenInfo.new(0.5), {Transparency = 0}):Play()
-    task.wait(0.1)
-
-    -- Step 3: Expand & Fade Line
     local lineTween = TweenService:Create(Line, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, 150, 0, 2), BackgroundTransparency = 0})
     lineTween:Play()
-    lineTween.Completed:Wait()
-
-    task.wait(0.5) -- Hold the visual for a moment
-
     
-    task.wait(0.2)
-
-        for i = 1, #LoadingText do
-        NameLabel.Text = string.sub(LoadingText, 1, i)
-        -- Randomize typing speed slightly for realism
-        task.wait(math.random(5, 10) / 500) 
+    for i = 1, #introText do
+        NameLabel.Text = string.sub(introText, 1, i)
+        task.wait(0.05)
     end
     
-    task.wait(0.2)
-
-    -- Step 4: Fade Out Everything
-    local fadeInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+    task.wait(0.5) 
     
+    local fadeInfo = TweenInfo.new(0.5)
     TweenService:Create(PFP, fadeInfo, {ImageTransparency = 1}):Play()
-    TweenService:Create(PFPStroke, fadeInfo, {Transparency = 1}):Play()
     TweenService:Create(NameLabel, fadeInfo, {TextTransparency = 1}):Play()
     TweenService:Create(Line, fadeInfo, {BackgroundTransparency = 1, Size = UDim2.new(0, 0, 0, 2)}):Play()
+    TweenService:Create(IntroBG, fadeInfo, {BackgroundTransparency = 1}):Play()
     
-    -- Fade background last
-    local bgFade = TweenService:Create(IntroBG, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {BackgroundTransparency = 1})
-    bgFade:Play()
-    bgFade.Completed:Wait()
-
+    task.wait(0.5)
     IntroGui:Destroy()
 end
 
--- PLAY THE INTRO
 PlayIntro()
--- // --- END OF INTRO ---
 
---Version
-RLoaderV="Version: beta-4gaqg45A"
-RLoaderStatus=" Status: 🟢"
-
--- Placeholder functions for file operations (Requires Executor Support)
-local makefolder = makefolder or function(path) warn("makefolder not defined in environment:", path) end
-local isfolder = isfolder or function(path) warn("isfolder not defined in environment:", path); return false end
-local writefile = writefile or function(path, content) warn("writefile not defined in environment:", path) end
-local readfile = readfile or function(path) warn("readfile not defined in environment:", path); return nil end
-local isfile = isfile or function(path) warn("isfile not defined in environment:", path); return false end
-local listfiles = listfiles or function(path) warn("listfiles not defined in environment:", path); return {} end
-local delfile = delfile or function(path) warn("delfile not defined in environment:", path) end
-
--- Pin Persistence Data
-local InitialPinData = {}
-local CurrentPinMap = {} 
-local SelectedConfigName = DEFAULT_CONFIG_NAME
-
--- Function to handle folder and file creation
-local function SetupFilesystem()
-    pcall(function()
-        if not isfolder(SETTINGS_FOLDER) then makefolder(SETTINGS_FOLDER) end
-        if not isfolder(SCRIPT_FOLDER_PATH) then makefolder(SCRIPT_FOLDER_PATH) end
-        if not isfolder(CONFIGS_FOLDER) then makefolder(CONFIGS_FOLDER) end
-        
-        if isfile(LAST_LOADED_FILE) then
-            SelectedConfigName = readfile(LAST_LOADED_FILE) or DEFAULT_CONFIG_NAME
-        end
-
-        local configFile = CONFIGS_FOLDER .. "/" .. SelectedConfigName
-        if isfile(configFile) then
-            local content = readfile(configFile)
-            if content and content ~= "" then
-                InitialPinData = HttpService:JSONDecode(content)
-            end
-        else
-            writefile(configFile, "{}")
-        end
-    end)
-end
-
-SetupFilesystem()
-
--- // THEME //
-local THEME = {
-    -- Colors
-    Main = Color3.fromRGB(25, 25, 30),
-    Sidebar = Color3.fromRGB(35, 35, 40),
-    TopBar = Color3.fromRGB(40, 40, 45),
-    Accent = Color3.fromRGB(0, 150, 255),
-    Text = Color3.fromRGB(240, 240, 240),
-    SubText = Color3.fromRGB(240, 240, 240),
-    Red = Color3.fromRGB(235, 60, 60),
-    Green = Color3.fromRGB(60, 235, 100),
-    Pin = Color3.fromRGB(255, 215, 0),
-    Input = Color3.fromRGB(20, 20, 25),
-
-    -- Transparency Settings (0.0 = Solid, 1.0 = Invisible)
-    Transparency = {
-        Sidebar = 0.7, -- Make sidebar slightly see-through
-        TopBar = 0.7,  -- Make top bar slightly see-through
-        Content = 0.5  -- Background for content areas (if used)
+-- // 4. EMBEDDED UI LIBRARY // -------------------------------------------------------
+local Library = (function()
+    local UILibrary = {}
+    local theme = {
+        Background = Color3.fromRGB(15, 15, 25), Sidebar = Color3.fromRGB(20, 18, 35),
+        Header = Color3.fromRGB(25, 20, 40), Panel = Color3.fromRGB(28, 25, 45),
+        Accent = Color3.fromRGB(138, 100, 255), AccentHover = Color3.fromRGB(158, 120, 255),
+        ButtonBg = Color3.fromRGB(35, 30, 55), ButtonHover = Color3.fromRGB(45, 40, 65), 
+        ButtonBgLoad = Color3.fromRGB(35, 30, 55), 
+        Text = Color3.fromRGB(230, 230, 240), TextDim = Color3.fromRGB(140, 135, 160), 
+        Border = Color3.fromRGB(60, 50, 90), Error = Color3.fromRGB(255, 100, 120),
+        Font = Enum.Font.Gotham
     }
-}
 
--- // SCRIPT-LOAD1 //  
+    -- Helper functions
+    local function create(class, props)
+        local obj = Instance.new(class)
+        for k, v in pairs(props) do if k ~= "Parent" then obj[k] = v end end
+        if props.Parent then obj.Parent = props.Parent end
+        return obj
+    end
+    local function roundify(obj, radius) create("UICorner", {CornerRadius = UDim.new(0, radius or 4), Parent = obj}) end
+    local function addStroke(obj, color) create("UIStroke", {Color = color or theme.Border, Thickness = 1, Parent = obj}) end
+    local function tween(obj, props, t) TweenService:Create(obj, TweenInfo.new(t or 0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), props):Play() end
 
--- Configuration
+    function UILibrary:CreateWindow(config)
+        local title = config.Title or "UI"
+        
+        -- [[ ROBUST KEYBIND LOADING ]]
+        local CurrentKeybind = Enum.KeyCode.RightShift
+        if SystemSettings.Keybind and Enum.KeyCode[SystemSettings.Keybind] then
+            CurrentKeybind = Enum.KeyCode[SystemSettings.Keybind]
+        end
+
+        local ScreenGui = create("ScreenGui", {
+            Name = "ModernUI_"..title, 
+            Parent = (gethui and gethui()) or CoreGui, 
+            ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
+            DisplayOrder = 10000, 
+            IgnoreGuiInset = true 
+        })
+        --[[Loader version]]
+        local RL_VERSION="beta-b32c6wt86"
+
+        -- [[ APPLY SAVED SCALE ]]
+        local UIScale = create("UIScale", {Parent = ScreenGui, Scale = SystemSettings.UIScale or 1})
+
+        -- [[ MAIN CONTAINER ]]
+        local Container = create("Frame", {
+            Size = UDim2.new(0, 700, 0, 500), 
+            Position = UDim2.new(0.5, 0, 0.5, 0),
+            AnchorPoint = Vector2.new(0.5, 0.5),
+            BackgroundColor3 = theme.Background,
+            BackgroundTransparency = 1,
+            Parent = ScreenGui,
+            ClipsDescendants = true,
+            Visible = false
+        })
+        roundify(Container, 12); addStroke(Container)
+
+        -- [[ FIX: APPLY SAVED WALLPAPER STATE ]]
+        local Wall = create("ImageLabel", {
+            Name = "Wallpaper",
+            Size = UDim2.new(1, 0, 1, 0), Position = UDim2.new(0,0,0,0),
+            BackgroundTransparency = 1, ScaleType = Enum.ScaleType.Crop,
+            ImageTransparency = 0, ZIndex = 0, Parent = Container,
+            Visible = SystemSettings.ShowWallpaper -- Directly use saved boolean
+        })
+        roundify(Wall, 12)
+
+        -- Dragging
+        local dragging, dragInput, dragStart, startPos
+        Container.InputBegan:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                dragging = true; dragStart = input.Position; startPos = Container.Position
+                input.Changed:Connect(function()
+                    if input.UserInputState == Enum.UserInputState.End then dragging = false end
+                end)
+            end
+        end)
+        Container.InputChanged:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseMovement then dragInput = input end
+        end)
+        UserInputService.InputChanged:Connect(function(input)
+            if dragging and input == dragInput then
+                local delta = input.Position - dragStart
+                tween(Container, {Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)}, 0.05)
+            end
+        end)
+
+        -- Header
+        local Header = create("Frame", {Size = UDim2.new(1,0,0,50), BackgroundColor3 = theme.Header, BackgroundTransparency = 0.1, Parent = Container})
+        roundify(Header, 12)
+        create("Frame", {Size = UDim2.new(1,0,0,10), Position = UDim2.new(0,0,1,-10), BackgroundColor3 = theme.Header, BackgroundTransparency = 0.1, Parent = Header, BorderSizePixel=0})
+-- // CUSTOM ICON SUPPORT //
+        local HeaderIcon = create("ImageLabel", {
+            Name = "HeaderIcon",
+            Size = UDim2.new(0, 37, 0, 37),                -- Size of the image (30x30 pixels)
+            Position = UDim2.new(0, 15.5, 0.38, -15),          -- 10px from left edge, centered vertically
+            BackgroundTransparency = 1,                     -- Ensure background is clear for rounding
+            Image = GetProcessedIcon("https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/Image/Icons/R-loadertrans-Christmas.png"), -- PASTE YOUR PNG LINK INSIDE THESE QUOTES
+            Parent = Header
+        })
+        
+        -- Apply rounding. 15px radius on a 30px image makes it a perfect circle.
+        -- Change 15 to 8 if you want a rounded square instead.
+        roundify(HeaderIcon, 8) 
+
+        -- // TITLE LABEL (Moved right) //
+        create("TextLabel", {
+            Text = title, 
+            Size = UDim2.new(1, -100, 1, 0), 
+            Position = UDim2.new(0, 51, 0, 0),          
+            BackgroundTransparency = 1, 
+            TextColor3 = theme.Text, 
+            Font = theme.Font, 
+            TextSize = 20, 
+            TextXAlignment = Enum.TextXAlignment.Left, 
+            Parent = Header
+        })
+
+        -- Toggle/Min/Close Logic
+        local isOpen = false
+        local isMinimizing = false
+
+        local function SetState(state)
+            if isMinimizing then return end
+            isOpen = state
+            
+            if state then
+                Container.Visible = true
+                Container.Size = UDim2.new(0, 650, 0, 450)
+                Container.BackgroundTransparency = 1
+                local openTween = TweenService:Create(Container, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+                    Size = UDim2.new(0, 700, 0, 500), BackgroundTransparency = 0.1
+                })
+                openTween:Play()
+            else
+                isMinimizing = true
+                local closeTween = TweenService:Create(Container, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                    Size = UDim2.new(0, 600, 0, 400), BackgroundTransparency = 1
+                })
+                closeTween:Play()
+                closeTween.Completed:Wait()
+                Container.Visible = false
+                isMinimizing = false
+            end
+        end
+        local MinimizeBtn = create("TextButton", {Text = "-", Size = UDim2.new(0,40,0,40), Position = UDim2.new(1,-85,0,5), BackgroundTransparency = 1, TextColor3 = theme.Text, Font = Enum.Font.GothamBold, TextSize = 24, Parent = Header})
+        MinimizeBtn.MouseButton1Click:Connect(function() 
+            SetState(false)
+            
+            -- [[ NOTIFY USER OF KEYBIND ]]
+            local savedKey = SystemSettings.Keybind or "RightShift"
+            -- We use a task.delay to ensure Window is fully initialized before calling Notify
+            task.delay(0.1, function()
+                if Window and Window.Notify then
+                    Window:Notify("UI Hidden", "Press " .. tostring(savedKey) .. " to toggle UI")
+                end
+            end)
+        end)
+
+        local CloseBtn = create("TextButton", {Text = "X", Size = UDim2.new(0,40,0,40), Position = UDim2.new(1,-45,0,5), BackgroundTransparency = 1, TextColor3 = theme.Error, Font = Enum.Font.GothamBold, TextSize = 18, Parent = Header})
+        CloseBtn.MouseButton1Click:Connect(function() ScreenGui:Destroy() end)
+        
+-- [[ FIX: ROBUST INPUT LISTENER ]]
+        UserInputService.InputBegan:Connect(function(input)
+            -- Check if user is typing in chat/console
+            local isTyping = UserInputService:GetFocusedTextBox() ~= nil
+            
+            if input.KeyCode == CurrentKeybind and not isTyping then
+                SetState(not isOpen)
+            end
+        end)
+        -- Sidebar & Content
+        local Sidebar = create("Frame", {Size = UDim2.new(0, 140, 1, -50), Position = UDim2.new(0,0,0,50), BackgroundColor3 = theme.Sidebar, BackgroundTransparency = 0.1, Parent = Container, BorderSizePixel = 0})
+        create("UICorner", {CornerRadius = UDim.new(0, 12), Parent = Sidebar})
+        create("Frame", {Size = UDim2.new(1, 0, 0, 15), BackgroundColor3 = theme.Sidebar, BackgroundTransparency = 0.1, BorderSizePixel = 0, Parent = Sidebar})
+        create("Frame", {Size = UDim2.new(0, 15, 0, 15), Position = UDim2.new(1, -15, 1, -15), BackgroundColor3 = theme.Sidebar, BackgroundTransparency = 0.1, BorderSizePixel = 0, Parent = Sidebar})
+
+        local ProfileFrame = create("Frame", {Name = "Profile", Size = UDim2.new(1, 0, 0, 90), BackgroundTransparency = 1, Parent = Sidebar})
+        local SidePFP = create("ImageLabel", {Size = UDim2.new(0, 50, 0, 50), Position = UDim2.new(0.5, -25, 0.1, 0), BackgroundTransparency = 1, Image = "rbxthumb://type=AvatarHeadShot&id="..LocalPlayer.UserId.."&w=150&h=150", Parent = ProfileFrame})
+        create("UICorner", {CornerRadius = UDim.new(1,0), Parent = SidePFP})
+        create("UIStroke", {Color = theme.Accent, Thickness = 2, Parent = SidePFP})
+        create("TextLabel", {Size = UDim2.new(1, 0, 0, 20), Position = UDim2.new(0, 0, 0.7, 0), BackgroundTransparency = 1, Text = RandomGreeting .. ", " .. LocalPlayer.Name, TextColor3 = theme.Text, Font = theme.Font, TextSize = 12, Parent = ProfileFrame})
+
+        local SidebarList = create("Frame", {Size = UDim2.new(1, 0, 1, -90), Position = UDim2.new(0, 0, 0, 90), BackgroundTransparency = 1, Parent = Sidebar})
+        create("UIListLayout", {Parent = SidebarList, SortOrder = Enum.SortOrder.LayoutOrder, Padding = UDim.new(0,5)})
+        create("UIPadding", {Parent = SidebarList, PaddingTop = UDim.new(0,10)})
+
+        local Content = create("Frame", {Size = UDim2.new(1, -150, 1, -60), Position = UDim2.new(0, 145, 0, 55), BackgroundTransparency = 1, Parent = Container})
+
+        local VerLabel = create("TextLabel", {Text = RL_VERSION, Size = UDim2.new(0, 100, 0, 20), Position = UDim2.new(1, -10, 1, -20), AnchorPoint = Vector2.new(1, 0), BackgroundTransparency = 1, TextColor3 = theme.TextDim, Font = theme.Font, TextSize = 10, TextXAlignment = Enum.TextXAlignment.Right, Parent = Container, ZIndex = 20})
+
+        -- Notifications
+        local NotifyFrame = create("Frame", {Size = UDim2.new(0, 250, 1, 0), Position = UDim2.new(1, -260, 0, 0), BackgroundTransparency = 1, Parent = ScreenGui, ZIndex = 100})
+        create("UIListLayout", {Parent = NotifyFrame, SortOrder = Enum.SortOrder.LayoutOrder, VerticalAlignment = Enum.VerticalAlignment.Bottom, Padding = UDim.new(0, 5)})
+        create("UIPadding", {Parent = NotifyFrame, PaddingBottom = UDim.new(0, 20)})
+
+        local Window = {ScreenGui = ScreenGui, Wallpaper = Wall, Scale = UIScale, Container = Container, SetState = SetState, SetKeybind = function(self, key) CurrentKeybind = key end} 
+
+        function Window:Notify(title, msg)
+            local N = create("Frame", {Size = UDim2.new(1, 0, 0, 60), BackgroundColor3 = theme.Panel, Parent = NotifyFrame, BackgroundTransparency = 0.1})
+            roundify(N, 8); addStroke(N, theme.Accent)
+            create("TextLabel", {Text = title, Size = UDim2.new(1, -10, 0, 20), Position = UDim2.new(0, 10, 0, 5), BackgroundTransparency = 1, TextColor3 = theme.Accent, Font = Enum.Font.GothamBold, TextSize = 14, TextXAlignment = Enum.TextXAlignment.Left, Parent = N})
+            create("TextLabel", {Text = msg, Size = UDim2.new(1, -10, 0, 30), Position = UDim2.new(0, 10, 0, 25), BackgroundTransparency = 1, TextColor3 = theme.Text, Font = theme.Font, TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left, TextWrapped = true, Parent = N})
+            N.Position = UDim2.new(1, 300, 0, 0)
+            tween(N, {Position = UDim2.new(0, 0, 0, 0)}, 0.5)
+            task.spawn(function()
+                task.wait(4)
+                tween(N, {BackgroundTransparency = 1}, 0.5)
+                for _,v in pairs(N:GetChildren()) do if v:IsA("TextLabel") then tween(v, {TextTransparency=1}, 0.5) end end
+                task.wait(0.5)
+                N:Destroy()
+            end)
+        end
+
+
+function Window:CreateCategory(name, icon)
+            local isPinned = PinnedTabs[name] == true
+            local order = isPinned and -1 or 1
+            if name == "Dashboard" then order = -9999 end 
+
+            local TabBtn = create("TextButton", {
+                Text = "   " .. icon .. "  " .. name, 
+                Size = UDim2.new(1, 0, 0, 35), 
+                BackgroundColor3 = theme.Sidebar, 
+                BackgroundTransparency = 0.5, 
+                TextColor3 = theme.TextDim, 
+                Font = theme.Font, 
+                TextSize = 14, 
+                TextXAlignment = Enum.TextXAlignment.Left, 
+                Parent = SidebarList, 
+                BorderSizePixel = 0, 
+                LayoutOrder = order, 
+                Active = true
+            })
+            
+            local PinIcon = create("ImageButton", {
+                Image = "rbxassetid://10709791437", 
+                ImageColor3 = isPinned and theme.Accent or theme.TextDim, 
+                BackgroundTransparency = 1, 
+                Size = UDim2.new(0, 20, 0, 20), 
+                Position = UDim2.new(1, -30, 0.5, -10), 
+                Parent = TabBtn, 
+                ZIndex = 2
+            })
+
+            local TabFrame = create("ScrollingFrame", {
+                Size = UDim2.new(1,0,1,0), 
+                BackgroundTransparency = 1, 
+                Visible = false, 
+                ScrollBarThickness = 2, 
+                Parent = Content, 
+                CanvasSize = UDim2.new(0,0,0,0), 
+                AutomaticCanvasSize = Enum.AutomaticSize.Y
+            })
+            create("UIListLayout", {Parent = TabFrame, SortOrder = Enum.SortOrder.LayoutOrder, Padding = UDim.new(0,10)})
+            create("UIPadding", {Parent = TabFrame, PaddingRight = UDim.new(0,5), PaddingLeft = UDim.new(0,5), PaddingTop = UDim.new(0,5)})
+
+            -- [[ LOGIC: OPEN TAB FUNCTION ]]
+            local function OpenThisTab()
+                -- Reset all buttons
+                for _,v in pairs(SidebarList:GetChildren()) do 
+                    if v:IsA("TextButton") then 
+                        tween(v, {BackgroundColor3 = theme.Sidebar, TextColor3 = theme.TextDim}, 0.2)
+                    end 
+                end
+                
+                -- Hide all frames
+                for _,v in pairs(Content:GetChildren()) do 
+                    v.Visible = false 
+                end
+
+                -- Activate current button
+                tween(TabBtn, {BackgroundColor3 = theme.Background, TextColor3 = theme.Accent}, 0.2)
+                
+                -- Show current frame
+                TabFrame.Visible = true
+                
+                -- Animate elements inside
+                for i, v in pairs(TabFrame:GetChildren()) do
+                    if v:IsA("GuiObject") then
+                        v.BackgroundTransparency = 1
+                        local targetTrans = (v.Name == "Dropdown" or v.Name:find("ScriptCard")) and 0.2 or 0
+                        if v:IsA("TextLabel") then targetTrans = 1 end
+                        tween(v, {BackgroundTransparency = targetTrans}, 0.3 + (i * 0.05))
+                    end
+                end
+            end
+
+            TabBtn.MouseButton1Click:Connect(OpenThisTab)
+
+            -- [[ FIX: CHECK IF THIS IS DASHBOARD AND LOAD IT ]]
+            if name == "Dashboard" then
+                OpenThisTab()
+            end
+
+            -- Pin Logic
+            local function TogglePin()
+                if name == "Dashboard" then return end
+                local newState = not PinnedTabs[name]
+                PinnedTabs[name] = newState
+                PinIcon.ImageColor3 = newState and theme.Accent or theme.TextDim
+                TabBtn.LayoutOrder = newState and -1 or 1
+                SaveData()
+            end
+            TabBtn.MouseButton2Click:Connect(TogglePin) 
+            PinIcon.MouseButton1Click:Connect(TogglePin)
+
+            local Tab = {ScrollFrame = TabFrame}
+
+-- Add this helper function immediately above Tab:Button
+            local function textShrink(obj, maxSize) 
+                obj.TextScaled = true 
+                obj.TextWrapped = true 
+                create("UITextSizeConstraint", {Parent = obj, MaxTextSize = maxSize}) 
+            end
+
+            function Tab:Button(text, icon, textColor, callback)
+                -- 1. Auto-Detect Arguments (Icon/Color are optional)
+                if type(icon) == "function" then 
+                    callback = icon; icon = nil; textColor = nil 
+                elseif type(textColor) == "function" then
+                    callback = textColor; textColor = nil
+                end
+
+                -- 2. Format Text with Icon
+                local displayText = text
+                if icon and icon ~= "" then displayText = icon .. "  " .. text end
+                
+                -- 3. Determine Color
+                local finalColor = textColor or theme.Text
+
+                local Btn = create("TextButton", {
+                    Text = displayText, 
+                    Size = UDim2.new(1,0,0,35), 
+                    BackgroundColor3 = theme.ButtonBg, 
+                    BackgroundTransparency = 0.2, 
+                    TextColor3 = finalColor, -- Color Applied Here
+                    Font = theme.Font, 
+                    Parent = TabFrame
+                })
+                roundify(Btn, 6)
+                textShrink(Btn, 14) -- Prevents text cutting off
+
+                Btn.MouseEnter:Connect(function() tween(Btn, {BackgroundColor3 = theme.ButtonHover}, 0.2) end)
+                Btn.MouseLeave:Connect(function() tween(Btn, {BackgroundColor3 = theme.ButtonBg}, 0.2) end)
+                Btn.MouseButton1Click:Connect(callback)
+                return Btn
+            end
+            
+            -- (Ensure you include the rest of the Tab functions like Tab:ScriptCard, Tab:Label, etc. here)
+            function Tab:ScriptCard(name, iconId, desc, callback)
+                 -- ... paste your existing ScriptCard logic here ...
+                 local Container = create("Frame", {Name = "ScriptCard_"..name, Size = UDim2.new(1, 0, 0, 110), BackgroundColor3 = theme.Panel, BackgroundTransparency = 0.2, Parent = TabFrame})
+                 roundify(Container, 8); addStroke(Container, theme.Border)
+                 local IconContainer = create("Frame", {Size = UDim2.new(0, 65, 0, 65), Position = UDim2.new(0, 8, 0.5, -32.5), BackgroundColor3 = Color3.fromRGB(0,0,0), BackgroundTransparency = 0.5, Parent = Container})
+                 roundify(IconContainer, 8); addStroke(IconContainer, theme.Border)
+                 create("ImageLabel", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, Image = (GetProcessedIcon and GetProcessedIcon(iconId)) or iconId, ScaleType = Enum.ScaleType.Fit, Parent = IconContainer})
+                 create("TextLabel", {Text = name, Size = UDim2.new(1, -85, 0, 20), Position = UDim2.new(0, 83, 0, 8), BackgroundTransparency = 1, TextColor3 = theme.Text, Font = Enum.Font.GothamBold, TextSize = 16, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd, Parent = Container})
+                 create("TextLabel", {Text = desc or "No description.", Size = UDim2.new(1, -85, 0, 40), Position = UDim2.new(0, 83, 0, 30), BackgroundTransparency = 1, TextColor3 = theme.TextDim, Font = theme.Font, TextSize = 12, TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, Parent = Container})
+                 local LoadBtn = create("TextButton", {Text = "Load Script", Size = UDim2.new(1, -85, 0, 25), Position = UDim2.new(0, 83, 1, -33), BackgroundColor3 = theme.ButtonBgLoad, BackgroundTransparency = 0.2, TextColor3 = theme.Text, Font = Enum.Font.GothamBold, TextSize = 13, Parent = Container})
+                 roundify(LoadBtn, 4)
+                 LoadBtn.MouseButton1Click:Connect(callback)
+                 return Container
+            end
+
+            function Tab:Label(text)
+                return create("TextLabel", {Text = text, Size = UDim2.new(1,0,0,25), BackgroundTransparency = 1, TextColor3 = theme.TextDim, Font = theme.Font, TextSize = 13, TextXAlignment = Enum.TextXAlignment.Left, Parent = TabFrame})
+            end
+
+            function Tab:Dropdown(text, options, callback, defaultVal)
+                local currentSelection = defaultVal or text
+                local Frame = create("Frame", {Name="Dropdown", Size = UDim2.new(1,0,0,35), BackgroundColor3 = theme.ButtonBg, BackgroundTransparency=0.2, Parent = TabFrame, ClipsDescendants=true})
+                roundify(Frame, 6)
+                local Header = create("TextButton", {Text = text .. (defaultVal and ": " .. defaultVal or " ▼"), Size = UDim2.new(1,0,0,35), BackgroundTransparency=1, TextColor3=theme.Text, Font=theme.Font, TextSize=14, Parent=Frame})
+                local List = create("Frame", {Size=UDim2.new(1,0,0,0), Position=UDim2.new(0,0,0,35), BackgroundTransparency=1, Parent=Frame})
+                create("UIListLayout", {Parent=List})
+                local open = false
+                Header.MouseButton1Click:Connect(function()
+                    open = not open
+                    tween(Frame, {Size = UDim2.new(1,0,0, open and 35 + (#options*30) or 35)}, 0.2)
+                end)
+                for _, opt in pairs(options) do
+                    local OptBtn = create("TextButton", {Text = opt, Size = UDim2.new(1,0,0,30), BackgroundColor3 = theme.Panel, BackgroundTransparency=0.2, TextColor3 = theme.Text, Font = theme.Font, TextSize = 13, Parent = List})
+                    OptBtn.MouseButton1Click:Connect(function()
+                        open = false
+                        tween(Frame, {Size = UDim2.new(1,0,0,35)}, 0.2)
+                        Header.Text = text .. ": " .. opt
+                        callback(opt)
+                    end)
+                end
+                return Frame
+            end
+
+            function Tab:Toggle(text, default, callback, saveOverrideKey)
+                local key = saveOverrideKey or text
+                local isRootSetting = (saveOverrideKey ~= nil) 
+                local savedState
+                if isRootSetting then savedState = SystemSettings[key] else savedState = SystemSettings.Toggles[key] end
+                if savedState == nil then savedState = default end
+
+                local Frame = create("Frame", {Size = UDim2.new(1,0,0,35), BackgroundColor3 = theme.ButtonBg, BackgroundTransparency=0.2, Parent = TabFrame})
+                roundify(Frame, 6)
+                create("TextLabel", {Text = text, Size=UDim2.new(1,-50,1,0), Position=UDim2.new(0,10,0,0), BackgroundTransparency=1, TextColor3=theme.Text, Font=theme.Font, TextSize=14, TextXAlignment=Enum.TextXAlignment.Left, Parent=Frame})
+                
+                local Indicator = create("TextButton", {Text="", Size=UDim2.new(0,20,0,20), Position=UDim2.new(1,-30,0.5,-10), BackgroundColor3 = savedState and theme.Accent or theme.Panel, Parent=Frame})
+                roundify(Indicator, 4)
+                
+                task.spawn(function() callback(savedState) end)
+
+                local state = savedState
+                Frame.InputBegan:Connect(function(input)
+                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                        state = not state
+                        Indicator.BackgroundColor3 = state and theme.Accent or theme.Panel
+                        if isRootSetting then SystemSettings[key] = state else SystemSettings.Toggles[key] = state end
+                        SaveData()
+                        callback(state)
+                    end
+                end)
+                return Frame
+            end
+
+            return Tab
+        end
+        return Window
+    end
+    return UILibrary
+end)()
+
+-- // 5. DATA & SCRIPT CATALOG // --------------------------------------------------------------
 local CURRENT_GAME_ID = game.GameId
-
--- List of all supported game IDs
--- These names now match the keys in FullScriptCatalog exactly
 local GameList = {
     ["Arsenal"] = 111958650,
     ["Rivals"] = 6035872082,
@@ -307,7 +791,6 @@ local GameList = {
     ["Valley Prison"] = 5456952508,
     ["Lucky Blocks"] = 279565647,
     ["AOTR"] = 4658598196,
-    ["ERLC"] = 903807016,
     ["BB Legends"] = 4931927012,
     ["The Forge"] = 7671049560,
     ["Prison Life"] = 73885730,
@@ -317,1629 +800,363 @@ local GameList = {
     ["Doors"] = 2440500124,
     ["Legends Of Sd"] = 1119466531,
     ["Nights in the Forest"] = 7326934954,
-
-    ["Universal"] = 0 -- fallback
 }
+local CurrentGameName = "Universal"
+for name, id in pairs(GameList) do if CURRENT_GAME_ID == id then CurrentGameName = name break end end
 
+BG_christmas_1="https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/Image/Icons/R-loadertrans-Christmas.png"
 
--- Detect the current game
-local CurrentGame = "Universal" -- default fallback
-for gameName, gameId in pairs(GameList) do
-    if CURRENT_GAME_ID == gameId then
-        CurrentGame = gameName
-        break
-    end
-end
-
-
--- Current target variables
-local TARGET_GAME_ID = CURRENT_GAME_ID
-local TARGET_GAME_NAME = CurrentGame
-
-
-
--- Universal scripts
-local test_lua = "loadstring(game:HttpGet('https://raw.githubusercontent.com/test.lua"
-
--- Blade Ball Scripts--
-Akashial = "loadstring(game:HttpGet('https://raw.githubusercontent.com/Akash1al/Blade-Ball-Updated-Script/refs/heads/main/Blade-Ball-Script'))()"
-MixRawwr = "loadstring(game:HttpGet('https://pastebin.com/raw/5v3yQUvH',true))()"
-
-
--- [[ 2. GAME CONTENT PARTITIONING (UPDATED WITH TARGETGAME) ]] --
-local FullScriptCatalog = {
+local FullCatalog = {
 
     ["Universal"] = {
         {
             Name = "Mana",
-            Image = "rbxassetid://9868265037",
-            Loadable = true,
-            scripload = "loadstring(game:HttpGet('https://raw.githubusercontent.com/Maanaaaa/ManaV2ForRoblox/main/MainScript.lua'))()"
+            Icon = BG_christmas_1,
+            Description = "ManaV2 universal utility hub.",
+            Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/Maanaaaa/ManaV2ForRoblox/main/MainScript.lua'))()"
         },
         {
             Name = "Infinite Yield",
-            Image = "rbxassetid://115810237733262",
-            Loadable = true,
-            scripload = "loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()"
+            Icon = BG_christmas_1,
+            Description = "The ultimate admin command script with hundreds of commands.",
+            Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()"
         },
         {
             Name = "R-Loader/Universal",
-            Image = "",
-            Loadable = true,
-            scripload = "loadstring(game:HttpGet('https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/xkJ8rtl85wxTZ9apvlfQPx7U88r5E3WVZGMoP.lua'))()"
+            Icon = BG_christmas_1,
+            Description = "Universal version of R-Loader.",
+            Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/R-loader-universal.lua'))()"
         },
-
     },
 
     ["Arsenal"] = {
         {
             Name = "Z3US: partially Detected",
-            TargetGame = "Arsenal",
-            Image = "",
-            Loadable = true,
-            scripload = "loadstring(game:HttpGet('https://raw.githubusercontent.com/blackowl1231/Z3US/refs/heads/main/Games/Z3US%20Arsenal%20Beta.lua'))()"
+            Icon = BG_christmas_1,
+            Description = "Aimbot, silent aim, and Arsenal utilities. Partially detected.",
+            Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/blackowl1231/Z3US/refs/heads/main/Games/Z3US%20Arsenal%20Beta.lua'))()"
         },
         {
             Name = "Vapa-v2",
-            TargetGame = "Arsenal",
-            Image = "",
-            Loadable = true,
-            scripload = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/Nickyangtpe/Vapa-v2/refs/heads/main/Vapav2-Arsenal.lua", true))()'
+            Icon = BG_christmas_1,
+            Description = "Advanced Arsenal script with combat utilities.",
+            Load = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/Nickyangtpe/Vapa-v2/refs/heads/main/Vapav2-Arsenal.lua", true))()'
         },
     },
 
     ["Rivals"] = {
         {
             Name = "Z3US Rivals",
-            TargetGame = "Rivals",
-            Image = "",
-            Loadable = true,
-            scripload = [[
+            Icon = BG_christmas_1,
+            Description = "Z3US version for Rivals with autoload support.",
+            Load = [[
                 getgenv().autoload = autoloadEnabled
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/blackowl1231/Z3US/refs/heads/main/Games/Z3US%20Rivals%20Beta.lua"))()
             ]]
         },
     },
 
-    ["Flick"] = {
-        {
-            Name = "Coming Soon...",
-            TargetGame = "Flick",
-            Image = "",
-            Loadable = false,
-            scripload = ""
-
-        },
-    },
 
     ["Prison Life"] = {
         {
             Name = "DP-HUB",
-            TargetGame = "Prison Life",
-            Image = "",
-            Loadable = false,
-            scripload = "loadstring(game:HttpGet('https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/LOK83u70UdGWBhj3LwexaiKVy5Q8MJTrxhM6KUz.lua'))()"
-        }
+            Icon = BG_christmas_1,
+            Description = "Prison Life admin, ESP, combat, and more.",
+            Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/scripts/PrisonLife_DP-HUB.lua'))()"
+        },
     },
 
     ["BB Legends"] = {
         {
             Name = "absence-mini",
-            TargetGame = "BB Legends",
-            Image = "",
-            Loadable = true,
-            scripload = "loadstring(game:HttpGet('https://raw.githubusercontent.com/vnausea/absence-mini/refs/heads/main/absencemini.lua'))()"
+            Icon = BG_christmas_1,
+            Description = "Mini version of absence-hub for BB Legends.",
+            Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/vnausea/absence-mini/refs/heads/main/absencemini.lua'))()"
         },
     },
 
     ["Build A Boat"] = {
         {
             Name = "Uniqu Hub",
-            TargetGame = "Build A Boat",
-            Image = "",
-            Loadable = true,
-            scripload = 'loadstring(game:HttpGet("https://rawscripts.net/raw/Unique-Hub-(14-Gmes)_521"))()'
-
-            
-
+            Icon = BG_christmas_1,
+            Description = "Multi-game hub including Build A Boat support.",
+            Load = 'loadstring(game:HttpGet("https://rawscripts.net/raw/Unique-Hub-(14-Gmes)_521"))()'
         },
         {
             Name = "Lexus Hub: partially working/laggy",
-            TargetGame = "Build A Boat",
-            Image = "",
-            Loadable = true,
-            scripload = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/102KIRA/Best-Babft-script/refs/heads/main/Actually%20Best%20babft%20script"))()'
-
+            Icon = BG_christmas_1,
+            Description = "BABFT script with partial features but laggy.",
+            Load = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/102KIRA/Best-Babft-script/refs/heads/main/Actually%20Best%20babft%20script"))()'
         },
     },
 
     ["Lucky Blocks"] = {
         {
             Name = "Lucky Blocks",
-            TargetGame = "Lucky Blocks",
-            Image = "",
-            Loadable = true,
-            scripload = "loadstring(game:HttpGet('https://raw.githubusercontent.com/Veaquach/LBBattlegroundsscript/refs/heads/main/Universal%20Lucky%20Block%20Battle%20Grounds%20Script.txt'))()"
+            Icon = BG_christmas_1,
+            Description = "Universal Lucky Blocks Battlegrounds script.",
+            Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/Veaquach/LBBattlegroundsscript/refs/heads/main/Universal%20Lucky%20Block%20Battle%20Grounds%20Script.txt'))()"
         },
     },
 
     ["Legends Of Sd"] = {
         {
             Name = "Legends Of Speed",
-            TargetGame = "Legends Of Sd",
-            Image = "",
-            Loadable = true,
-            scripload = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/jokerbiel13/FourHub/refs/heads/main/Speed%20legendsFh.lua",true))()'
+            Icon = BG_christmas_1,
+            Description = "Legends of Speed script with auto-farm and utilities.",
+            Load = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/jokerbiel13/FourHub/refs/heads/main/Speed%20legendsFh.lua",true))()'
         },
-
-        
     },
+
     ["FNAF Eternal Nights"] = {
         {
             Name = "FNAF Eternal Nights",
-            TargetGame = "FNAF Eternal Nights",
-            Image = "",
-            Loadable = true,
-            scripload = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/Snipez-Dev/Rbx-Scripts/refs/heads/main/Eternal%20Nights"))()'
+            Icon = BG_christmas_1,
+            Description = "FNAF Eternal Nights script pack.",
+            Load = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/Snipez-Dev/Rbx-Scripts/refs/heads/main/Eternal%20Nights"))()'
         },
     },
 
     ["Nights in the Forest"] = {
         {
             Name = "unknown",
-            TargetGame = "Nights in the Forest",
-            Image = "",
-            Loadable = true,
-            scripload = 'loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/c27892d6692ba09d991c09dc9d5ceae1.lua"))()'
+            Icon = BG_christmas_1,
+            Description = "Luarmor-protected loader for Nights In The Forest.",
+            Load = 'loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/c27892d6692ba09d991c09dc9d5ceae1.lua"))()'
         },
     },
 
     ["Doors"] = {
         {
             Name = "Rloader Doors",
-            TargetGame = "Doors",
-            Image = "",
-            Loadable = false,
-            scripload = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/Doors_RLoader.lua"))()'
+            Icon = BG_christmas_1,
+            Description = "R-Loader version for Doors.",
+            Load = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/scripts/Doors_RLoader.lua"))()'
         },
-            {
-            Name = "zynlope-no-ui",
-            TargetGame = "Doors",
-            Image = "",
-            Loadable = true,
-            scripload = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/rolezeay/doors/refs/heads/main/hmmmmm"))()'
-        },
-    },
-
-    ["ERLC"] = {
         {
-            Name = "Emergency Response: Liberty County",
-            TargetGame = "ERLC",
-            Image = "",
-            Loadable = true,
-            scripload = "loadstring(game:HttpGet('https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/xkJ8rtl85wxTZ9apvlfQPx7U88r5E3WVZGMoP.lua'))()"
+            Name = "zynlope-no-ui",
+            Icon = BG_christmas_1,
+            Description = "UI-less Doors script.",
+            Load = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/rolezeay/doors/refs/heads/main/hmmmmm"))()'
         },
     },
 
     ["AOTR"] = {
         {
             Name = "Attack on Titan Revolution",
-            TargetGame = "AOTR",
-            Image = "",
-            Loadable = true,
-            scripload = 'loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/705e7fe7aa288f0fe86900cedb1119b1.lua"))()'
+            Icon = BG_christmas_1,
+            Description = "AOTR Luarmor script loader.",
+            Load = 'loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/705e7fe7aa288f0fe86900cedb1119b1.lua"))()'
         },
     },
-    
+
     ["The Forge"] = {
         {
             Name = "Rayfield",
-            TargetGame = "The Forge",
-            Image = "",
-            Loadable = true,
-            scripload = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/LioK251/RbScripts/refs/heads/main/lazyuhub_theforge.lua"))()'
+            Icon = BG_christmas_1,
+            Description = "The Forge script using Rayfield UI.",
+            Load = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/LioK251/RbScripts/refs/heads/main/lazyuhub_theforge.lua"))()'
         },
         {
             Name = "ForgeHub",
-            TargetGame = "The Forge",
-            Image = "",
-            Loadable = true,
-            scripload = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/jokerbiel13/FourHub/refs/heads/main/TheForgeFH.lua",true))()'
+            Icon = BG_christmas_1,
+            Description = "Utility hub for The Forge.",
+            Load = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/jokerbiel13/FourHub/refs/heads/main/TheForgeFH.lua",true))()'
         },
         {
             Name = "pepehook-loader",
-            TargetGame = "The Forge",
-            Image = "",
-            Loadable = true,
-            scripload = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/GiftStein1/pepehook-loader/refs/heads/main/loader.lua"))()'
-        },
-
-
-        
-    },
-
-    ["Valley Prison"] = {
-        {
-            Name = "Valley Prison",
-            TargetGame = "Valley Prison",
-            Image = "",
-            Loadable = false,
-            scripload = test_lua
-        },
-    },
-
-
-    ["Emote RNG"] = {
-        {
-            Name = "Emote RNG BETA",
-            TargetGame = "Emote RNG BETA",
-            Image = "",
-            Loadable = false,
-            scripload = test_lua
+            Icon = BG_christmas_1,
+            Description = "Pepehook loader for The Forge.",
+            Load = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/GiftStein1/pepehook-loader/refs/heads/main/loader.lua"))()'
         },
     },
 
     ["Blade Ball"] = {
         {
             Name = "Akashial",
-            TargetGame = "Blade Ball",
-            Image = "",
-            Loadable = true,
-            scripload = Akashial
+            Icon = BG_christmas_1,
+            Description = "Akashial Blade Ball loader.",
+            Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/Akash1al/Blade-Ball-Updated-Script/refs/heads/main/Blade-Ball-Script'))()"
         },
         {
             Name = "MixRawwr",
-            TargetGame = "Blade Ball",
-            Image = "",
-            Loadable = true,
-            scripload = MixRawwr
+            Icon = BG_christmas_1,
+            Description = "MixRawwr Blade Ball loader.",
+            Load = "loadstring(game:HttpGet('https://pastebin.com/raw/5v3yQUvH',true))()"
         },
-
     },
-
 }
 
--- This is the new, filtered catalog used by the rest of your script
-local ScriptCatalog = {
-    ["Universal"] = FullScriptCatalog["Universal"] -- Always include Universal scripts
-}
 
--- Check if the current game is supported (not "Universal" by default)
-if TARGET_GAME_NAME ~= "Universal" and FullScriptCatalog[TARGET_GAME_NAME] then
-    -- If it is supported, include only those scripts
-    ScriptCatalog[TARGET_GAME_NAME] = FullScriptCatalog[TARGET_GAME_NAME]
-end
+local ActiveCatalog = { ["Universal"] = FullCatalog["Universal"] }
+if CurrentGameName ~= "Universal" and FullCatalog[CurrentGameName] then ActiveCatalog[CurrentGameName] = FullCatalog[CurrentGameName] end
 
--- // SCRIPT-LOAD2-END //
+-- // 6. UI INITIALIZATION & BACKGROUND PRELOAD // --------------------------------------------
 
+local Window = Library:CreateWindow({
+    Title = "Loader | " .. CurrentGameName,
+    Size = Vector2.new(700, 500)
+})
 
--- // SCREEN GUI //
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "R-Loader"
-ScreenGui.ResetOnSpawn = false
-ScreenGui.Parent = pcall(function() return CoreGui end) and CoreGui or LocalPlayer:WaitForChild("PlayerGui")
-
--- // BACKGROUND CONFIGURATION //
-local BackgroundConfig = {
-    Enabled = true, 
-    Url = _G.UserURl(), -- Dynamically gets the URL
-    Transparency = 0.5 
-}
-
--- // MAIN FRAME //
-local MainFrame = Instance.new("Frame")
-MainFrame.Name = "MainFrame"
-MainFrame.Size = UDim2.new(0, 0, 0, 0) -- START CLOSED FOR ANIMATION
-MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0) -- CENTERED
-MainFrame.AnchorPoint = Vector2.new(0.5, 0.5) -- CENTER ANCHOR
-MainFrame.BorderSizePixel = 0
-MainFrame.ClipsDescendants = true
-MainFrame.Parent = ScreenGui
-MainFrame.Visible = true -- Start invisible
-Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 6)
-
--- // --- UI BACKGROUND LOGIC (FORCE RELOAD) --- //
-if BackgroundConfig.Enabled then
-    MainFrame.BackgroundColor3 = THEME.Main 
-    MainFrame.BackgroundTransparency = 1 -- Make transparent for image
-
-    task.spawn(function()
-        -- 1. Check for Exploit Support
-        local getAsset = getgenv().getcustomasset or getgenv().getsynasset
-        if not getAsset or not makefolder then 
-            MainFrame.BackgroundTransparency = 0 -- Fallback to solid color
-            return 
-        end
-
-        local BackgroundFileName = "R_Loader_BG_Image.png"
-        local filePath = SETTINGS_FOLDER .. "/" .. BackgroundFileName
-
-        -- 2. CLEANUP: Delete the old file if it exists (Forces a refresh)
-        if isfile(filePath) then
-            delfile(filePath)
-        end
-
-        -- 3. DOWNLOAD: Fetch the new image based on the current URL
-        if BackgroundConfig.Url and BackgroundConfig.Url ~= "" then
-            local success, response = pcall(function() return game:HttpGet(BackgroundConfig.Url) end)
-            if success and response then
-                writefile(filePath, response)
-            end
-        end
-
-        -- 4. APPLY: Load the newly downloaded image
-        if isfile(filePath) then
-            local BG = Instance.new("ImageLabel")
-            BG.Name = "UI_Background"
-            BG.Size = UDim2.new(1, 0, 1, 0) -- Fills entire frame
-            BG.Position = UDim2.new(0, 0, 0, 0)
-            BG.BackgroundTransparency = 1
-            BG.BorderSizePixel = 0
-            BG.ZIndex = 0 
-            
-            -- THIS IS THE AUTO-RESIZE MAGIC
-            BG.ScaleType = Enum.ScaleType.Crop 
-            -- Crop: Zooms in to fill space (No black bars, correct aspect ratio)
-            
-            BG.Parent = MainFrame
-
-            -- Load via custom asset
-            local success, assetId = pcall(function() return getAsset(filePath) end)
-            if success then
-                BG.Image = assetId
-            end
-
-            -- 5. Dark Overlay (Tint)
-            local Overlay = Instance.new("Frame")
-            Overlay.Name = "Tint"
-            Overlay.Size = UDim2.new(1, 0, 1, 0)
-            Overlay.BackgroundColor3 = THEME.Main 
-            Overlay.BackgroundTransparency = BackgroundConfig.Transparency
-            Overlay.ZIndex = 0
-            Overlay.Parent = MainFrame
-        else
-            -- Fallback if download failed
-            MainFrame.BackgroundTransparency = 0
-        end
-    end)
-else
-    MainFrame.BackgroundColor3 = THEME.Main
-    MainFrame.BackgroundTransparency = 0
-end
-
--- // TOP BAR //
-local TopBar = Instance.new("Frame")
-TopBar.Size = UDim2.new(1, 0, 0, 30)
-TopBar.BackgroundColor3 = THEME.TopBar
-TopBar.BackgroundTransparency = THEME.Transparency.TopBar -- <--- ADD THIS LINE
-TopBar.BorderSizePixel = 0
-TopBar.Parent = MainFrame
-Instance.new("UICorner", TopBar).CornerRadius = UDim.new(0, 6)
-
-local TopPatch = Instance.new("Frame")
-TopPatch.Size = UDim2.new(1, 0, 0, 10)
-TopPatch.Position = UDim2.new(0, 0, 1, -10)
-TopPatch.BackgroundColor3 = THEME.TopBar
-TopPatch.BackgroundTransparency = THEME.Transparency.TopBar -- <--- ADD THIS LINE (Must match TopBar)
-TopPatch.BorderSizePixel = 0
-TopPatch.Parent = TopBar
-
-local Title = Instance.new("TextLabel")
-Title.Text = "  R-Loader | Target: "..TARGET_GAME_NAME.." [Game-ID: "..CURRENT_GAME_ID..RLoaderStatus.."]"
-Title.Size = UDim2.new(1, -60, 1, 0)
-Title.BackgroundTransparency = 1
-Title.TextColor3 = THEME.Text
-Title.TextXAlignment = Enum.TextXAlignment.Left
-Title.Font = Enum.Font.GothamBold
-Title.TextScaled = true -- [[ CHANGED ]]
-Title.TextWrapped = true -- [[ CHANGED ]]
--- Optional constraint to stop it from getting too huge on empty space
-local sizeConstraint = Instance.new("UITextSizeConstraint", Title)
-sizeConstraint.MaxTextSize = 14 
-Title.Parent = TopBar
-
--- // DRAGGING //
-local dragging, dragStart, startPos
-TopBar.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        dragging = true; dragStart = input.Position; startPos = MainFrame.Position
+-- Background Preload Logic
+task.spawn(function()
+    local bgUrl = DEFAULT_BACKGROUND
+    local BG_FILE_PATH = SETTINGS_FOLDER .. "/custom_bg.jpg"
+    
+    if SpecialUsers[LocalPlayer.UserId] and SpecialUsers[LocalPlayer.UserId].Background ~= "" then
+        bgUrl = SpecialUsers[LocalPlayer.UserId].Background
     end
-end)
-UserInputService.InputChanged:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseMovement and dragging then
-        local delta = input.Position - dragStart
-        MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+
+    local function LoadBG()
+        if isfile(BG_FILE_PATH) then delfile(BG_FILE_PATH) end
+        local success, response = pcall(function() return game:HttpGet(bgUrl) end)
+        if success and response then
+            writefile(BG_FILE_PATH, response)
+            local loadSuccess, _ = pcall(function()
+                local asset = getcustomasset and getcustomasset(BG_FILE_PATH) or BG_FILE_PATH
+                if Window.Wallpaper then Window.Wallpaper.Image = asset end
+            end)
+        end
     end
-end)
-UserInputService.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then dragging = false end
+    
+    Window:Notify("System", "Loading Assets...")
+    LoadBG()
+    
+    task.wait(0.5)
+    Window.SetState(true) 
 end)
 
--- // WINDOW CONTROLS //
-local function AddWinButton(text, color, posOffset, callback)
-    local btn = Instance.new("TextButton")
-    btn.Size = UDim2.new(0, 30, 0, 30)
-    btn.Position = UDim2.new(1, posOffset, 0, 0)
-    btn.BackgroundTransparency = 1
-    btn.Text = text
-    btn.TextColor3 = color
-    btn.Font = Enum.Font.GothamBold
-    btn.TextSize = 14
-    btn.Parent = TopBar
-    btn.MouseButton1Click:Connect(callback)
-end
-
--- // --- MODERN NOTIFICATION SYSTEM (SLIDE VARIANT) ---
-local NotificationHolder = Instance.new("Frame")
-NotificationHolder.Name = "NotificationHolder"
-NotificationHolder.Size = UDim2.new(0, 300, 1, -20)
--- POSITION CHANGED: Locked to the Right Side
-NotificationHolder.Position = UDim2.new(1, -310, 0, 20) 
-NotificationHolder.AnchorPoint = Vector2.new(0, 0)
-NotificationHolder.BackgroundTransparency = 1
-NotificationHolder.Parent = ScreenGui 
-
-local NoteLayout = Instance.new("UIListLayout")
-NoteLayout.Parent = NotificationHolder
-NoteLayout.SortOrder = Enum.SortOrder.LayoutOrder
-NoteLayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
-NoteLayout.Padding = UDim.new(0, 10)
-
-local function SendNotification(title, text, duration)
-    local duration = duration or 3
-    
-    -- 1. THE CONTAINER (Invisible - Handles the List Layout spacing)
-    local Container = Instance.new("Frame")
-    Container.Name = "Container"
-    Container.Size = UDim2.new(1, 0, 0, 0) -- Starts with 0 height
-    Container.BackgroundTransparency = 1
-    Container.ClipsDescendants = false -- Crucial: Allows the slide animation to be seen outside the box
-    Container.Parent = NotificationHolder
-
-    -- 2. THE VISUAL FRAME (Visible - Handles the Slide Animation)
-    local Note = Instance.new("Frame")
-    Note.Name = "VisualFrame"
-    Note.Size = UDim2.new(1, 0, 1, 0) -- Fills the Container
-    Note.Position = UDim2.new(1.5, 0, 0, 0) -- Starts OFF SCREEN (Right side)
-    Note.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    Note.BorderSizePixel = 0
-    Note.Parent = Container
-    
-    local NoteCorner = Instance.new("UICorner")
-    NoteCorner.CornerRadius = UDim.new(0, 6)
-    NoteCorner.Parent = Note
-    
-    -- Accent Line
-    local Accent = Instance.new("Frame")
-    Accent.Size = UDim2.new(0, 4, 1, 0)
-    Accent.BackgroundColor3 = THEME.Accent -- Uses your script's Blue Accent
-    Accent.BorderSizePixel = 0
-    Accent.Parent = Note
-    
-    local AccentCorner = Instance.new("UICorner")
-    AccentCorner.CornerRadius = UDim.new(0, 6)
-    AccentCorner.Parent = Accent
-    
-    -- Title
-    local NoteTitle = Instance.new("TextLabel")
-    NoteTitle.Size = UDim2.new(1, -20, 0, 20)
-    NoteTitle.Position = UDim2.new(0, 12, 0, 5)
-    NoteTitle.BackgroundTransparency = 1
-    NoteTitle.Text = title
-    NoteTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-    NoteTitle.TextSize = 14
-    NoteTitle.Font = Enum.Font.GothamBold
-    NoteTitle.TextXAlignment = Enum.TextXAlignment.Left
-    NoteTitle.Parent = Note
-    
-    -- Text
-    local NoteText = Instance.new("TextLabel")
-    NoteText.Size = UDim2.new(1, -20, 0, 30)
-    NoteText.Position = UDim2.new(0, 12, 0, 25)
-    NoteText.BackgroundTransparency = 1
-    NoteText.Text = text
-    NoteText.TextColor3 = Color3.fromRGB(200, 200, 200)
-    NoteText.TextSize = 12
-    NoteText.Font = Enum.Font.Gotham
-    NoteText.TextXAlignment = Enum.TextXAlignment.Left
-    NoteText.TextWrapped = true
-    NoteText.Parent = Note
-
-    -- // ANIMATION LOGIC //
-    -- 1. Expand Container Height (Push other notes up)
-    game:GetService("TweenService"):Create(Container, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(1, 0, 0, 60)}):Play()
-    
-    -- 2. Slide Visual Frame In (From Right to Left)
-    game:GetService("TweenService"):Create(Note, TweenInfo.new(0.4, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position = UDim2.new(0, 0, 0, 0)}):Play()
-    
-    -- Auto Remove
-    task.delay(duration, function()
-        if Container and Container.Parent then
-            -- Slide Out to the Right
-            game:GetService("TweenService"):Create(Note, TweenInfo.new(0.4, Enum.EasingStyle.Quint, Enum.EasingDirection.In), {Position = UDim2.new(1.5, 0, 0, 0)}):Play()
-            
-            -- Collapse Height
-            local closeTween = game:GetService("TweenService"):Create(Container, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {Size = UDim2.new(1, 0, 0, 0)})
-            
-            task.wait(0.2) -- Slight delay so we see the slide start before it shrinks
-            closeTween:Play()
-            closeTween.Completed:Wait()
-            
-            Container:Destroy()
+-- Hot Reload
+task.spawn(function()
+    if isfile(HOTRELOAD_FILE) then
+        local savedData = readfile(HOTRELOAD_FILE)
+        local gameContext, scriptName = savedData:match("([^:]+):(.+)")
+        if gameContext == CurrentGameName or gameContext == "Universal" then
+             local targetScript = nil
+             if FullCatalog[gameContext] then
+                 for _, s in ipairs(FullCatalog[gameContext]) do if s.Name == scriptName then targetScript = s break end end
+             end
+             if targetScript then
+                 Window:Notify("Hot Reload", "Loading " .. scriptName)
+                 loadstring(targetScript.Load)()
+             end
         end
-    end)
-end
-
--- // CALLABLE WRAPPER (Global Access) //
-getgenv().Notification = function(arg1, arg2, arg3)
-    if not arg2 then
-        -- Called as Notification("Text Only")
-        SendNotification("R-Loader", tostring(arg1), 3)
-    else
-        -- Called as Notification("Title", "Text", Duration)
-        SendNotification(tostring(arg1), tostring(arg2), arg3 or 3)
-    end
-end
-
--- // --- MINIMIZE & TOGGLE LOGIC (SMOOTH ANIMATIONS) ---
-local UserInputService = game:GetService("UserInputService")
-local TweenService = game:GetService("TweenService")
-
--- 1. PREPARE MAINFRAME FOR ANIMATION
--- We set AnchorPoint to 0.5, 0.5 so it scales from the center
-MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0) 
-MainFrame.ClipsDescendants = true -- Ensures content hides when shrinking
-
-local UI_Open = false -- Start closed, let the startup anim open it
-local Debounce = false -- Prevents spamming keys breaking animations
-
--- Animation Settings
-local OpenTweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out) -- "Bouncy" pop open
-local CloseTweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In) -- Smooth shrink close
-
--- // TOGGLE FUNCTION
-local function ToggleUI(state)
-    if Debounce then return end
-    Debounce = true
-    
-    if state then
-        -- OPENING
-        MainFrame.Visible = true
-        MainFrame.Size = UDim2.new(0, 0, 0, 0) -- Start tiny
-        
-        local openAnim = TweenService:Create(MainFrame, OpenTweenInfo, {Size = UDim2.new(0, 550, 0, 350)}) -- Target Size
-        openAnim:Play()
-        openAnim.Completed:Wait()
-        UI_Open = true
-    else
-        -- CLOSING/MINIMIZING
-        local closeAnim = TweenService:Create(MainFrame, CloseTweenInfo, {Size = UDim2.new(0, 0, 0, 0)}) -- Shrink to 0
-        closeAnim:Play()
-        closeAnim.Completed:Wait()
-        MainFrame.Visible = false
-        UI_Open = false
-    end
-    
-    Debounce = false
-end
-
--- // RIGHT Right Shift LISTENER
-UserInputService.InputBegan:Connect(function(input, gameProcessed)
-    -- Only toggle if Right Shift pressed AND not typing in chat
-    if input.KeyCode == Enum.KeyCode.RightShift and not UserInputService:GetFocusedTextBox() then
-        ToggleUI(not UI_Open) -- Toggle opposite of current state
     end
 end)
 
--- // MINIMIZE BUTTON (-)
-AddWinButton("-", THEME.Text, -60, function()
-    ToggleUI(false) -- Trigger Smooth Close
-    SendNotification("Hidden", "Press Right Shift to open the menu.", 4)
+-- // 7. UI TABS // ---------------------------------------------------------------------------
+
+-- >> DASHBOARD (Always First)
+local Dashboard = Window:CreateCategory("Dashboard", "🏠")
+Dashboard:Label("--- User Profile ---")
+Dashboard:Button("Copy Game ID: " .. tostring(CURRENT_GAME_ID), function() setclipboard(tostring(CURRENT_GAME_ID)); Window:Notify("System", "Game ID copied.") end)
+Dashboard:Label("--- Credits ---")
+-- 1. Owner Button (Gold Icon + Text)
+Dashboard:Button("Owner Discord: ewkobe", Icons.owner, Colors.owner, function() 
+    setclipboard("ewkobe")
+    Window:Notify("System", "Discord copied!") 
 end)
 
--- // CLOSE BUTTON (X)
-AddWinButton("X", THEME.Red, -30, function()
-    if Debounce then return end
-    Debounce = true
-    
-    -- Smooth Close Animation
-    local closeAnim = TweenService:Create(MainFrame, CloseTweenInfo, {Size = UDim2.new(0, 0, 0, 0)})
-    closeAnim:Play()
-    closeAnim.Completed:Wait()
-    
-    -- Destroy GUI after animation finishes
-    ScreenGui:Destroy()
-    shared.Mana = nil 
-    getgenv().Notification = nil
+-- 2. Dev Button (Orange Icon + Text)
+Dashboard:Button("Owner/Dev: @mixapire", Icons.dev, Colors.dev, function() 
+    setclipboard("mixapire")
+    Window:Notify("System", "Discord copied!") 
 end)
 
--- // TABS & CONTAINERS //
-local TabHolder = Instance.new("Frame")
-TabHolder.Size = UDim2.new(0, 110, 1, -30)
-TabHolder.Position = UDim2.new(0, 0, 0, 30)
-TabHolder.BackgroundColor3 = THEME.Sidebar
-TabHolder.BorderSizePixel = 0
-TabHolder.Parent = MainFrame
+-- 3. Invite Button (Discord Blue Icon + Text)
+Dashboard:Button("Copy Discord Invite", Icons.discord, Colors.discord, function() 
+    setclipboard("https://discord.gg/g2ufS3jV")
+    Window:Notify("System", "Discord Link Copied!") 
+end)
 
-local TabListLayout = Instance.new("UIListLayout")
-TabListLayout.Parent = TabHolder
-TabListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-
-local ContentHolder = Instance.new("Frame")
-ContentHolder.Size = UDim2.new(1, -120, 1, -40)
-ContentHolder.Position = UDim2.new(0, 115, 0, 35)
-ContentHolder.BackgroundTransparency = 1
-ContentHolder.Parent = MainFrame
-
-local Tabs = {}
-
--- Utility to manage tab sorting
-local function ReSortTabs()
-    table.sort(Tabs, function(a, b)
-        if a.isPinned ~= b.isPinned then
-            return a.isPinned -- Pinned (true) comes before unpinned (false)
-        else
-            return a.Btn.Text < b.Btn.Text
-        end
-    end)
-    
-    for i, data in ipairs(Tabs) do
-        data.Btn.LayoutOrder = i
-    end
-end
-
-local function CreateTab(name)
-    local Btn = Instance.new("TextButton")
-    Btn.Name = name 
-    Btn.Size = UDim2.new(1, 0, 0, 40)
-    Btn.BackgroundColor3 = THEME.Sidebar
-    Btn.Text = name
-    Btn.TextColor3 = THEME.SubText
-    Btn.Font = Enum.Font.GothamSemibold
-    Btn.TextScaled = true -- [[ CHANGED: Fits long tab names ]]
-    Btn.TextWrapped = true
-    -- Keep text readable by limiting max size
-    local constraint = Instance.new("UITextSizeConstraint", Btn)
-    constraint.MaxTextSize = 14
-    
-    Btn.BorderSizePixel = 0
-    Btn.Parent = TabHolder
-
-    local Indicator = Instance.new("Frame")
-    Indicator.Size = UDim2.new(0, 3, 1, 0)
-    Indicator.BackgroundColor3 = THEME.Accent
-    Indicator.BorderSizePixel = 0
-    Indicator.BackgroundTransparency = 1
-    Indicator.Parent = Btn
-    
-    local PinIndicator = Instance.new("Frame") -- New Pin Indicator
-    PinIndicator.Size = UDim2.new(0, 8, 0, 8)
-    PinIndicator.Position = UDim2.new(1, -12, 0.5, -4)
-    PinIndicator.BackgroundColor3 = THEME.Pin
-    PinIndicator.Parent = Btn
-    Instance.new("UICorner", PinIndicator).CornerRadius = UDim.new(1, 0)
-
-    local Page = Instance.new("Frame")
-    Page.Name = name .. "_Page"
-    Page.Size = UDim2.new(1, 0, 1, 0)
-    Page.BackgroundTransparency = 1
-    Page.Visible = false
-    Page.Parent = ContentHolder
-
-    local PageLayout = Instance.new("UIListLayout")
-    PageLayout.Parent = Page
-    PageLayout.Padding = UDim.new(0, 8)
-    PageLayout.SortOrder = Enum.SortOrder.LayoutOrder
-
-    local Padding = Instance.new("UIPadding")
-    Padding.Parent = Page
-    Padding.PaddingTop = UDim.new(0, 5)
-
-    -- Pin Logic
-    local isPinned = InitialPinData[name] or false
-    PinIndicator.Visible = isPinned
-
-    Btn.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton2 then
-            isPinned = not isPinned
-            PinIndicator.Visible = isPinned
-            TabData.isPinned = isPinned
-            ReSortTabs()
-        end
-    end)
-
-    -- Selection Logic
-    Btn.MouseButton1Click:Connect(function()
-        for _, tab in pairs(Tabs) do
-            TweenService:Create(tab.Btn, TweenInfo.new(0.2), {BackgroundColor3 = THEME.Sidebar, TextColor3 = THEME.SubText}):Play()
-            tab.Indicator.BackgroundTransparency = 1
-            tab.Page.Visible = false
-        end
-        TweenService:Create(Btn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(45,45,50), TextColor3 = THEME.Text}):Play()
-        Indicator.BackgroundTransparency = 0
-        Page.Visible = true
-    end)
-
-    local TabData = {
-        Btn = Btn,
-        Page = Page,
-        Indicator = Indicator,
-        isPinned = isPinned,
-        PinIndicator = PinIndicator -- Added for external control (Config tab)
-    }
-    table.insert(Tabs, TabData)
-    return Page
-end
-
--- [[ 3. SCRIPT CONTAINER CREATION FUNCTION (UPDATED LOAD STRING) ]] --
-local function CreateContainer(pageData, name, scriptImageURL, isLoadable, scripload)
-    
-    local Frame = Instance.new("Frame")
-    Frame.Size = UDim2.new(1, 0, 0, 60)
-    Frame.BackgroundColor3 = THEME.TopBar
-    Frame.Parent = pageData
-    Instance.new("UICorner", Frame).CornerRadius = UDim.new(0, 8)
-    
-    local Padding = Instance.new("UIPadding")
-    Padding.PaddingTop = UDim.new(0, 5)
-    Padding.PaddingBottom = UDim.new(0, 5)
-    Padding.PaddingLeft = UDim.new(0, 10)
-    Padding.PaddingRight = UDim.new(0, 10)
-    Padding.Parent = Frame
-    
-    local List = Instance.new("Frame")
-    List.Size = UDim2.new(1, 0, 1, 0)
-    List.BackgroundTransparency = 1
-    List.Parent = Frame
-    
-    local ListLayout = Instance.new("UIListLayout")
-    ListLayout.FillDirection = Enum.FillDirection.Horizontal
-    ListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-    ListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
-    ListLayout.Padding = UDim.new(0, 10)
-    ListLayout.Parent = List
-
-    local ImageHolder = Instance.new("Frame")
-    ImageHolder.Size = UDim2.new(0, 50, 0, 50)
-    ImageHolder.BackgroundTransparency = 1
-    ImageHolder.Parent = List
-    local DEFAULT_IMAGE_ASSET_ID = "rbxassetid://138544928930772" 
-
-    -- Determine the image to use
-    local finalImageURL
-    if scriptImageURL and scriptImageURL ~= "" then
-    -- Use the provided script image URL
-    finalImageURL = scriptImageURL 
-    else
-    -- Use the default image ID and hide the "NO IMAGE" text
-    finalImageURL = DEFAULT_IMAGE_ASSET_ID
-    end
-
-    -- ImageDisplay setup
-    local ImageDisplay = Instance.new("ImageLabel")
-    ImageDisplay.Size = UDim2.new(1, 0, 1, 0)
-    ImageDisplay.BackgroundColor3 = THEME.Sidebar
-    ImageDisplay.Image = finalImageURL  -- Use the determined URL/ID
-    ImageDisplay.ScaleType = Enum.ScaleType.Fit
-    ImageDisplay.Parent = ImageHolder
-    Instance.new("UICorner", ImageDisplay).CornerRadius = UDim.new(0, 4)
-
-    -- NoImageLabel setup
-    local NoImageLabel = Instance.new("TextLabel")
-    NoImageLabel.Size = UDim2.new(1, 0, 1, 0)
-    NoImageLabel.BackgroundTransparency = 1
-    NoImageLabel.Text = "NO IMAGE"
-    NoImageLabel.TextColor3 = THEME.SubText
-    NoImageLabel.Font = Enum.Font.Gotham
-    NoImageLabel.TextSize = 8
-    NoImageLabel.TextWrapped = true
-    -- Only show the "NO IMAGE" label if the original URL was missing AND we are NOT using the default image
-    NoImageLabel.Visible = (not scriptImageURL or scriptImageURL == "") and finalImageURL == ""
-    NoImageLabel.Parent = ImageDisplay
- 
-    local InfoHolder = Instance.new("Frame")
-    InfoHolder.Size = UDim2.new(1, -90, 1, 0)
-    InfoHolder.BackgroundTransparency = 1
-    InfoHolder.Parent = List
-    
-    local InfoLayout = Instance.new("UIListLayout")
-    InfoLayout.Parent = InfoHolder
-    InfoLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    InfoLayout.Padding = UDim.new(0, 3)
-    InfoLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
-    InfoLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-
-local TitleLabel_Cont = Instance.new("TextLabel")
-    TitleLabel_Cont.Text = name
-    TitleLabel_Cont.Size = UDim2.new(1, 0, 0, 15)
-    TitleLabel_Cont.BackgroundTransparency = 1
-    TitleLabel_Cont.TextColor3 = THEME.Text
-    TitleLabel_Cont.TextXAlignment = Enum.TextXAlignment.Left
-    TitleLabel_Cont.Font = Enum.Font.GothamSemibold
-    TitleLabel_Cont.TextScaled = true -- [[ CHANGED ]]
-    TitleLabel_Cont.TextWrapped = true
-    local tConstraint = Instance.new("UITextSizeConstraint", TitleLabel_Cont)
-    tConstraint.MaxTextSize = 14
-    TitleLabel_Cont.Parent = InfoHolder
-    
-
-    local ControlsStatus = Instance.new("Frame")
-    ControlsStatus.Size = UDim2.new(1, 0, 0, 20)
-    ControlsStatus.BackgroundTransparency = 1
-    ControlsStatus.Parent = InfoHolder
-    
-    local ControlsStatusLayout = Instance.new("UIListLayout")
-    ControlsStatusLayout.FillDirection = Enum.FillDirection.Horizontal
-    ControlsStatusLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-    ControlsStatusLayout.Padding = UDim.new(0, 10)
-    ControlsStatusLayout.Parent = ControlsStatus
-    
-    local StatusLabel = Instance.new("TextLabel")
-    StatusLabel.Size = UDim2.new(0, 70, 1, 0)
-    StatusLabel.BackgroundTransparency = 1
-    StatusLabel.TextXAlignment = Enum.TextXAlignment.Left
-    StatusLabel.Font = Enum.Font.GothamBold
-    StatusLabel.TextSize = 12
-    StatusLabel.Parent = ControlsStatus
-    
-    if isLoadable then
-        StatusLabel.Text = "LOADABLE"
-        StatusLabel.TextColor3 = THEME.Green
-    else
-        StatusLabel.Text = "DISABLED"
-        StatusLabel.TextColor3 = THEME.Red
-    end
-    
-    local LoadBtn = Instance.new("TextButton")
-    LoadBtn.Size = UDim2.new(0, 60, 1, 0)
-    LoadBtn.BackgroundColor3 = THEME.Accent
-    LoadBtn.Text = "Load"
-    LoadBtn.TextColor3 = THEME.Text
-    LoadBtn.Font = Enum.Font.Gotham
-    LoadBtn.TextSize = 13
-    LoadBtn.Parent = ControlsStatus
-    Instance.new("UICorner", LoadBtn).CornerRadius = UDim.new(0, 4)
-    
-    local DefaultLoadColor = THEME.Accent
-    local HoverLoadColor = Color3.fromRGB(20, 170, 255)
-
-    LoadBtn.MouseEnter:Connect(function()
-        TweenService:Create(LoadBtn, TweenInfo.new(0.1), {BackgroundColor3 = HoverLoadColor}):Play()
-    end)
-    LoadBtn.MouseLeave:Connect(function()
-        TweenService:Create(LoadBtn, TweenInfo.new(0.1), {BackgroundColor3 = DefaultLoadColor}):Play()
-    end)
-    
-    LoadBtn.MouseButton1Click:Connect(function()
-        if isLoadable and scripload and scripload ~= "" then
-            pcall(function()
-                loadstring(scripload)() -- Execute the script load string
-            end)
-            
-            pcall(function()
-                game:GetService("StarterGui"):SetCore("SendNotification",{ Title="Script Loaded", Text=name.." executed!", Duration=3 })
-            end)
-        else
-            pcall(function()
-                game:GetService("StarterGui"):SetCore("SendNotification",{ Title="Cannot Load", Text=name.." is disabled or missing load string!", Duration=3 })
-            end)
-        end
-    end)
-end
-
--- [[ 4. CONFIG TAB CREATION FUNCTION ]] --
--- Utility function to refresh the Configs list from the filesystem
-local function GetAvailableConfigs()
-    local files = {}
-    pcall(function()
-        for _, file in ipairs(listfiles(CONFIGS_FOLDER)) do
-            if file:find(".json$") then
-                table.insert(files, file)
-            end
-        end
-    end)
-    return files
-end
-
--- Function to load pin data onto the UI elements
-local function ApplyPinsFromData(data)
-    for _, tabData in pairs(Tabs) do
-        local isPinned = data[tabData.Btn.Name] or false
-        tabData.isPinned = isPinned
-        tabData.PinIndicator.Visible = isPinned
-    end
-    ReSortTabs()
-end
-
--- Function to update the Hot-Reload file
-local function UpdateHotReloadFile(configName)
-    pcall(function()
-        writefile(LAST_LOADED_FILE, configName)
-    end)
-end
-
-local function CreateConfigTab(pageData)
-    local Notify
-    pcall(function()
-        local function showNotification(text, color)
-            local NotifyLabel = Instance.new("TextLabel")
-            NotifyLabel.Text = text
-            NotifyLabel.Size = UDim2.new(0.6, 0, 0, 30)
-            NotifyLabel.Position = UDim2.new(0.5, -(MainFrame.Size.X.Offset * 0.3), 1, -40)
-            NotifyLabel.BackgroundTransparency = 1
-            NotifyLabel.TextColor3 = color
-            NotifyLabel.TextXAlignment = Enum.TextXAlignment.Center
-            NotifyLabel.Font = Enum.Font.GothamBold
-            NotifyLabel.TextSize = 16
-            NotifyLabel.ZIndex = 5
-            NotifyLabel.Parent = MainFrame
-            NotifyLabel.TextTransparency = 1
-            
-            TweenService:Create(NotifyLabel, TweenInfo.new(0.3), {TextTransparency = 0}):Play()
-            task.delay(2, function()
-                TweenService:Create(NotifyLabel, TweenInfo.new(0.5), {TextTransparency = 1}):Play()
-                task.delay(0.5, function() NotifyLabel:Destroy() end)
-            end)
-        end
-        Notify = showNotification
-    end)
-
-    local ConfigPanel = Instance.new("Frame")
-    ConfigPanel.Size = UDim2.new(1, 0, 1, 0)
-    ConfigPanel.BackgroundTransparency = 1
-    ConfigPanel.Parent = pageData
-    
-    local ConfigLayout = Instance.new("UIListLayout")
-    ConfigLayout.Parent = ConfigPanel
-    ConfigLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    ConfigLayout.Padding = UDim.new(0, 10)
-    ConfigLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-
-    ----------------------------------------------------------
-    -- 1. CONFIG SELECTION SYSTEM
-    ----------------------------------------------------------
-    local SelectFrame = Instance.new("Frame")
-    SelectFrame.Size = UDim2.new(1, 0, 0, 150)
-    SelectFrame.BackgroundColor3 = THEME.TopBar
-    SelectFrame.Parent = ConfigPanel
-    Instance.new("UICorner", SelectFrame).CornerRadius = UDim.new(0, 8)
-    
-    local ListTitle = Instance.new("TextLabel")
-    ListTitle.Text = "Config Selection"
-    ListTitle.Size = UDim2.new(1, 0, 0, 20)
-    ListTitle.BackgroundTransparency = 1
-    ListTitle.TextColor3 = THEME.Accent
-    ListTitle.Font = Enum.Font.GothamBold
-    ListTitle.TextSize = 14
-    ListTitle.Parent = SelectFrame
-
-    local ConfigListBox = Instance.new("ScrollingFrame")
-    ConfigListBox.Size = UDim2.new(1, -20, 0, 120)
-    ConfigListBox.Position = UDim2.new(0, 10, 0, 25)
-    ConfigListBox.BackgroundTransparency = 1
-    ConfigListBox.BorderSizePixel = 0
-    ConfigListBox.Parent = SelectFrame
-    
-    local ConfigListLayout = Instance.new("UIListLayout")
-    ConfigListLayout.Parent = ConfigListBox
-    ConfigListLayout.Padding = UDim.new(0, 5)
-
-    local SelectedLabel = Instance.new("TextLabel")
-    SelectedLabel.Size = UDim2.new(1, 0, 0, 20)
-    SelectedLabel.Position = UDim2.new(0, 0, 1, 5)
-    SelectedLabel.BackgroundTransparency = 1
-    SelectedLabel.TextColor3 = THEME.SubText
-    SelectedLabel.TextXAlignment = Enum.TextXAlignment.Left
-    SelectedLabel.Font = Enum.Font.Gotham
-    SelectedLabel.TextSize = 12
-    SelectedLabel.Text = "Selected: "..SelectedConfigName
-    SelectedLabel.Parent = SelectFrame
-
-    local function RefreshConfigList()
-        for _, child in ipairs(ConfigListBox:GetChildren()) do
-            if child:IsA("TextButton") then child:Destroy() end
-        end
-        
-        local configs = GetAvailableConfigs()
-        for _, name in ipairs(configs) do
-            local btn = Instance.new("TextButton")
-            btn.Name = name
-            btn.Text = name:gsub(".json", "")
-            btn.Size = UDim2.new(1, 0, 0, 20)
-            btn.BackgroundColor3 = (name == SelectedConfigName) and THEME.Accent or THEME.Sidebar
-            btn.TextColor3 = THEME.Text
-            btn.Font = Enum.Font.Gotham
-            btn.TextSize = 13
-            btn.Parent = ConfigListBox
-
-            btn.MouseButton1Click:Connect(function()
-                SelectedConfigName = name
-                SelectedLabel.Text = "Selected: "..name
-                RefreshConfigList() -- Refresh colors
-            end)
-        end
-        if #configs == 0 then
-            SelectedLabel.Text = "Selected: (No Configs)"
-            SelectedConfigName = ""
-        end
-    end
-    RefreshConfigList()
-
-    
-
-    ----------------------------------------------------------
-    -- 2. ACTIONS FRAME
-    ----------------------------------------------------------
-    local ActionsFrame = Instance.new("Frame")
-    ActionsFrame.Size = UDim2.new(1, 0, 0, 30)
-    ActionsFrame.BackgroundTransparency = 1
-    ActionsFrame.Parent = ConfigPanel
-    
-    local ActionsLayout = Instance.new("UIListLayout")
-    ActionsLayout.Parent = ActionsFrame
-    ActionsLayout.FillDirection = Enum.FillDirection.Horizontal
-    ActionsLayout.Padding = UDim.new(0, 5)
-    ActionsLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-
-    -- LOAD BUTTON
-    local LoadBtn = Instance.new("TextButton")
-    LoadBtn.Size = UDim2.new(0.33, -5, 0.7, 0)
-    LoadBtn.Text = "Load Config"
-    LoadBtn.BackgroundColor3 = THEME.Green
-    LoadBtn.TextColor3 = THEME.Text
-    LoadBtn.Font = Enum.Font.GothamBold
-    LoadBtn.TextSize = 14
-    LoadBtn.Parent = ActionsFrame
-    Instance.new("UICorner", LoadBtn).CornerRadius = UDim.new(0, 4)
-
-    LoadBtn.MouseButton1Click:Connect(function()
-        if SelectedConfigName == "" then Notify("Error: No config selected.", THEME.Red) return end
-        
-        local configFile = CONFIGS_FOLDER .. "/" .. SelectedConfigName
-        if isfile(configFile) then
-            local content = readfile(configFile)
-            if content and content ~= "" then
-                local data = HttpService:JSONDecode(content)
-                ApplyPinsFromData(data)
-                Notify("Config '"..SelectedConfigName.."' loaded successfully.", THEME.Green)
-            else
-                Notify("Error: Config file is empty.", THEME.Red)
-            end
-        else
-            Notify("Error: Config file not found.", THEME.Red)
-        end
-    end)
-    
-    -- OVERWRITE BUTTON
-    local OverwriteBtn = Instance.new("TextButton")
-    OverwriteBtn.Size = UDim2.new(0.33, -5, 0.7, 0)
-    OverwriteBtn.Text = "Overwrite"
-    OverwriteBtn.BackgroundColor3 = THEME.Pin
-    OverwriteBtn.TextColor3 = THEME.Main
-    OverwriteBtn.Font = Enum.Font.GothamBold
-    OverwriteBtn.TextSize = 14
-    OverwriteBtn.Parent = ActionsFrame
-    Instance.new("UICorner", OverwriteBtn).CornerRadius = UDim.new(0, 4)
-
-    OverwriteBtn.MouseButton1Click:Connect(function()
-        if SelectedConfigName == "" then Notify("Error: No config selected.", THEME.Red) return end
-
-        local pinMap = {}
-        for _, tabData in pairs(Tabs) do
-            pinMap[tabData.Btn.Name] = tabData.isPinned
-        end
-        local content = HttpService:JSONEncode(pinMap)
-        
-        pcall(function()
-            writefile(CONFIGS_FOLDER .. "/" .. SelectedConfigName, content)
-            Notify("Config '"..SelectedConfigName.."' overwritten.", THEME.Pin)
-        end)
-    end)
-    
-    -- DELETE BUTTON
-    local DeleteBtn = Instance.new("TextButton")
-    DeleteBtn.Size = UDim2.new(0.35, -5, 0.7, 0)
-    DeleteBtn.Text = "Delete"
-    DeleteBtn.BackgroundColor3 = THEME.Red
-    DeleteBtn.TextColor3 = THEME.Text
-    DeleteBtn.Font = Enum.Font.GothamBold
-    DeleteBtn.TextSize = 14
-    DeleteBtn.Parent = ActionsFrame
-    Instance.new("UICorner", DeleteBtn).CornerRadius = UDim.new(0, 4)
-
-    DeleteBtn.MouseButton1Click:Connect(function()
-        if SelectedConfigName == "" then Notify("Error: No config selected.", THEME.Red) return end
-        if SelectedConfigName == DEFAULT_CONFIG_NAME then Notify("Cannot delete the default config.", THEME.Red) return end
-
-        pcall(function()
-            delfile(CONFIGS_FOLDER .. "/" .. SelectedConfigName)
-            SelectedConfigName = DEFAULT_CONFIG_NAME -- Reset selection
-            Notify("Config '"..SelectedConfigName.."' deleted.", THEME.Red)
-        end)
-        RefreshConfigList()
-    end)
-    
-    ----------------------------------------------------------
-    -- 3. HOT RELOAD TOGGLE
-    ----------------------------------------------------------
-    local HotReloadFrame = Instance.new("Frame")
-    HotReloadFrame.Size = UDim2.new(1, 0, 0, 30)
-    HotReloadFrame.BackgroundColor3 = THEME.Sidebar
-    HotReloadFrame.Parent = ConfigPanel
-    Instance.new("UICorner", HotReloadFrame).CornerRadius = UDim.new(0, 8)
-
-    local HotReloadLabel = Instance.new("TextLabel")
-    HotReloadLabel.Text = "Hot Reload selected config on run:"
-    HotReloadLabel.Size = UDim2.new(0.7, 0, 1, 0)
-    HotReloadLabel.Position = UDim2.new(0, 10, 0, 0)
-    HotReloadLabel.BackgroundTransparency = 1
-    HotReloadLabel.TextColor3 = THEME.Text
-    HotReloadLabel.TextXAlignment = Enum.TextXAlignment.Left
-    HotReloadLabel.Font = Enum.Font.Gotham
-    HotReloadLabel.TextSize = 14
-    HotReloadLabel.Parent = HotReloadFrame
-    
-    local HotReloadToggle = Instance.new("TextButton")
-    HotReloadToggle.Size = UDim2.new(0, 80, 0, 20)
-    HotReloadToggle.Position = UDim2.new(1, -90, 0.5, -10)
-    HotReloadToggle.Parent = HotReloadFrame
-    Instance.new("UICorner", HotReloadToggle).CornerRadius = UDim.new(0, 4)
-
-    local isHotReloading = isfile(LAST_LOADED_FILE) and readfile(LAST_LOADED_FILE) ~= ""
-    
-    local function UpdateToggleState()
-        if isHotReloading then
-            HotReloadToggle.Text = "Enabled"
-            HotReloadToggle.BackgroundColor3 = THEME.Green
-            UpdateHotReloadFile(SelectedConfigName)
-        else
-            HotReloadToggle.Text = "Disabled"
-            HotReloadToggle.BackgroundColor3 = THEME.Red
-            UpdateHotReloadFile("") -- Clear the file to disable hot-reload
-        end
-    end
-    
-    HotReloadToggle.MouseButton1Click:Connect(function()
-        isHotReloading = not isHotReloading
-        UpdateToggleState()
-        Notify(isHotReloading and "Hot Reload Enabled for: "..SelectedConfigName or "Hot Reload Disabled.", isHotReloading and THEME.Green or THEME.Red)
-    end)
-    
-    UpdateToggleState() 
-
-    ----------------------------------------------------------
-    -- 4. NEW CONFIG INPUT
-    ----------------------------------------------------------
-    local NewConfigFrame = Instance.new("Frame")
-    NewConfigFrame.Size = UDim2.new(1, 0, 0, 50)
-    NewConfigFrame.BackgroundColor3 = THEME.Sidebar
-    NewConfigFrame.Parent = ConfigPanel
-    Instance.new("UICorner", NewConfigFrame).CornerRadius = UDim.new(0, 8)
-    
-    local NewInput = Instance.new("TextBox")
-    NewInput.Size = UDim2.new(0.6, -10, 0, 20)
-    NewInput.Position = UDim2.new(0, 5, 0.5, -10)
-    NewInput.PlaceholderText = "New Config Name (e.g., jump_pins)"
-    NewInput.Text = ""
-    NewInput.TextColor3 = THEME.Text
-    NewInput.BackgroundColor3 = THEME.TopBar
-    NewInput.Parent = NewConfigFrame
-    
-    local CreateBtn = Instance.new("TextButton")
-    CreateBtn.Size = UDim2.new(0.4, -10, 0, 20)
-    CreateBtn.Position = UDim2.new(0.6, 5, 0.5, -10)
-    CreateBtn.Text = "Create & Overwrite"
-    CreateBtn.BackgroundColor3 = THEME.Accent
-    CreateBtn.TextColor3 = THEME.Text
-    CreateBtn.Font = Enum.Font.GothamBold
-    CreateBtn.TextSize = 14
-    CreateBtn.Parent = NewConfigFrame
-    Instance.new("UICorner", CreateBtn).CornerRadius = UDim.new(0, 4)
-
-    CreateBtn.MouseButton1Click:Connect(function()
-        local name = NewInput.Text:gsub("[^a-zA-Z0-9_]", "")
-        if name == "" then Notify("Error: Invalid config name.", THEME.Red) return end
-        
-        local fileName = name .. ".json"
-        
-        SelectedConfigName = fileName
-        OverwriteBtn:Click() 
-        RefreshConfigList()
-        UpdateToggleState() 
-        
-        NewInput.Text = ""
-        Notify("New Config '"..fileName.."' created and saved!", THEME.Green)
-    end)
-end
-
--- [[ 5. INITIALIZATION AND SCRIPT POPULATION ]] --
-
--- Create Tabs based on the Script Catalog Keys
-for tabName, scriptList in pairs(ScriptCatalog) do
-    local page = CreateTab(tabName)
-    -- Add a placeholder to prevent errors if the list is empty
-    if #scriptList == 0 then 
-        local NoScriptsLabel = Instance.new("TextLabel")
-        NoScriptsLabel.Size = UDim2.new(1, 0, 1, 0)
-        NoScriptsLabel.BackgroundTransparency = 1
-        NoScriptsLabel.Text = "No scripts available"
-        NoScriptsLabel.TextColor3 = THEME.SubText
-        NoScriptsLabel.Font = Enum.Font.GothamBold
-        NoScriptsLabel.TextSize = 18
-        NoScriptsLabel.Parent = page
-    end
-
-    for _, scriptInfo in ipairs(scriptList) do
-        CreateContainer(page, scriptInfo.Name, scriptInfo.Image, scriptInfo.Loadable, scriptInfo.scripload)
-    end
-end
-
--- Create the static tabs (Config and Support)
---local ConfigPage = CreateTab("Config")
---CreateConfigTab(ConfigPage)
-
--- [[ 4. SUPPORT TAB CREATION FUNCTION (REVISED) ]] --
-local function CreateSupportTab(pageData)
-    
-    local Notify
-    pcall(function()
-        -- Notification function local to the config/support section
-        local function showNotification(text, color)
-            local NotifyLabel = Instance.new("TextLabel")
-            NotifyLabel.Text = text
-            NotifyLabel.Size = UDim2.new(0.6, 0, 0, 30)
-            NotifyLabel.Position = UDim2.new(0.5, -(MainFrame.Size.X.Offset * 0.3), 1, -40)
-            NotifyLabel.BackgroundTransparency = 1
-            NotifyLabel.TextColor3 = color
-            NotifyLabel.TextXAlignment = Enum.TextXAlignment.Center
-            NotifyLabel.Font = Enum.Font.GothamBold
-            NotifyLabel.TextSize = 16
-            NotifyLabel.ZIndex = 5
-            NotifyLabel.Parent = MainFrame
-            NotifyLabel.TextTransparency = 1
-            
-            TweenService:Create(NotifyLabel, TweenInfo.new(0.3), {TextTransparency = 0}):Play()
-            task.delay(1.5, function()
-                TweenService:Create(NotifyLabel, TweenInfo.new(0.5), {TextTransparency = 1}):Play()
-                task.delay(0.5, function() NotifyLabel:Destroy() end)
-            end)
-        end
-        Notify = showNotification
-    end)
-    
-    -- Main Info Container
-    local InfoFrame = Instance.new("Frame")
-    InfoFrame.Size = UDim2.new(1, 0, 0, 260)
-    InfoFrame.BackgroundColor3 = THEME.TopBar
-    InfoFrame.Parent = pageData
-    Instance.new("UICorner", InfoFrame).CornerRadius = UDim.new(0, 8)
-
-    local Layout = Instance.new("UIListLayout")
-    Layout.Parent = InfoFrame
-    Layout.Padding = UDim.new(0, 5)
-    Layout.HorizontalAlignment = Enum.HorizontalAlignment.Left
-    Layout.VerticalAlignment = Enum.VerticalAlignment.Top
-    
-    local Padding = Instance.new("UIPadding")
-    Padding.PaddingLeft = UDim.new(0, 10)
-    Padding.PaddingTop = UDim.new(0, 5)
-    Padding.Parent = InfoFrame
-
-local function createInfoLine(text, copyValue, color)
-        local Button = Instance.new("TextButton")
-        Button.Text = text
-        Button.Size = UDim2.new(1, -20, 0, 20)
-        Button.BackgroundTransparency = 1
-        Button.TextColor3 = color or THEME.Text
-        Button.TextXAlignment = Enum.TextXAlignment.Left
-        Button.Font = Enum.Font.Gotham
-        Button.TextScaled = true -- [[ CHANGED ]]
-        Button.TextWrapped = true 
-        -- Limit max size
-        local bConstraint = Instance.new("UITextSizeConstraint", Button)
-        bConstraint.MaxTextSize = 13
-        
-        Button.BorderSizePixel = 0
-        
-        local DefaultTextColor = color or THEME.Text
-
-        Button.MouseEnter:Connect(function()
-            TweenService:Create(Button, TweenInfo.new(0.1), {TextColor3 = THEME.Accent, BackgroundTransparency = 0.9}):Play()
-        end)
-        Button.MouseLeave:Connect(function()
-            TweenService:Create(Button, TweenInfo.new(0.1), {TextColor3 = DefaultTextColor, BackgroundTransparency = 1}):Play()
-        end)
-        
-        if copyValue then
-            Button.MouseButton1Click:Connect(function()
-                local success = pcall(function()
-                    setclipboard(copyValue) 
-                end)
-                
-                if success then
-                    Notify("Copied: '"..copyValue.."'!", THEME.Green)
-                else
-                    Notify("Error: setclipboard not available.", THEME.Red)
-                end
-            end)
-        end
-
-        return Button
-    end
-    -- Title Section
-    createInfoLine("🛠️ R-Loader Support Information", nil, THEME.Accent).Font = Enum.Font.GothamBold
-    
-    -- Version Info
-    createInfoLine(RLoaderV)
-        createInfoLine("Config-status(❌)")
-    -- Developer Contacts
-    createInfoLine("Developer: Mix/R-Loader", "Mix/R-Loader")
-    createInfoLine("Discord Invite: discord.gg/LoaderCommunity", "https://discord.gg/fveV8thB", THEME.Green)
-    createInfoLine("Why tf dont you have this: https://ublockorigin.com", "https://ublockorigin.com", THEME.Red)
-    createInfoLine("Avoid increasing suicide rates: https://bypass.vip", "https://bypass.vip", THEME.Red)
-
-    createInfoLine("Right-Click Tab to Pin/Unpin", nil, THEME.SubText)
-    createInfoLine("Config Tab to Save/Load Pin States", nil, THEME.SubText)
-    local DevBot2 = CURRENT_GAME_ID
-    createInfoLine("GameID: "..DevBot2, DevBot2, THEME.Accent)
-end
-
-local SupportPage = CreateTab("Help/Support")
-CreateSupportTab(SupportPage)
-
--- Apply initial pin data and sorting
-ReSortTabs()
-
-
--- [[ NEW MAIN TAB CREATION FUNCTION (FINAL REVISION - USING createInfoLine) ]] --
-local function CreateMainTab(name)
-    -- Utility function to show notifications (Necessary for copy/paste feedback)
-    local function Notify(text, color)
-        pcall(function()
-            local NotifyLabel = Instance.new("TextLabel")
-            NotifyLabel.Text = text
-            NotifyLabel.Size = UDim2.new(0.6, 0, 0, 10)
-            NotifyLabel.Position = UDim2.new(0.5, -(MainFrame.Size.X.Offset * 0.3), 1, -40)
-            NotifyLabel.BackgroundTransparency = 1
-            NotifyLabel.TextColor3 = color
-            NotifyLabel.TextXAlignment = Enum.TextXAlignment.Center
-            NotifyLabel.Font = Enum.Font.GothamBold
-            NotifyLabel.TextSize = 16
-            NotifyLabel.ZIndex = 5
-            NotifyLabel.Parent = MainFrame
-            NotifyLabel.TextTransparency = 1
-            
-            TweenService:Create(NotifyLabel, TweenInfo.new(0.3), {TextTransparency = 0}):Play()
-            task.delay(1.5, function()
-                TweenService:Create(NotifyLabel, TweenInfo.new(0.5), {TextTransparency = 1}):Play()
-                task.delay(0.5, function() NotifyLabel:Destroy() end)
-            end)
+-- >> GAME SCRIPTS
+for categoryName, scripts in pairs(ActiveCatalog) do
+    local GameTab = Window:CreateCategory(categoryName, "🎮")
+    GameTab:Label("--- " .. categoryName .. " Scripts ---")
+    for _, scriptData in ipairs(scripts) do
+        GameTab:ScriptCard(scriptData.Name, scriptData.Icon, scriptData.Description, function()
+            pcall(function() loadstring(scriptData.Load)() end)
+            Window:Notify("Executor Loading", scriptData.Name)
+            Window:Notify("Executor", scriptData.Name .. " Loaded.")
         end)
     end
-    
-    local Btn = Instance.new("TextButton")
-    Btn.Name = name 
-    Btn.LayoutOrder = -100 
-    Btn.Size = UDim2.new(1, 0, 0, 45) 
-    Btn.BackgroundColor3 = THEME.Sidebar
-    Btn.Text = "" 
-    Btn.TextColor3 = THEME.SubText
-    Btn.Font = Enum.Font.GothamSemibold
-    Btn.TextSize = 14
-    Btn.BorderSizePixel = 0
-    Btn.Parent = TabHolder
+end
 
-    local Indicator = Instance.new("Frame")
-    Indicator.Size = UDim2.new(0, 3, 1, 0)
-    Indicator.BackgroundColor3 = THEME.Accent
-    Indicator.BorderSizePixel = 0
-    Indicator.BackgroundTransparency = 1
-    Indicator.Parent = Btn
-    
-    local PinIndicator = Instance.new("Frame") 
-    PinIndicator.Size = UDim2.new(0, 0, 0, 0) 
-    PinIndicator.Visible = false
-    PinIndicator.Parent = Btn
+-- >> SETTINGS
+local Settings = Window:CreateCategory("Settings", "⚙️")
 
-    local player = game.Players.LocalPlayer
-    -- refined to use rbxthumb (instant load, higher quality, no yielding)
-    local thumbUrl = "rbxthumb://type=AvatarHeadShot&id=" .. player.UserId .. "&w=150&h=150"
+Settings:Label("--- UI Appearance ---")
+Settings:Dropdown("UI Scale", {"0.5", "0.75", "1", "1.25", "1.5"}, function(val)
+    if Window.Scale then Window.Scale.Scale = tonumber(val) end
+    SystemSettings.UIScale = tonumber(val); SaveData()
+end, tostring(SystemSettings.UIScale)) -- Pass default saved value
 
-    -- Profile Picture (Tab Button)
-    local AvatarImage = Instance.new("ImageLabel")
-    AvatarImage.Size = UDim2.new(0, 30, 0, 30)
-    AvatarImage.Position = UDim2.new(0, 8, 0.5, -15)
-    AvatarImage.BackgroundColor3 = THEME.Input
-    AvatarImage.Image = thumbUrl
-    AvatarImage.Parent = Btn
-    Instance.new("UICorner", AvatarImage).CornerRadius = UDim.new(1, 0)
+-- FIX: Using specific save key "ShowWallpaper" so it maps to SystemSettings.ShowWallpaper
+Settings:Toggle("Custom Wallpaper", true, function(state)
+    if Window.Wallpaper then Window.Wallpaper.Visible = state end
+    -- Note: Save logic handled inside toggle function now
+end, "ShowWallpaper") 
 
--- Username Label
-    local UsernameLabel = Instance.new("TextLabel")
-    UsernameLabel.Text = LocalPlayer.Name
-    UsernameLabel.Size = UDim2.new(1, -50, 0, 15) 
-    UsernameLabel.Position = UDim2.new(0, 42, 0.5, -10) 
-    UsernameLabel.BackgroundTransparency = 1
-    UsernameLabel.TextColor3 = THEME.Text
-    UsernameLabel.TextXAlignment = Enum.TextXAlignment.Left
-    UsernameLabel.Font = Enum.Font.GothamBold
-    UsernameLabel.TextScaled = true -- [[ CHANGED ]]
-    UsernameLabel.TextWrapped = true
-    UsernameLabel.Parent = Btn
-    
-    -- Status/Version Label
-    local StatusLabel = Instance.new("TextLabel")
-    StatusLabel.Text = "Status: Online"
-    StatusLabel.Size = UDim2.new(1, -50, 0, 15)
-    StatusLabel.Position = UDim2.new(0, 42, 0.5, 3) 
-    StatusLabel.BackgroundTransparency = 1
-    StatusLabel.TextColor3 = THEME.Accent
-    StatusLabel.TextXAlignment = Enum.TextXAlignment.Left
-    StatusLabel.Font = Enum.Font.Gotham
-    StatusLabel.TextSize = 10
-    StatusLabel.Parent = Btn
-
-  
-    local Page = Instance.new("Frame")
-    Page.Name = name .. "_Page"
-    Page.Size = UDim2.new(1, 0, 1, 0)
-    Page.BackgroundTransparency = 1
-    Page.Visible = false
-    Page.Parent = ContentHolder
-
-    local PageLayout = Instance.new("UIListLayout")
-    PageLayout.Parent = Page
-    PageLayout.Padding = UDim.new(0, 8)
-    PageLayout.SortOrder = Enum.SortOrder.LayoutOrder
-
-    local Padding = Instance.new("UIPadding")
-    Padding.Parent = Page
-    Padding.PaddingTop = UDim.new(0, 5)
-
-    ----------------------------------------------------------
-    -- 1. UTILITY FOR COPY/PASTE LINES (Local Definition)
-    ----------------------------------------------------------
-    local function createInfoLine(text, copyValue, color)
-        local Button = Instance.new("TextButton")
-        Button.Text = text
-        Button.Size = UDim2.new(1, 0, 0, 20) -- Full width, no extra padding
-        Button.BackgroundTransparency = 1
-        Button.TextColor3 = color or THEME.Text
-        Button.TextXAlignment = Enum.TextXAlignment.Left
-        Button.Font = Enum.Font.Gotham
-        Button.TextSize = 13
-        Button.BorderSizePixel = 0
-        Button.Parent = Page -- Parented directly to the page (using PageLayout)
-        
-        local DefaultTextColor = color or THEME.Text
-
-        Button.MouseEnter:Connect(function()
-            TweenService:Create(Button, TweenInfo.new(0.1), {TextColor3 = THEME.Accent, BackgroundTransparency = 0.9}):Play()
-        end)
-        Button.MouseLeave:Connect(function()
-            TweenService:Create(Button, TweenInfo.new(0.1), {TextColor3 = DefaultTextColor, BackgroundTransparency = 1}):Play()
-        end)
-        
-        if copyValue then
-            Button.MouseButton1Click:Connect(function()
-                local success = pcall(function()
-                    setclipboard(copyValue) 
-                end)
-                
-                if success then
-                    Notify("Copied: '"..copyValue.."'!", THEME.Green)
-                else
-                    Notify("Error: setclipboard not available.", THEME.Red)
-                end
-            end)
-        end
-
-        return Button
+Settings:Label("--- Keybinds ---")
+local keys = {"RightShift", "RightControl", "LeftControl", "LeftAlt", "Insert", "Delete", "Home", "End", "F1", "F4", "F8"}
+Settings:Dropdown("UI Toggle Key", keys, function(val)
+    if Enum.KeyCode[val] then
+        Window:SetKeybind(Enum.KeyCode[val])
+        SystemSettings.Keybind = val
+        SaveData()
+        Window:Notify("Settings", "Bind saved to " .. val)
     end
-    
-    ----------------------------------------------------------
-    -- 2. PAGE CONTENT
-    ----------------------------------------------------------
-    
-    -- Welcome Label (Updated to just a simple label)
-    local WelcomeLabel = Instance.new("TextLabel")
-    WelcomeLabel.Text = "Welcome to "..RLoaderV
-    WelcomeLabel.Size = UDim2.new(1, 0, 0, 30)
-    WelcomeLabel.BackgroundTransparency = 1
-    WelcomeLabel.TextColor3 = THEME.Text
-    WelcomeLabel.Font = Enum.Font.GothamBold
-    WelcomeLabel.TextSize = 16
-    WelcomeLabel.Parent = Page
+end, SystemSettings.Keybind)
 
-    -- User Profile Frame
-    local ProfileFrame = Instance.new("Frame")
-    ProfileFrame.Size = UDim2.new(1, 0, 0, 50)
-    ProfileFrame.BackgroundTransparency = 1
-    ProfileFrame.Parent = Page
-    
-    local ProfileLayout = Instance.new("UIListLayout")
-    ProfileLayout.FillDirection = Enum.FillDirection.Horizontal
-    ProfileLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-    ProfileLayout.Padding = UDim.new(0, 10)
-    ProfileLayout.Parent = ProfileFrame
-    
-    local PageAvatar = Instance.new("ImageLabel")
-    PageAvatar.Size = UDim2.new(0, 40, 0, 40)
-    PageAvatar.BackgroundColor3 = THEME.Input
-    PageAvatar.Image = thumbUrl -- Use the same resolved URL
-    PageAvatar.Parent = ProfileFrame
-    Instance.new("UICorner", PageAvatar).CornerRadius = UDim.new(1, 0)
-    
-    local WelcomeUserText = Instance.new("TextLabel")
-    WelcomeUserText.Text = "Hello, " .. LocalPlayer.Name
-    WelcomeUserText.Size = UDim2.new(1, -60, 1, 0)
-    WelcomeUserText.BackgroundTransparency = 1
-    WelcomeUserText.TextColor3 = THEME.Accent
-    WelcomeUserText.TextXAlignment = Enum.TextXAlignment.Left
-    WelcomeUserText.Font = Enum.Font.GothamBold
-    WelcomeUserText.TextSize = 18
-    WelcomeUserText.Parent = ProfileFrame
-
-    -- Description
-    createInfoLine("--- DESCRIPTION ---", nil, THEME.SubText).Font = Enum.Font.GothamBold
-    createInfoLine("R-Loader "..RLoaderV.." is a stable, persistent, and modular scripting solution.", nil, THEME.SubText).TextSize = 10
-    createInfoLine("Use the tabs for game-specific scripts and the Config tab to save pin layouts.", nil, THEME.SubText).TextSize = 10
-
-    -- Contact Info (Using createInfoLine)
-    local DiscordTag = "mixapire"
-    local KingsTab = "ewkobe"
-    local RLoaderCommunity = "R-Loader Community"
-    local DiscordInvite = "https://discord.gg/8UNFGpyn"
-    createInfoLine("--- CONTACT INFO ---", nil, THEME.SubText).Font = Enum.Font.GothamBold
-    createInfoLine("👤Dev-Tag: "..DiscordTag, DiscordTag, THEME.Green).TextSize = 13
-    createInfoLine("👑King's-Tag: "..KingsTab, KingsTab, THEME.Green).TextSize = 13
-    createInfoLine("Discord Invite: "..RLoaderCommunity, DiscordInvite, THEME.Accent).TextSize = 13
-
-
-
-    ----------------------------------------------------------
-    -- END OF PAGE CONTENT
-    ----------------------------------------------------------
-
-    -- The Main tab cannot be pinned or unpinned via right-click, so we skip that logic.
-    local isPinned = true
-
-    -- Selection Logic (Same as other tabs)
-    Btn.MouseButton1Click:Connect(function()
-        for _, tab in pairs(Tabs) do
-            TweenService:Create(tab.Btn, TweenInfo.new(0.2), {BackgroundColor3 = THEME.Sidebar, TextColor3 = THEME.SubText}):Play()
-            tab.Indicator.BackgroundTransparency = 1
-            tab.Page.Visible = false
-        end
-        TweenService:Create(Btn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(45,45,50), TextColor3 = THEME.Text}):Play()
-        Indicator.BackgroundTransparency = 0
-        Page.Visible = true
-    end)
-
-    local TabData = {
-        Btn = Btn,
-        Page = Page,
-        Indicator = Indicator,
-        isPinned = isPinned,
-        PinIndicator = PinIndicator
-    }
-    table.insert(Tabs, TabData)
-    return Page
+Settings:Label("--- Hot Reload ("..CurrentGameName..") ---")
+local validScripts = {"None"}
+for _, s in ipairs(FullCatalog["Universal"]) do table.insert(validScripts, "Universal:" .. s.Name) end
+if CurrentGameName ~= "Universal" and FullCatalog[CurrentGameName] then
+    for _, s in ipairs(FullCatalog[CurrentGameName]) do table.insert(validScripts, CurrentGameName .. ":" .. s.Name) end
 end
 
--- 1. Create the fixed Main Tab FIRST
-local MainPage = CreateMainTab("Main")
-ReSortTabs()
+Settings:Dropdown("Select Auto-Load Script", validScripts, function(val)
+    if val == "None" then delfile(HOTRELOAD_FILE); Window:Notify("Hot Reload", "Disabled") else
+        local g, s = val:match("([^:]+):(.+)")
+        writefile(HOTRELOAD_FILE, g .. ":" .. s)
+        Window:Notify("Hot Reload", "Set to: " .. s)
+    end
+end)
 
--- Open the first tab 
-if Tabs[1] then
-    local ActiveColor = Color3.fromRGB(45,45,50)
-    Tabs[1].Btn.BackgroundColor3 = ActiveColor
-    Tabs[1].Btn.TextColor3 = THEME.Text
-    Tabs[1].Indicator.BackgroundTransparency = 0
-    Tabs[1].Page.Visible = true
-end
+Settings:Label("--- Config Management ---")
+local selectedConfig = "Default"
+local configList = listfiles(CONFIGS_FOLDER) or {}
+local cleanList = {}
+for _, file in pairs(configList) do table.insert(cleanList, file:gsub(CONFIGS_FOLDER.."\\", ""):gsub(CONFIGS_FOLDER.."/", "")) end
 
--- // --- TRIGGER OPEN ANIMATION AFTER INTRO FINISHES ---
-ToggleUI(true)
+Settings:Dropdown("Select Config", cleanList, function(val) selectedConfig = val end)
+Settings:Button("Load Config", function()
+    local path = CONFIGS_FOLDER .. "/" .. selectedConfig
+    if isfile(path) then
+        Window:Notify("Config", "Loaded " .. selectedConfig)
+    end
+end)
+
+local InputBox = Instance.new("TextBox")
+InputBox.Name = "CustomInput"
+InputBox.Size = UDim2.new(1, 0, 0, 35)
+InputBox.BackgroundColor3 = Color3.fromRGB(28, 25, 45)
+InputBox.TextColor3 = Color3.fromRGB(230, 230, 240)
+InputBox.Font = Enum.Font.Gotham
+InputBox.TextSize = 14
+InputBox.PlaceholderText = "Type new config name..."
+InputBox.Text = ""
+InputBox.Parent = Settings.ScrollFrame
+local UICorner = Instance.new("UICorner"); UICorner.CornerRadius = UDim.new(0, 6); UICorner.Parent = InputBox
+
+Settings:Button("Save / Overwrite", function()
+    local name = InputBox.Text ~= "" and InputBox.Text or selectedConfig
+    if not name:find(".json") then name = name .. ".json" end
+    writefile(CONFIGS_FOLDER .. "/" .. name, HttpService:JSONEncode({Saved = true, Game = CurrentGameName}))
+    Window:Notify("Config", "Saved " .. name)
+end)
+
+Settings:Button("Delete Selected", function()
+    local path = CONFIGS_FOLDER .. "/" .. selectedConfig
+    if isfile(path) then delfile(path); Window:Notify("Config", "Deleted " .. selectedConfig) end
+end)
