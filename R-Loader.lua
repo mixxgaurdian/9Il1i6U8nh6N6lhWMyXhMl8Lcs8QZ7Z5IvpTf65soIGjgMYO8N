@@ -63,13 +63,14 @@ local function PlayIntro()
     PFPStroke.Color = Color3.fromRGB(0, 150, 255) -- Accent Blue
     PFPStroke.Thickness = 2
 
-    -- 2. Username Text (Starts Empty for Typewriter)
+-- 2. Username Text (Starts Empty for Typewriter)
     local NameLabel = Instance.new("TextLabel")
     NameLabel.Size = UDim2.new(1, 0, 0, 30)
     NameLabel.Position = UDim2.new(0, 0, 0.65, 0)
     NameLabel.BackgroundTransparency = 1
     NameLabel.TextColor3 = Color3.fromRGB(240, 240, 240)
-    NameLabel.TextSize = 24
+    NameLabel.TextScaled = true 
+    NameLabel.TextWrapped = true 
     NameLabel.Font = Enum.Font.GothamBold
     NameLabel.Text = "" -- Empty start
     NameLabel.Parent = Container
@@ -79,7 +80,8 @@ local function PlayIntro()
     MsgLabel.Position = UDim2.new(0, 0, 0.75, 0)
     MsgLabel.BackgroundTransparency = 1
     MsgLabel.TextColor3 = Color3.fromRGB(240, 240, 240)
-    MsgLabel.TextSize = 24
+    MsgLabel.TextScaled = true 
+    MsgLabel.TextWrapped = true
     MsgLabel.Font = Enum.Font.GothamBold
     MsgLabel.Text = "" -- Empty start
     MsgLabel.Parent = Container
@@ -93,9 +95,6 @@ local function PlayIntro()
     Line.BorderSizePixel = 0
     Line.BackgroundTransparency = 1
     Line.Parent = Container
-
---Urls deprecated:
---https://www.avezano.com/cdn/shop/products/AN-2278.jpg
 
 local SpecialUsers = {
     -- clix
@@ -298,26 +297,30 @@ local THEME = {
 local CURRENT_GAME_ID = game.GameId
 
 -- List of all supported game IDs
+-- These names now match the keys in FullScriptCatalog exactly
 local GameList = {
-    Arsenal = 111958650,
-    Rivals = 6035872082,
-    Baseplate = 80461030,
-    Emote_RNG = 8313824597,
-    Blade_Ball = 4777817887,
-    Valley_Prison = 5456952508,
-    Lucky_Blocks = 279565647,
-    AOTR= 4658598196,
-    ERLC = 903807016,
-    BB_Legends = 4931927012,
-    The_Forge = 7671049560,
-    Prison_Life = 73885730,
-    Flick=8795154789,
-    Build_A_Boat = 210851291,
-    FNAF_Eternal_Nights = 4053293514,
-    Doors = 2440500124,
-    Legends_Of_Sd=1119466531,
-    Universal = 0 -- fallback for unsupported games
+    ["Arsenal"] = 111958650,
+    ["Rivals"] = 6035872082,
+    ["Baseplate"] = 80461030,
+    ["Emote RNG"] = 8313824597,
+    ["Blade Ball"] = 4777817887,
+    ["Valley Prison"] = 5456952508,
+    ["Lucky Blocks"] = 279565647,
+    ["AOTR"] = 4658598196,
+    ["ERLC"] = 903807016,
+    ["BB Legends"] = 4931927012,
+    ["The Forge"] = 7671049560,
+    ["Prison Life"] = 73885730,
+    ["Flick"] = 8795154789,
+    ["Build A Boat"] = 210851291,
+    ["FNAF Eternal Nights"] = 4053293514,
+    ["Doors"] = 2440500124,
+    ["Legends Of Sd"] = 1119466531,
+    ["Nights in the Forest"] = 7326934954,
+
+    ["Universal"] = 0 -- fallback
 }
+
 
 -- Detect the current game
 local CurrentGame = "Universal" -- default fallback
@@ -337,8 +340,6 @@ local TARGET_GAME_NAME = CurrentGame
 
 -- Universal scripts
 local test_lua = "loadstring(game:HttpGet('https://raw.githubusercontent.com/test.lua"
-local Infinite_yield = "loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()"
-local ManaV2 = "loadstring(game:HttpGet('https://raw.githubusercontent.com/Maanaaaa/ManaV2ForRoblox/main/MainScript.lua'))()"
 
 -- Blade Ball Scripts--
 Akashial = "loadstring(game:HttpGet('https://raw.githubusercontent.com/Akash1al/Blade-Ball-Updated-Script/refs/heads/main/Blade-Ball-Script'))()"
@@ -353,13 +354,13 @@ local FullScriptCatalog = {
             Name = "Mana",
             Image = "rbxassetid://9868265037",
             Loadable = true,
-            scripload = ManaV2
+            scripload = "loadstring(game:HttpGet('https://raw.githubusercontent.com/Maanaaaa/ManaV2ForRoblox/main/MainScript.lua'))()"
         },
         {
             Name = "Infinite Yield",
             Image = "rbxassetid://115810237733262",
             Loadable = true,
-            scripload = Infinite_yield
+            scripload = "loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()"
         },
         {
             Name = "R-Loader/Universal",
@@ -411,40 +412,40 @@ local FullScriptCatalog = {
         },
     },
 
-    ["Prison_Life"] = {
+    ["Prison Life"] = {
         {
             Name = "DP-HUB",
-            TargetGame = "Prison_Life",
+            TargetGame = "Prison Life",
             Image = "",
-            Loadable = true,
+            Loadable = false,
             scripload = "loadstring(game:HttpGet('https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/LOK83u70UdGWBhj3LwexaiKVy5Q8MJTrxhM6KUz.lua'))()"
         }
     },
 
-    ["BB_Legends"] = {
+    ["BB Legends"] = {
         {
             Name = "absence-mini",
-            TargetGame = "BB_Legends",
+            TargetGame = "BB Legends",
             Image = "",
             Loadable = true,
             scripload = "loadstring(game:HttpGet('https://raw.githubusercontent.com/vnausea/absence-mini/refs/heads/main/absencemini.lua'))()"
         },
     },
 
-    ["Build_A_Boat"] = {
+    ["Build A Boat"] = {
         {
             Name = "Uniqu Hub",
-            TargetGame = "Build_A_Boat",
+            TargetGame = "Build A Boat",
             Image = "",
             Loadable = true,
             scripload = 'loadstring(game:HttpGet("https://rawscripts.net/raw/Unique-Hub-(14-Gmes)_521"))()'
 
-           
+            
 
         },
         {
             Name = "Lexus Hub: partially working/laggy",
-            TargetGame = "Build_A_Boat",
+            TargetGame = "Build A Boat",
             Image = "",
             Loadable = true,
             scripload = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/102KIRA/Best-Babft-script/refs/heads/main/Actually%20Best%20babft%20script"))()'
@@ -452,20 +453,20 @@ local FullScriptCatalog = {
         },
     },
 
-    ["Lucky_Blocks"] = {
+    ["Lucky Blocks"] = {
         {
             Name = "Lucky Blocks",
-            TargetGame = "Lucky_Blocks",
+            TargetGame = "Lucky Blocks",
             Image = "",
             Loadable = true,
             scripload = "loadstring(game:HttpGet('https://raw.githubusercontent.com/Veaquach/LBBattlegroundsscript/refs/heads/main/Universal%20Lucky%20Block%20Battle%20Grounds%20Script.txt'))()"
         },
     },
 
-    ["Legends_Of_Sd"] = {
+    ["Legends Of Sd"] = {
         {
             Name = "Legends Of Speed",
-            TargetGame = "Legends_Of_Sd",
+            TargetGame = "Legends Of Sd",
             Image = "",
             Loadable = true,
             scripload = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/jokerbiel13/FourHub/refs/heads/main/Speed%20legendsFh.lua",true))()'
@@ -473,21 +474,32 @@ local FullScriptCatalog = {
 
         
     },
-    ["FNAF_Eternal_Nights"] = {
+    ["FNAF Eternal Nights"] = {
         {
             Name = "FNAF Eternal Nights",
-            TargetGame = "FNAF_Eternal_Nights",
+            TargetGame = "FNAF Eternal Nights",
             Image = "",
             Loadable = true,
             scripload = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/Snipez-Dev/Rbx-Scripts/refs/heads/main/Eternal%20Nights"))()'
         },
     },
+
+    ["Nights in the Forest"] = {
+        {
+            Name = "unknown",
+            TargetGame = "Nights in the Forest",
+            Image = "",
+            Loadable = true,
+            scripload = 'loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/c27892d6692ba09d991c09dc9d5ceae1.lua"))()'
+        },
+    },
+
     ["Doors"] = {
         {
             Name = "Rloader Doors",
             TargetGame = "Doors",
             Image = "",
-            Loadable = true,
+            Loadable = false,
             scripload = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/Doors_RLoader.lua"))()'
         },
             {
@@ -519,24 +531,24 @@ local FullScriptCatalog = {
         },
     },
     
-    ["The_Forge"] = {
+    ["The Forge"] = {
         {
             Name = "Rayfield",
-            TargetGame = "The_Forge",
+            TargetGame = "The Forge",
             Image = "",
             Loadable = true,
             scripload = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/LioK251/RbScripts/refs/heads/main/lazyuhub_theforge.lua"))()'
         },
         {
             Name = "ForgeHub",
-            TargetGame = "The_Forge",
+            TargetGame = "The Forge",
             Image = "",
             Loadable = true,
             scripload = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/jokerbiel13/FourHub/refs/heads/main/TheForgeFH.lua",true))()'
         },
         {
             Name = "pepehook-loader",
-            TargetGame = "The_Forge",
+            TargetGame = "The Forge",
             Image = "",
             Loadable = true,
             scripload = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/GiftStein1/pepehook-loader/refs/heads/main/loader.lua"))()'
@@ -546,10 +558,10 @@ local FullScriptCatalog = {
         
     },
 
-    ["Valley_Prison"] = {
+    ["Valley Prison"] = {
         {
             Name = "Valley Prison",
-            TargetGame = "Valley_Prison",
+            TargetGame = "Valley Prison",
             Image = "",
             Loadable = false,
             scripload = test_lua
@@ -557,27 +569,27 @@ local FullScriptCatalog = {
     },
 
 
-    ["Emote_RNG"] = {
+    ["Emote RNG"] = {
         {
             Name = "Emote RNG BETA",
-            TargetGame = "Emote_RNG_BETA",
+            TargetGame = "Emote RNG BETA",
             Image = "",
             Loadable = false,
             scripload = test_lua
         },
     },
 
-    ["Blade_Ball"] = {
+    ["Blade Ball"] = {
         {
             Name = "Akashial",
-            TargetGame = "Blade_Ball",
+            TargetGame = "Blade Ball",
             Image = "",
             Loadable = true,
             scripload = Akashial
         },
         {
             Name = "MixRawwr",
-            TargetGame = "Blade_Ball",
+            TargetGame = "Blade Ball",
             Image = "",
             Loadable = true,
             scripload = MixRawwr
@@ -599,7 +611,6 @@ if TARGET_GAME_NAME ~= "Universal" and FullScriptCatalog[TARGET_GAME_NAME] then
 end
 
 -- // SCRIPT-LOAD2-END //
-
 
 
 -- // SCREEN GUI //
@@ -715,14 +726,16 @@ TopPatch.Parent = TopBar
 
 local Title = Instance.new("TextLabel")
 Title.Text = "  R-Loader | Target: "..TARGET_GAME_NAME.." [Game-ID: "..CURRENT_GAME_ID..RLoaderStatus.."]"
-
-
 Title.Size = UDim2.new(1, -60, 1, 0)
 Title.BackgroundTransparency = 1
 Title.TextColor3 = THEME.Text
 Title.TextXAlignment = Enum.TextXAlignment.Left
 Title.Font = Enum.Font.GothamBold
-Title.TextSize = 14
+Title.TextScaled = true -- [[ CHANGED ]]
+Title.TextWrapped = true -- [[ CHANGED ]]
+-- Optional constraint to stop it from getting too huge on empty space
+local sizeConstraint = Instance.new("UITextSizeConstraint", Title)
+sizeConstraint.MaxTextSize = 14 
 Title.Parent = TopBar
 
 -- // DRAGGING //
@@ -978,13 +991,18 @@ end
 
 local function CreateTab(name)
     local Btn = Instance.new("TextButton")
-    Btn.Name = name -- Name property is crucial for the Config system
+    Btn.Name = name 
     Btn.Size = UDim2.new(1, 0, 0, 40)
     Btn.BackgroundColor3 = THEME.Sidebar
     Btn.Text = name
     Btn.TextColor3 = THEME.SubText
     Btn.Font = Enum.Font.GothamSemibold
-    Btn.TextSize = 14
+    Btn.TextScaled = true -- [[ CHANGED: Fits long tab names ]]
+    Btn.TextWrapped = true
+    -- Keep text readable by limiting max size
+    local constraint = Instance.new("UITextSizeConstraint", Btn)
+    constraint.MaxTextSize = 14
+    
     Btn.BorderSizePixel = 0
     Btn.Parent = TabHolder
 
@@ -1132,16 +1150,20 @@ local function CreateContainer(pageData, name, scriptImageURL, isLoadable, scrip
     InfoLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
     InfoLayout.VerticalAlignment = Enum.VerticalAlignment.Center
 
-    local TitleLabel_Cont = Instance.new("TextLabel")
+local TitleLabel_Cont = Instance.new("TextLabel")
     TitleLabel_Cont.Text = name
     TitleLabel_Cont.Size = UDim2.new(1, 0, 0, 15)
     TitleLabel_Cont.BackgroundTransparency = 1
     TitleLabel_Cont.TextColor3 = THEME.Text
     TitleLabel_Cont.TextXAlignment = Enum.TextXAlignment.Left
     TitleLabel_Cont.Font = Enum.Font.GothamSemibold
-    TitleLabel_Cont.TextSize = 14
+    TitleLabel_Cont.TextScaled = true -- [[ CHANGED ]]
+    TitleLabel_Cont.TextWrapped = true
+    local tConstraint = Instance.new("UITextSizeConstraint", TitleLabel_Cont)
+    tConstraint.MaxTextSize = 14
     TitleLabel_Cont.Parent = InfoHolder
     
+
     local ControlsStatus = Instance.new("Frame")
     ControlsStatus.Size = UDim2.new(1, 0, 0, 20)
     ControlsStatus.BackgroundTransparency = 1
@@ -1604,7 +1626,7 @@ local function CreateSupportTab(pageData)
     Padding.PaddingTop = UDim.new(0, 5)
     Padding.Parent = InfoFrame
 
-    local function createInfoLine(text, copyValue, color)
+local function createInfoLine(text, copyValue, color)
         local Button = Instance.new("TextButton")
         Button.Text = text
         Button.Size = UDim2.new(1, -20, 0, 20)
@@ -1612,9 +1634,13 @@ local function CreateSupportTab(pageData)
         Button.TextColor3 = color or THEME.Text
         Button.TextXAlignment = Enum.TextXAlignment.Left
         Button.Font = Enum.Font.Gotham
-        Button.TextSize = 13
+        Button.TextScaled = true -- [[ CHANGED ]]
+        Button.TextWrapped = true 
+        -- Limit max size
+        local bConstraint = Instance.new("UITextSizeConstraint", Button)
+        bConstraint.MaxTextSize = 13
+        
         Button.BorderSizePixel = 0
-        Button.Parent = InfoFrame
         
         local DefaultTextColor = color or THEME.Text
 
@@ -1729,7 +1755,7 @@ local function CreateMainTab(name)
     AvatarImage.Parent = Btn
     Instance.new("UICorner", AvatarImage).CornerRadius = UDim.new(1, 0)
 
-    -- Username Label
+-- Username Label
     local UsernameLabel = Instance.new("TextLabel")
     UsernameLabel.Text = LocalPlayer.Name
     UsernameLabel.Size = UDim2.new(1, -50, 0, 15) 
@@ -1738,7 +1764,8 @@ local function CreateMainTab(name)
     UsernameLabel.TextColor3 = THEME.Text
     UsernameLabel.TextXAlignment = Enum.TextXAlignment.Left
     UsernameLabel.Font = Enum.Font.GothamBold
-    UsernameLabel.TextSize = 10
+    UsernameLabel.TextScaled = true -- [[ CHANGED ]]
+    UsernameLabel.TextWrapped = true
     UsernameLabel.Parent = Btn
     
     -- Status/Version Label
