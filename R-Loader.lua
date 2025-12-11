@@ -828,7 +828,7 @@ local FullCatalog = {
             Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/R-loader-universal.lua'))()"
         },
         {
-            Name = "R-Loader/Universal",
+            Name = "R-Loader Old UI",
             Icon = BG_christmas_1,
             Description = "This is the old ui of R-loader if you run into any issues happy exploiting",
             Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/scripts/R-Loader-deprecated.lua'))()"
