@@ -1451,26 +1451,46 @@ RunService.RenderStepped:Connect(function(deltaTime)
 end)
 
 -- Noclip & Stats Loop
+-- Noclip & Stats Loop
 local lastNoclipState = false
 RunService.Stepped:Connect(function()
     if not LocalPlayer.Character then return end
     
-    if Config.Toggles.Noclip then
-        for _, v in pairs(LocalPlayer.Character:GetChildren()) do
-            if v:IsA("BasePart") then v.CanCollide = false end
+    -- [[ UPDATED: Activate Noclip if "Noclip" OR "Fly" is on ]]
+    local shouldNoclip = Config.Toggles.Noclip or Config.Toggles.Fly
+
+    if shouldNoclip then
+        -- [[ DISABLE COLLISIONS ]]
+        -- Catches all parts (R15, R6, Accessories)
+        for _, v in pairs(LocalPlayer.Character:GetDescendants()) do
+            if v:IsA("BasePart") and v.CanCollide == true then
+                v.CanCollide = false
+            end
         end
         lastNoclipState = true
+
     elseif lastNoclipState then
-        for _, v in pairs(LocalPlayer.Character:GetChildren()) do
-            if v:IsA("BasePart") then v.CanCollide = true end
+        -- [[ RESTORE COLLISIONS (Safe Mode) ]]
+        -- Restores collision when you turn OFF Fly/Noclip
+        -- Skips RootPart and Accessories so you don't get stuck/flung
+        for _, v in pairs(LocalPlayer.Character:GetDescendants()) do
+            if v:IsA("BasePart") then
+                if v.Name ~= "HumanoidRootPart" and not v.Parent:IsA("Accessory") and not v.Parent:IsA("Tool") then
+                    v.CanCollide = true 
+                end
+            end
         end
         lastNoclipState = false
     end
     
+    -- [[ STATS ]]
     local hum = LocalPlayer.Character:FindFirstChild("Humanoid")
     if hum then
         if Config.Toggles.Speed then hum.WalkSpeed = Config.Movement.WalkSpeed end
-        if Config.Toggles.Jump then hum.UseJumpPower = true; hum.JumpPower = Config.Movement.JumpPower end
+        if Config.Toggles.Jump then 
+            hum.UseJumpPower = true 
+            hum.JumpPower = Config.Movement.JumpPower 
+        end
     end
 end)
 
