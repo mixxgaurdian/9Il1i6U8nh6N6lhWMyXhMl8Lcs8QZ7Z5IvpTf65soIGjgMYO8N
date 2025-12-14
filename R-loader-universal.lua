@@ -344,6 +344,9 @@ local function CreateToggle(page, text, state, callback)
     local ic = Instance.new("UICorner"); ic.CornerRadius = UDim.new(0,6); ic.Parent = ind
     
     btn.MouseButton1Click:Connect(function()
+        -- [NEW] Check if disabled
+        if DisabledFeatures[text] then return end 
+
         state = not state
         ind.BackgroundColor3 = state and Colors.Accent or Color3.fromRGB(40,40,45)
         callback(state)
@@ -414,7 +417,11 @@ local function CreateButton(page, text, callback)
     btn.Font = Enum.Font.GothamBold
     btn.TextSize = 14
     local c = Instance.new("UICorner"); c.Parent = btn
-    btn.MouseButton1Click:Connect(callback)
+    -- [NEW] Updated click connection
+    btn.MouseButton1Click:Connect(function()
+        if DisabledFeatures[text] then return end
+        callback()
+    end)
     return btn
 end
 
@@ -1406,6 +1413,41 @@ RunService.RenderStepped:Connect(function()
         end
     end
 end)
+
+-- // [NEW] GAME SPECIFIC CONFIGURATION // -------------------------------------
+local GameSpecificConfigs = {
+    -- [Game ID] = {List of exact names to disable}
+    
+    -- Example: Disable Fly and Noclip for Game ID 9356971415
+    [9356971415] = {"Fly", "Noclip", "Enable Safe Fly"}, 
+
+    -- Example: Disable Combat for another game
+    [123456789] = {"Aimbot Enabled", "FOV Size"},
+}
+
+-- APPLY LOGIC
+local currentGameId = game.GameId
+local configToApply = GameSpecificConfigs[currentGameId]
+
+if configToApply then
+    task.delay(1, function()
+        if Notify then Notify("Disabling detected features...") end
+        for _, featureName in ipairs(configToApply) do
+            DisableFeature(featureName)
+            
+            -- Extra Safety: Reset Physics if movement is disabled
+            if featureName == "Fly" or featureName == "Enable Safe Fly" or featureName == "Noclip" then
+                if LocalPlayer.Character then
+                    local hum = LocalPlayer.Character:FindFirstChild("Humanoid")
+                    local root = LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                    if hum then hum.PlatformStand = false; hum:ChangeState(Enum.HumanoidStateType.GettingUp) end
+                    if root then root.Anchored = false end
+                end
+            end
+        end
+    end)
+end
+-- // -------------------------------------------------------------------------
 
 Notify("Loading R-Loader...", 0.3)
 Notify("R-Loader Injected Successfully", 0.3)
