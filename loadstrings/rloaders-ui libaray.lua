@@ -1,6 +1,6 @@
 --[[ 
-    R-LOADER UI LIBRARY (REFACTORED MODULE)
-    Save this script to your executor's workspace or upload to GitHub.
+    R-LOADER UI LIBRARY (FIXED & REFACTORED)
+    Update this code in your GitHub/Workspace file.
 ]]
 
 local Library = {}
@@ -43,14 +43,6 @@ Library.Theme = {
     Border = Color3.fromRGB(60, 50, 90),
     Error = Color3.fromRGB(255, 100, 120),
     Font = Enum.Font.Gotham
-}
-
--- // ICONS EXPORT //
-Library.Icons = {
-    home = "🏠", settings = "⚙️", user = "👤", search = "🔍",
-    check = "✅", alert = "⚠️", trash = "🗑️",
-    combat = "⚔️", movement = "💨", visual = "👁️",
-    script = "📜", discord = "💬"
 }
 
 -- // HELPER FUNCTIONS //
@@ -114,7 +106,7 @@ function Library:CreateWindow(config)
         BackgroundTransparency = 0.1,
         Parent = ScreenGui,
         ClipsDescendants = true,
-        Visible = false -- Hidden by default until Intro finishes or manually shown
+        Visible = false 
     })
     roundify(Container, 12); addStroke(Container)
 
@@ -139,10 +131,8 @@ function Library:CreateWindow(config)
     -- Header
     local Header = create("Frame", {Size = UDim2.new(1,0,0,50), BackgroundColor3 = Library.Theme.Header, BackgroundTransparency = 0.1, Parent = Container})
     roundify(Header, 12)
-    -- Square off bottom corners
     create("Frame", {Size = UDim2.new(1,0,0,10), Position = UDim2.new(0,0,1,-10), BackgroundColor3 = Library.Theme.Header, BackgroundTransparency = 0, Parent = Header, BorderSizePixel=0})
     
-    -- Icon & Title
     local HeaderIcon = create("ImageLabel", {
         Size = UDim2.new(0, 30, 0, 30), Position = UDim2.new(0, 15, 0.5, -15),
         BackgroundTransparency = 1, Image = GetProcessedIcon(config.Icon or ""), Parent = Header
@@ -156,8 +146,8 @@ function Library:CreateWindow(config)
     -- Sidebar
     local Sidebar = create("Frame", {Size = UDim2.new(0, 150, 1, -50), Position = UDim2.new(0,0,0,50), BackgroundColor3 = Library.Theme.Sidebar, BackgroundTransparency = 0.1, Parent = Container, BorderSizePixel = 0})
     create("UICorner", {CornerRadius = UDim.new(0, 12), Parent = Sidebar})
-    create("Frame", {Size = UDim2.new(1, 0, 0, 15), BackgroundColor3 = Library.Theme.Sidebar, BackgroundTransparency = 0, BorderSizePixel = 0, Parent = Sidebar}) -- Square Top
-    create("Frame", {Size = UDim2.new(0, 15, 0, 15), Position = UDim2.new(1, -15, 1, -15), BackgroundColor3 = Library.Theme.Sidebar, BackgroundTransparency = 0, BorderSizePixel = 0, Parent = Sidebar}) -- Square Right Bottom
+    create("Frame", {Size = UDim2.new(1, 0, 0, 15), BackgroundColor3 = Library.Theme.Sidebar, BackgroundTransparency = 0, BorderSizePixel = 0, Parent = Sidebar}) 
+    create("Frame", {Size = UDim2.new(0, 15, 0, 15), Position = UDim2.new(1, -15, 1, -15), BackgroundColor3 = Library.Theme.Sidebar, BackgroundTransparency = 0, BorderSizePixel = 0, Parent = Sidebar}) 
 
     -- Profile Area
     local ProfileFrame = create("Frame", {Size = UDim2.new(1, 0, 0, 80), BackgroundTransparency = 1, Parent = Sidebar})
@@ -196,7 +186,6 @@ function Library:CreateWindow(config)
         create("TextLabel", {Text = title, Size = UDim2.new(1, -10, 0, 20), Position = UDim2.new(0, 10, 0, 5), BackgroundTransparency = 1, TextColor3 = Library.Theme.Accent, Font = Enum.Font.GothamBold, TextSize = 14, TextXAlignment = Enum.TextXAlignment.Left, Parent = N})
         create("TextLabel", {Text = msg, Size = UDim2.new(1, -10, 0, 30), Position = UDim2.new(0, 10, 0, 25), BackgroundTransparency = 1, TextColor3 = Library.Theme.Text, Font = Library.Theme.Font, TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left, TextWrapped = true, Parent = N})
         
-        -- Animation
         N.Position = UDim2.new(1, 300, 0, 0)
         tween(N, {Position = UDim2.new(0, 0, 0, 0)}, 0.5)
         task.delay(duration or 3, function()
@@ -204,6 +193,9 @@ function Library:CreateWindow(config)
             N:Destroy()
         end)
     end
+
+    -- Tab Tracking for Auto-Select
+    local FirstTab = true
 
     function Window:CreateTab(name, icon)
         local TabBtn = create("TextButton", {
@@ -240,23 +232,23 @@ function Library:CreateWindow(config)
             tween(TabBtn, {BackgroundColor3 = Library.Theme.Background, TextColor3 = Library.Theme.Accent}, 0.2)
             TabFrame.Visible = true
             
-            -- Fade in children
+            -- Fade in children (FIXED: Supports Buttons & Sliders now)
             for i, v in pairs(TabFrame:GetChildren()) do
-                if v:IsA("Frame") then
+                if v:IsA("GuiObject") and not v:IsA("UIListLayout") and not v:IsA("UIPadding") then
                     v.BackgroundTransparency = 1
                     tween(v, {BackgroundTransparency = 0.2}, 0.3 + (i*0.05))
                 end
             end
         end)
 
-        -- If first tab, select it
-        if #SidebarList:GetChildren() == 3 then -- 3 because UIList + Padding + 1st Button
-             TabBtn.MouseButton1Click:Fire() 
+        -- Auto Select First Tab (FIXED LOGIC)
+        if FirstTab then
+            FirstTab = false
+            TabBtn.MouseButton1Click:Fire()
         end
 
         local Tab = {}
 
-        -- COMPONENT: LABEL
         function Tab:Label(text)
             local Lab = create("TextLabel", {
                 Text = text, Size = UDim2.new(1,0,0,25), BackgroundTransparency = 1, 
@@ -266,7 +258,6 @@ function Library:CreateWindow(config)
             create("UIPadding", {Parent = Lab, PaddingLeft = UDim.new(0, 5)})
         end
 
-        -- COMPONENT: BUTTON
         function Tab:Button(text, callback)
             local BtnFrame = create("TextButton", {
                 Text = text, Size = UDim2.new(1,0,0,35), BackgroundColor3 = Library.Theme.ButtonBg, 
@@ -282,7 +273,6 @@ function Library:CreateWindow(config)
             end)
         end
 
-        -- COMPONENT: TOGGLE
         function Tab:Toggle(text, default, callback)
             local state = default or false
             local ToggleFrame = create("TextButton", {
@@ -311,10 +301,9 @@ function Library:CreateWindow(config)
             end
 
             ToggleFrame.MouseButton1Click:Connect(Update)
-            if default then if callback then callback(true) end end -- Init
+            if default then if callback then callback(true) end end 
         end
 
-        -- COMPONENT: SLIDER
         function Tab:Slider(text, min, max, default, callback)
             local value = default or min
             local SliderFrame = create("Frame", {
@@ -375,7 +364,6 @@ function Library:CreateWindow(config)
             end)
         end
         
-        -- COMPONENT: DROPDOWN
         function Tab:Dropdown(text, options, callback)
             local DropFrame = create("Frame", {
                 Size = UDim2.new(1, 0, 0, 35), BackgroundColor3 = Library.Theme.ButtonBg,
@@ -419,10 +407,8 @@ function Library:CreateWindow(config)
         return Tab
     end
     
-    -- Show Window after init
     Container.Visible = true
     
-    -- Toggle Keybind
     UserInputService.InputBegan:Connect(function(input, gp)
         if not gp and input.KeyCode == savedKey then
             Container.Visible = not Container.Visible
