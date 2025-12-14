@@ -726,6 +726,8 @@ MoveTab:Slider("TP Speed Interval", 0.01, 1, Config.Movement.IntervalSpeed, func
 
 -- // PLAYER TELEPORT & LOGS TAB (CUSTOM UI) //
 -- Recreating the complex logic from Universal within the new UI structure
+-- // PLAYER TELEPORT & LOGS TAB (CUSTOM UI) //
+-- Recreating the complex logic from Universal within the new UI structure
 local TPPage = TPTab.ScrollFrame
 local isTPingToPlayer = false
 local liveUpdateEnabled = true
@@ -755,10 +757,15 @@ ModeLogsBtn.TextColor3 = Theme.TextDim
 ModeLogsBtn.Font = Theme.Font
 Instance.new("UICorner", ModeLogsBtn).CornerRadius = UDim.new(0, 6)
 
-local ListContainer = Instance.new("Frame", TPPage)
-ListContainer.Size = UDim2.new(1, 0, 0, 300) -- Fixed height for scroll
+-- [[ UPDATE: CHANGED TO SCROLLINGFRAME ]] 
+local ListContainer = Instance.new("ScrollingFrame", TPPage)
+ListContainer.Size = UDim2.new(1, 0, 0, 300) -- Visible Height
 ListContainer.BackgroundTransparency = 1
 ListContainer.Visible = true
+ListContainer.CanvasSize = UDim2.new(0, 0, 0, 0) -- Starts empty
+ListContainer.AutomaticCanvasSize = Enum.AutomaticSize.Y -- Expands automatically
+ListContainer.ScrollBarThickness = 4
+ListContainer.ScrollBarImageColor3 = Theme.Accent
 
 local LogsContainer = Instance.new("ScrollingFrame", TPPage)
 LogsContainer.Size = UDim2.new(1, 0, 0, 300)
@@ -791,7 +798,6 @@ local function TeleportToPlayer(targetPlayer)
         return
     end
     
-    
     isTPingToPlayer = true
     Window:Notify("System", "Going to: " .. targetPlayer.Name)
     task.spawn(function()
@@ -815,8 +821,15 @@ local function TeleportToPlayer(targetPlayer)
 end
 
 local function RefreshPlayerList()
-    for _, v in pairs(ListContainer:GetChildren()) do if v:IsA("TextButton") or v:IsA("UIListLayout") then v:Destroy() end end
-    local LL = Instance.new("UIListLayout", ListContainer); LL.Padding = UDim.new(0, 5)
+    -- Clear old buttons
+    for _, v in pairs(ListContainer:GetChildren()) do 
+        if v:IsA("TextButton") or v:IsA("UIListLayout") then v:Destroy() end 
+    end
+    
+    -- Re-add Layout
+    local LL = Instance.new("UIListLayout", ListContainer)
+    LL.Padding = UDim.new(0, 5)
+    LL.SortOrder = Enum.SortOrder.LayoutOrder
     
     for _, plr in pairs(Players:GetPlayers()) do
         if plr ~= LocalPlayer then
@@ -825,7 +838,7 @@ local function RefreshPlayerList()
                 distText = math.floor((LocalPlayer.Character.HumanoidRootPart.Position - plr.Character.HumanoidRootPart.Position).Magnitude)
             end
             local btn = Instance.new("TextButton", ListContainer)
-            btn.Size = UDim2.new(1, 0, 0, 30)
+            btn.Size = UDim2.new(1, -10, 0, 30) -- Adjusted width for scrollbar
             btn.BackgroundColor3 = Theme.ButtonBg
             btn.BackgroundTransparency = 0.2
             btn.Text = "  " .. plr.Name .. " [" .. distText .. " studs]"
