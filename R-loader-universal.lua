@@ -8,6 +8,46 @@ local TextChatService = game:GetService("TextChatService")
 local Camera = workspace.CurrentCamera
 local LocalPlayer = Players.LocalPlayer
 
+local StarterGui = game:GetService("StarterGui")
+if StarterGui:FindFirstChild("R-Loader_UI") then
+	StarterGui["R-Loader_UI"]:Destroy()
+end
+
+local LocalPlayer = {
+	Name = "StudioDev",
+	UserId = 123456,
+	Character = nil,
+	PlayerGui = StarterGui -- Redirects UI to StarterGui so you can see it
+}
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "R-Loader_UI"
+ScreenGui.ResetOnSpawn = false
+
+-- FORCE PARENT TO STARTERGUI FOR LIVE EDITING
+ScreenGui.Parent = StarterGui
+
+local function ResetMovement()
+    local char = LocalPlayer.Character
+    if not char then return end
+    
+    local root = char:FindFirstChild("HumanoidRootPart")
+    local hum = char:FindFirstChild("Humanoid")
+    
+    if root then
+        root.Anchored = false 
+        root.AssemblyLinearVelocity = Vector3.zero 
+        root.AssemblyAngularVelocity = Vector3.zero
+        root.Velocity = Vector3.zero
+    end
+    
+    if hum then
+        hum.PlatformStand = false
+        -- "GettingUp" is the best state to force Roblox to recognize gravity again
+        hum:ChangeState(Enum.HumanoidStateType.GettingUp)
+    end
+end
+
 local Config = {
     Aimbot = {
         Enabled = false,
@@ -606,32 +646,32 @@ local function CheckRig(char)
     return 'R6'
 end
 
--- [ADD THIS INSIDE THE MOVEMENT TAB SECTION]
-
-CreateLabel(MovePage, "--- Character Stats ---")
 
 -- WalkSpeed Controls
 CreateSlider(MovePage, "WalkSpeed", 16, 200, Config.Movement.WalkSpeed, function(v) 
     Config.Movement.WalkSpeed = v 
 end)
 
+-- [[ REPLACE THE PREVIOUS SPEED TOGGLE WITH THIS ]]
 CreateToggle(MovePage, "Enable Speed", Config.Toggles.Speed, function(v) 
     Config.Toggles.Speed = v 
+    -- Reset to default if disabled
+    if not v and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+        LocalPlayer.Character.Humanoid.WalkSpeed = 16 
+    end
     SaveConfig()
 end)
 
--- JumpPower Controls
-CreateSlider(MovePage, "Jump Power", 50, 300, Config.Movement.JumpPower, function(v) 
-    Config.Movement.JumpPower = v 
-end)
-
+-- [[ REPLACE THE PREVIOUS JUMP TOGGLE WITH THIS ]]
 CreateToggle(MovePage, "Enable Jump", Config.Toggles.Jump, function(v) 
     Config.Toggles.Jump = v 
+    -- Reset to default if disabled
+    if not v and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+        LocalPlayer.Character.Humanoid.JumpPower = 50
+    end
     SaveConfig()
 end)
 
-CreateLabel(MovePage, "--- Utilities ---")
--- (Keep your Phase and Teleport buttons below this)
 
 CreateSlider(MovePage, "Phase Distance", 1, 50, Config.Movement.PhaseDist, function(v) 
     Config.Movement.PhaseDist = v 
@@ -936,13 +976,25 @@ end)
 AddLog("Logger Active...", Color3.fromRGB(200, 200, 200))
 RefreshPlayerList()
 
--- [[ MISC TAB ]] --
-CreateSlider(MiscPage, "Fly Speed", 10, 150, Config.Movement.FlySpeed, function(v) 
-    Config.Movement.FlySpeed = v 
-end)
-
+-- [[ REPLACE FLY TOGGLE ]]
 CreateToggle(MiscPage, "Fly", Config.Toggles.Fly, function(v) 
     Config.Toggles.Fly = v 
+    
+    -- If turning OFF, or if SafeFly is ON (to prevent conflict), reset
+    if not v then
+        ResetMovement()
+    end
+    SaveConfig()
+end)
+
+-- [[ REPLACE SAFE FLY TOGGLE ]]
+CreateToggle(MiscPage, "Enable Safe Fly", Config.Toggles.SafeFly, function(v) 
+    Config.Toggles.SafeFly = v 
+    
+    -- If turning OFF, reset physics completely
+    if not v then
+        ResetMovement()
+    end
     SaveConfig()
 end)
 
@@ -951,26 +1003,10 @@ CreateToggle(MiscPage, "Noclip", Config.Toggles.Noclip, function(v)
     SaveConfig()
 end)
 
--- [ADD THIS INSIDE THE MISC TAB SECTION]
-
-CreateLabel(MiscPage, "--- Safe Fly (Velocity) ---")
-
 CreateSlider(MiscPage, "Safe Fly Speed", 10, 200, Config.Movement.SafeFlySpeed, function(v) 
     Config.Movement.SafeFlySpeed = v 
 end)
 
-CreateToggle(MiscPage, "Enable Safe Fly", Config.Toggles.SafeFly, function(v) 
-    Config.Toggles.SafeFly = v 
-    
-    -- Safety: Unanchor if disabled
-    if not v and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-         LocalPlayer.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.zero
-    end
-    SaveConfig()
-end)
-
-CreateLabel(MiscPage, "--- CFrame Fly ---")
--- (Your existing Fly controls go here)
 
 
 -- [[ KEYBINDS TAB ]] --
@@ -1084,45 +1120,69 @@ UserInputService.InputBegan:Connect(function(input, gpe)
     end
 end)
 
--- Updated RenderStepped to use DeltaTime for smooth CFrame movement
+-- [[ REPLACE THE RENDERSTEPPED LOGIC AT THE BOTTOM ]]
 RunService.RenderStepped:Connect(function(deltaTime)
-    if Config.Toggles.Fly and LocalPlayer.Character then
-        local char = LocalPlayer.Character
-        local root = char:FindFirstChild("HumanoidRootPart")
-        local hum = char:FindFirstChild("Humanoid")
+    if not LocalPlayer.Character then return end
+    local root = LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+    local hum = LocalPlayer.Character:FindFirstChild("Humanoid")
+    if not root or not hum then return end
+
+    -- === OPTION 1: CFRAME FLY (Standard) ===
+    if Config.Toggles.Fly then
+        -- Force state
+        root.Anchored = true
+        hum.PlatformStand = true 
         
-        if root and hum then
-            -- Force Anchored/PlatformStand every frame just in case a game script tries to unanchor you
-            root.Anchored = true
-            hum.PlatformStand = true 
-            
-            local moveDir = Vector3.zero
-            local camCFrame = Camera.CFrame
-            
-            -- Calculate Direction
-            if UserInputService:IsKeyDown(Enum.KeyCode.W) then moveDir = moveDir + camCFrame.LookVector end
-            if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - camCFrame.LookVector end
-            if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - camCFrame.RightVector end
-            if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveDir = moveDir + camCFrame.RightVector end
-            if UserInputService:IsKeyDown(Enum.KeyCode.Space) then moveDir = moveDir + Vector3.new(0, 1, 0) end
-            if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then moveDir = moveDir - Vector3.new(0, 1, 0) end
-            
-            -- Normalize vector so diagonal movement isn't faster
-            if moveDir.Magnitude > 0 then
-                moveDir = moveDir.Unit
-            end
-            
-            -- CFrame Move: Position + (Direction * Speed * TimeSinceLastFrame)
-            root.CFrame = root.CFrame + (moveDir * (Config.Movement.FlySpeed * deltaTime))
-            
-            -- Zero out velocity just to be safe (so physics don't build up)
-            root.Velocity = Vector3.zero
-            root.AssemblyLinearVelocity = Vector3.zero
+        local moveDir = Vector3.zero
+        local camCF = Camera.CFrame
+        
+        if UserInputService:IsKeyDown(Enum.KeyCode.W) then moveDir = moveDir + camCF.LookVector end
+        if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - camCF.LookVector end
+        if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - camCF.RightVector end
+        if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveDir = moveDir + camCF.RightVector end
+        if UserInputService:IsKeyDown(Enum.KeyCode.Space) then moveDir = moveDir + Vector3.new(0, 1, 0) end
+        if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then moveDir = moveDir - Vector3.new(0, 1, 0) end
+        
+        if moveDir.Magnitude > 0 then
+            moveDir = moveDir.Unit * (Config.Movement.FlySpeed * deltaTime)
+            root.CFrame = root.CFrame + moveDir
         end
+        
+        root.Velocity = Vector3.zero
+        root.AssemblyLinearVelocity = Vector3.zero
+
+    -- === OPTION 2: SAFE FLY (Velocity/Physics) ===
+    elseif Config.Toggles.SafeFly then
+        -- Force state (BUT DO NOT ANCHOR)
+        hum:ChangeState(Enum.HumanoidStateType.Physics)
+        hum.PlatformStand = false -- Let physics run, but control velocity
+        
+        local moveDir = Vector3.zero
+        local camCF = Camera.CFrame
+        
+        if UserInputService:IsKeyDown(Enum.KeyCode.W) then moveDir = moveDir + camCF.LookVector end
+        if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - camCF.LookVector end
+        if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - camCF.RightVector end
+        if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveDir = moveDir + camCF.RightVector end
+        if UserInputService:IsKeyDown(Enum.KeyCode.Space) then moveDir = moveDir + Vector3.new(0, 1, 0) end
+        if UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then moveDir = moveDir - Vector3.new(0, 1, 0) end
+        
+        if moveDir.Magnitude > 0 then
+            -- Multiply by speed
+            moveDir = moveDir.Unit * Config.Movement.SafeFlySpeed
+        else
+            -- If no input, hover in place (counteract gravity)
+            moveDir = Vector3.zero
+        end
+        
+        root.AssemblyLinearVelocity = moveDir
+        root.AssemblyAngularVelocity = Vector3.zero
     end
 end)
 
 local lastNoclipState = false
+
+
 RunService.Stepped:Connect(function()
     if not LocalPlayer.Character then return end
     
@@ -1292,17 +1352,19 @@ RunService.RenderStepped:Connect(function()
     end
 end)
 
--- [PASTE THIS AT THE BOTTOM OF THE LOGIC SECTION]
+-- [[ REPLACE THE LOGIC SECTION AT THE BOTTOM WITH THIS ]]
 
 -- 1. Speed and Jump Logic (Enforce values)
 RunService.Stepped:Connect(function()
     if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
         local hum = LocalPlayer.Character.Humanoid
         
+        -- Only force the speed if the toggle is ON
         if Config.Toggles.Speed then
             hum.WalkSpeed = Config.Movement.WalkSpeed
         end
         
+        -- Only force the jump if the toggle is ON
         if Config.Toggles.Jump then
             hum.UseJumpPower = true
             hum.JumpPower = Config.Movement.JumpPower
@@ -1312,22 +1374,22 @@ end)
 
 -- 2. Safe Fly Logic (Velocity Based)
 RunService.RenderStepped:Connect(function()
+    -- Only run if enabled
     if Config.Toggles.SafeFly and LocalPlayer.Character then
         local root = LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
         local hum = LocalPlayer.Character:FindFirstChild("Humanoid")
         
         if root and hum then
-            -- Get Camera Direction
             local camCF = Camera.CFrame
             local moveDir = Vector3.zero
             
-            -- Basic WASD controls relative to camera
+            -- WASD Controls
             if UserInputService:IsKeyDown(Enum.KeyCode.W) then moveDir = moveDir + camCF.LookVector end
             if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - camCF.LookVector end
             if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - camCF.RightVector end
             if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveDir = moveDir + camCF.RightVector end
             
-            -- Up/Down Movement (Space/Ctrl)
+            -- Up/Down
             if UserInputService:IsKeyDown(Enum.KeyCode.Space) then moveDir = moveDir + Vector3.new(0, 1, 0) end
             if UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then moveDir = moveDir - Vector3.new(0, 1, 0) end
             
@@ -1335,19 +1397,15 @@ RunService.RenderStepped:Connect(function()
                 moveDir = moveDir.Unit * Config.Movement.SafeFlySpeed
             end
             
-            -- Apply Velocity (This overwrites gravity, making it "fly")
-            -- We use AssemblyLinearVelocity which is the modern replacement for BodyVelocity
+            -- Apply Physics
             root.AssemblyLinearVelocity = moveDir
-            
-            -- Optional: Remove existing velocity to prevent stacking
             root.AssemblyAngularVelocity = Vector3.zero 
             
-            -- Prevent falling animations if possible
+            -- Force Physics state to ignore gravity while flying
             hum:ChangeState(Enum.HumanoidStateType.Physics)
         end
     end
 end)
-
 
 Notify("Loading R-Loader...", 0.3)
 Notify("R-Loader Injected Successfully", 0.3)
