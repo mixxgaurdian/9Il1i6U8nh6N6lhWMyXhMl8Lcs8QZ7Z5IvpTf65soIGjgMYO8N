@@ -31,6 +31,9 @@ local Config = {
         SavedCFrame = nil, 
         IntervalSpeed = 0.05,
         FlySpeed = 50,
+        WalkSpeed = 16,
+        JumpPower = 50,
+        SafeFlySpeed = 50,
     },
     Binds = {
         ToggleUI = Enum.KeyCode.M,
@@ -44,8 +47,12 @@ local Config = {
     Toggles = {
         Fly = false,
         Noclip = false,
-        ShowObjects=false,
-        Fullbright=false,
+        ShowObjects = false,
+        Fullbright = false,
+        -- [[ NEW ADDS ]]
+        Speed = false,
+        Jump = false,
+        SafeFly = false,
     }
 }
 
@@ -514,6 +521,8 @@ local CombatPage, CombatTab = CreateTab("Combat")
 local VisualsPage, VisualsTab = CreateTab("Visuals")
 local MovePage, MoveTab = CreateTab("Movement")
 
+
+
 -- [[ CRITICAL FIX: TO PLAYER TAB ]]
 local TPPage, TPTab = CreateTab("To Player")
 -- We must remove the default layout so the custom layout works
@@ -526,6 +535,8 @@ end
 local MiscPage, MiscTab = CreateTab("Misc")
 local BindsPage, BindsTab = CreateTab("Keybinds")
 local WhitePage, WhiteTab = CreateTab("Whitelist")
+
+
 
 InfoTab.TextColor3 = Colors.Accent
 InfoTab.BackgroundColor3 = Colors.DarkBg
@@ -595,6 +606,33 @@ local function CheckRig(char)
     return 'R6'
 end
 
+-- [ADD THIS INSIDE THE MOVEMENT TAB SECTION]
+
+CreateLabel(MovePage, "--- Character Stats ---")
+
+-- WalkSpeed Controls
+CreateSlider(MovePage, "WalkSpeed", 16, 200, Config.Movement.WalkSpeed, function(v) 
+    Config.Movement.WalkSpeed = v 
+end)
+
+CreateToggle(MovePage, "Enable Speed", Config.Toggles.Speed, function(v) 
+    Config.Toggles.Speed = v 
+    SaveConfig()
+end)
+
+-- JumpPower Controls
+CreateSlider(MovePage, "Jump Power", 50, 300, Config.Movement.JumpPower, function(v) 
+    Config.Movement.JumpPower = v 
+end)
+
+CreateToggle(MovePage, "Enable Jump", Config.Toggles.Jump, function(v) 
+    Config.Toggles.Jump = v 
+    SaveConfig()
+end)
+
+CreateLabel(MovePage, "--- Utilities ---")
+-- (Keep your Phase and Teleport buttons below this)
+
 CreateSlider(MovePage, "Phase Distance", 1, 50, Config.Movement.PhaseDist, function(v) 
     Config.Movement.PhaseDist = v 
 end)
@@ -651,6 +689,9 @@ CreateButton(MovePage, "Teleport", function()
         isTeleporting = false
     end)
 end)
+
+
+
 
 --------------------------------------------------------------------------------
 -- TAB: TELEPORT TO PLAYER + LOGGER
@@ -909,6 +950,27 @@ CreateToggle(MiscPage, "Noclip", Config.Toggles.Noclip, function(v)
     Config.Toggles.Noclip = v 
     SaveConfig()
 end)
+
+-- [ADD THIS INSIDE THE MISC TAB SECTION]
+
+CreateLabel(MiscPage, "--- Safe Fly (Velocity) ---")
+
+CreateSlider(MiscPage, "Safe Fly Speed", 10, 200, Config.Movement.SafeFlySpeed, function(v) 
+    Config.Movement.SafeFlySpeed = v 
+end)
+
+CreateToggle(MiscPage, "Enable Safe Fly", Config.Toggles.SafeFly, function(v) 
+    Config.Toggles.SafeFly = v 
+    
+    -- Safety: Unanchor if disabled
+    if not v and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+         LocalPlayer.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.zero
+    end
+    SaveConfig()
+end)
+
+CreateLabel(MiscPage, "--- CFrame Fly ---")
+-- (Your existing Fly controls go here)
 
 
 -- [[ KEYBINDS TAB ]] --
@@ -1226,6 +1288,62 @@ RunService.RenderStepped:Connect(function()
             local pos = Camera:WorldToViewportPoint(closest.Position)
             local mousePos = UserInputService:GetMouseLocation()
             mousemoverel((pos.X - mousePos.X)/Config.Aimbot.Smoothness, (pos.Y - mousePos.Y)/Config.Aimbot.Smoothness)
+        end
+    end
+end)
+
+-- [PASTE THIS AT THE BOTTOM OF THE LOGIC SECTION]
+
+-- 1. Speed and Jump Logic (Enforce values)
+RunService.Stepped:Connect(function()
+    if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+        local hum = LocalPlayer.Character.Humanoid
+        
+        if Config.Toggles.Speed then
+            hum.WalkSpeed = Config.Movement.WalkSpeed
+        end
+        
+        if Config.Toggles.Jump then
+            hum.UseJumpPower = true
+            hum.JumpPower = Config.Movement.JumpPower
+        end
+    end
+end)
+
+-- 2. Safe Fly Logic (Velocity Based)
+RunService.RenderStepped:Connect(function()
+    if Config.Toggles.SafeFly and LocalPlayer.Character then
+        local root = LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        local hum = LocalPlayer.Character:FindFirstChild("Humanoid")
+        
+        if root and hum then
+            -- Get Camera Direction
+            local camCF = Camera.CFrame
+            local moveDir = Vector3.zero
+            
+            -- Basic WASD controls relative to camera
+            if UserInputService:IsKeyDown(Enum.KeyCode.W) then moveDir = moveDir + camCF.LookVector end
+            if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - camCF.LookVector end
+            if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - camCF.RightVector end
+            if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveDir = moveDir + camCF.RightVector end
+            
+            -- Up/Down Movement (Space/Ctrl)
+            if UserInputService:IsKeyDown(Enum.KeyCode.Space) then moveDir = moveDir + Vector3.new(0, 1, 0) end
+            if UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then moveDir = moveDir - Vector3.new(0, 1, 0) end
+            
+            if moveDir.Magnitude > 0 then
+                moveDir = moveDir.Unit * Config.Movement.SafeFlySpeed
+            end
+            
+            -- Apply Velocity (This overwrites gravity, making it "fly")
+            -- We use AssemblyLinearVelocity which is the modern replacement for BodyVelocity
+            root.AssemblyLinearVelocity = moveDir
+            
+            -- Optional: Remove existing velocity to prevent stacking
+            root.AssemblyAngularVelocity = Vector3.zero 
+            
+            -- Prevent falling animations if possible
+            hum:ChangeState(Enum.HumanoidStateType.Physics)
         end
     end
 end)
