@@ -1111,102 +1111,203 @@ end)
 -- // 3. PLAYER INTERACTIONS //
 FunTab:Label("--- Player Interactions ---")
 
+-- Services
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- Variables
 local FlingTargetName = nil
 local AttachTargetName = nil
 local AttachPos = "Back" 
-local Flinging = false
+local CycleDuration = 2
+local SafePos = nil -- Stores return position
+
+-- Toggles
+local FlingingSingle = false
+local FlingingCycle = false
 local Attaching = false
 
--- [[ FLING SYSTEM ]]
+-- // HELPER: PHYSICS & NOCLIP //
+local function EnablePhysics(enable)
+    local char = LocalPlayer.Character
+    if not char then return end
+    
+    local root = char:FindFirstChild("HumanoidRootPart")
+    local hum = char:FindFirstChild("Humanoid")
+    
+    if enable then
+        -- TURN ON FLING PHYSICS
+        if hum then 
+            hum.PlatformStand = true 
+            hum:ChangeState(Enum.HumanoidStateType.Physics)
+        end
+        
+        -- Anti-Fall (BodyVelocity)
+        if root and not root:FindFirstChild("FlingHover") then
+            local bv = Instance.new("BodyVelocity")
+            bv.Name = "FlingHover"
+            bv.Parent = root
+            bv.MaxForce = Vector3.new(100000, 100000, 100000)
+            bv.Velocity = Vector3.zero 
+        end
+        
+        -- Noclip
+        for _, part in pairs(char:GetDescendants()) do
+            if part:IsA("BasePart") then part.CanCollide = false end
+        end
+    else
+        -- TURN OFF / RESET
+        if hum then 
+            hum.PlatformStand = false 
+            hum:ChangeState(Enum.HumanoidStateType.GettingUp)
+        end
+        
+        if root then
+            -- Remove Hover
+            local bv = root:FindFirstChild("FlingHover")
+            if bv then bv:Destroy() end
+            
+            -- Stop Spinning
+            root.AssemblyAngularVelocity = Vector3.zero
+            root.AssemblyLinearVelocity = Vector3.zero
+            root.Velocity = Vector3.zero
+            root.RotVelocity = Vector3.zero
+        end
+    end
+end
+
+-- // HELPER: FLING ACTION //
+-- This runs one "tick" of flinging logic
+local function ProcessFling(targetRoot)
+    local myRoot = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+    if myRoot and targetRoot then
+
+        local Wave = math.sin(tick() * 100)
+        local VerticalOffset = math.sign(Wave) * 10 -- Move up/down by 10 studs
+        
+        myRoot.CFrame = CFrame.new(targetRoot.Position) * CFrame.new(0, VerticalOffset, 0)
+        
+        myRoot.AssemblyAngularVelocity = Vector3.new(0, 100000, 0) 
+
+        myRoot.AssemblyLinearVelocity = Vector3.zero 
+    end
+end
+
+-- [[ SINGLE TARGET FLING ]]
 FunTab:Dropdown("Select Fling Target", function(name)
     FlingTargetName = name
     Window:Notify("System", "Fling Target: " .. name)
 end)
 
 FunTab:Toggle("Fling Player", false, function(v)
-    Flinging = v
+    FlingingSingle = v
+    
     if v then
-        Window:Notify("System", "Flinging: " .. (FlingTargetName or "None"))
-        
-        -- 1. SAVE SAFE START POSITION
-        local SafePos = nil
+        -- Save Safe Position
         if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             SafePos = LocalPlayer.Character.HumanoidRootPart.CFrame
         end
-
+        
+        Window:Notify("System", "Flinging: " .. (FlingTargetName or "None"))
+        EnablePhysics(true)
+        
         task.spawn(function()
-            local CycleTimer = tick()
-            
-            while Flinging do
+            while FlingingSingle do
                 local target = Players:FindFirstChild(FlingTargetName)
-                local myChar = LocalPlayer.Character
-                local myRoot = myChar and myChar:FindFirstChild("HumanoidRootPart")
-                
-                if target and target.Character and target.Character:FindFirstChild("HumanoidRootPart") and myRoot then
-                    local tRoot = target.Character.HumanoidRootPart
-                    
-                    -- 2. ANTI-VOID / FALL SAFETY
-                    -- If we fall 20 studs below where we started, teleport back instantly
-                    if SafePos and myRoot.Position.Y < (SafePos.Position.Y - 20) then
-                        myRoot.CFrame = SafePos
-                        myRoot.AssemblyLinearVelocity = Vector3.zero
-                        myRoot.Velocity = Vector3.zero
-                    end
-                    
-                    -- 3. NOCLIP (Essential for entering the target)
-                    for _, part in pairs(myChar:GetDescendants()) do
-                        if part:IsA("BasePart") then part.CanCollide = false end
-                    end
-                    
-                    -- 4. DETACH & REATTACH CYCLE (Every 1 Second)
-                    if tick() - CycleTimer > 1 then
-                        -- // Detach Phase //
-                        -- Briefly move slightly above them and stop spinning to reset physics collisions
-                        myRoot.CFrame = tRoot.CFrame * CFrame.new(0, 5, 0)
-                        myRoot.AssemblyAngularVelocity = Vector3.zero
-                        myRoot.RotVelocity = Vector3.zero
-                        task.wait(0.1) -- Short pause
-                        CycleTimer = tick() -- Reset timer
-                    else
-                        -- // Attack Phase //
-                        -- 5. UP/DOWN JERK + SPIN
-                        -- We use math.random to vibrate violently up/down and side-to-side
-                        local JitterX = math.random(-3, 3)
-                        local JitterY = math.random(-40, 40) -- Strong up/down jerk
-                        local JitterZ = math.random(-3, 3)
-                        
-                        myRoot.CFrame = tRoot.CFrame * CFrame.new(JitterX, JitterY, JitterZ)
-                        myRoot.AssemblyAngularVelocity = Vector3.new(0, 100000, 0) -- Infinite Spin
-                        myRoot.AssemblyLinearVelocity = Vector3.zero 
-                        myRoot.Velocity = Vector3.zero 
-                    end
+                if target and target.Character and target.Character:FindFirstChild("HumanoidRootPart") then
+                    ProcessFling(target.Character.HumanoidRootPart)
                 end
-                RunService.Heartbeat:Wait()
+                RunService.Heartbeat:Wait() 
             end
             
-            -- 6. EXIT: RETURN TO SAFE POSITION
-            if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and SafePos then
-                local r = LocalPlayer.Character.HumanoidRootPart
-                r.AssemblyAngularVelocity = Vector3.zero
-                r.AssemblyLinearVelocity = Vector3.zero
-                r.Velocity = Vector3.zero
-                r.RotVelocity = Vector3.zero
-                r.CFrame = SafePos
+            -- Cleanup
+            EnablePhysics(false)
+            if SafePos and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                LocalPlayer.Character.HumanoidRootPart.CFrame = SafePos
             end
         end)
+    else
+        Window:Notify("System", "Fling Stopped")
     end
 end)
 
--- [[ ATTACH SYSTEM ]]
+
+-- [[ CYCLE FLING ALL ]]
+FunTab:Label("--- Cycle Fling ---")
+
+FunTab:Slider("Duration Per Player", 0.5, 5, CycleDuration, function(v)
+    CycleDuration = v
+end)
+
+FunTab:Toggle("Cycle Fling All", false, function(v)
+    FlingingCycle = v
+    
+    if v then
+        -- 1. Save Safe Position ONCE
+        if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            SafePos = LocalPlayer.Character.HumanoidRootPart.CFrame
+        end
+        
+        Window:Notify("System", "Cycle Mode: ON")
+        EnablePhysics(true)
+        
+        task.spawn(function()
+            while FlingingCycle do
+                local potentialTargets = Players:GetPlayers()
+                
+                for _, plr in pairs(potentialTargets) do
+                    -- Checks: Must be enabled, not us, and player must exist
+                    if not FlingingCycle then break end
+                    
+                    if plr ~= LocalPlayer and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
+                        
+                        local timer = tick()
+                        -- [[ ATTACK LOOP FOR THIS PLAYER ]]
+                        while (tick() - timer) < CycleDuration and FlingingCycle do
+                            if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
+                                ProcessFling(plr.Character.HumanoidRootPart)
+                            else
+                                break -- Player died/left, move to next immediately
+                            end
+                            RunService.Heartbeat:Wait()
+                        end
+                        
+                        -- Slight pause to stabilize before next target
+                        task.wait(0.05)
+                    end
+                end
+                
+                -- Wait before restarting the list
+                task.wait(0.5) 
+            end
+            
+            -- Cleanup
+            EnablePhysics(false)
+            if SafePos and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                LocalPlayer.Character.HumanoidRootPart.CFrame = SafePos
+                Window:Notify("System", "Returned Safe")
+            end
+        end)
+    else
+        Window:Notify("System", "Cycle Mode: OFF")
+    end
+end)
+
+
+-- [[ ATTACH SYSTEM (Preserved) ]]
+FunTab:Label("--- Attach ---")
+
 FunTab:Dropdown("Select Attach Target", function(name)
     AttachTargetName = name
     Window:Notify("System", "Attach Target: " .. name)
 end)
 
--- Position Cycler
 local PosBtn
 PosBtn = FunTab:Button("Position: " .. AttachPos, function()
-    if AttachPos == "Back" then AttachPos = "Front" else AttachPos = "Back" end
+    if AttachPos == "Back" then AttachPos = "Front" 
+    elseif AttachPos == "Front" then AttachPos = "Under"
+    else AttachPos = "Back" end
     PosBtn.Text = "Position: " .. AttachPos
 end)
 
@@ -1214,7 +1315,6 @@ FunTab:Toggle("Attach to Player", false, function(v)
     Attaching = v
     if v then
         Window:Notify("System", "Attached to: " .. (AttachTargetName or "None"))
-        
         task.spawn(function()
             while Attaching do
                 local target = Players:FindFirstChild(AttachTargetName)
@@ -1223,18 +1323,12 @@ FunTab:Toggle("Attach to Player", false, function(v)
                 
                 if target and target.Character and target.Character:FindFirstChild("HumanoidRootPart") and myRoot then
                     local tRoot = target.Character.HumanoidRootPart
+                    local offset
+                    if AttachPos == "Back" then offset = CFrame.new(0, 0, 2)
+                    elseif AttachPos == "Front" then offset = CFrame.new(0, 0, -2) * CFrame.Angles(0, math.pi, 0)
+                    else offset = CFrame.new(0, -8, 0) * CFrame.Angles(math.rad(90), 0, 0) end
                     
-                    -- Calculate Offset
-                    local offsetCFrame
-                    if AttachPos == "Back" then
-                        offsetCFrame = CFrame.new(0, 0, 2) -- Behind
-                    else
-                        -- Front, facing them
-                        offsetCFrame = CFrame.new(0, 0, -2) * CFrame.Angles(0, math.pi, 0) 
-                    end
-                    
-                    -- Lock CFrame
-                    myRoot.CFrame = tRoot.CFrame * offsetCFrame
+                    myRoot.CFrame = tRoot.CFrame * offset
                     myRoot.AssemblyLinearVelocity = Vector3.zero
                     myRoot.Velocity = Vector3.zero
                 end
@@ -1243,6 +1337,7 @@ FunTab:Toggle("Attach to Player", false, function(v)
         end)
     end
 end)
+
 -- // KEYBINDS TAB //
 KeybindsTab:Binder("Toggle UI", Config.Binds.ToggleUI, function(k) Config.Binds.ToggleUI = k end)
 KeybindsTab:Binder("Phase", Config.Binds.Phase, function(k) Config.Binds.Phase = k end)
@@ -1298,7 +1393,6 @@ UserInputService.InputBegan:Connect(function(input, gpe)
         end)
     end
 end)
-
 -- Movement Loop (Fly, Speed, Jump)
 RunService.RenderStepped:Connect(function(deltaTime)
     if not LocalPlayer.Character then return end
@@ -1307,10 +1401,15 @@ RunService.RenderStepped:Connect(function(deltaTime)
     if not root or not hum then return end
 
     if Config.Toggles.Fly then
-        root.Anchored = true
-        hum.PlatformStand = true 
+        -- [[ FIX: DO NOT ANCHOR ]]
+        -- Keeping Anchored = false ensures the server updates your hitbox position
+        root.Anchored = false 
+        hum.PlatformStand = true -- Disables standard physics/animations
+        
         local moveDir = Vector3.zero
         local camCF = Camera.CFrame
+        
+        -- Calculate Direction
         if UserInputService:IsKeyDown(Enum.KeyCode.W) then moveDir = moveDir + camCF.LookVector end
         if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - camCF.LookVector end
         if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - camCF.RightVector end
@@ -1318,14 +1417,20 @@ RunService.RenderStepped:Connect(function(deltaTime)
         if UserInputService:IsKeyDown(Enum.KeyCode.Space) then moveDir = moveDir + Vector3.new(0, 1, 0) end
         if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then moveDir = moveDir - Vector3.new(0, 1, 0) end
         
+        -- Apply Movement
         if moveDir.Magnitude > 0 then
             moveDir = moveDir.Unit * (Config.Movement.FlySpeed * deltaTime)
             root.CFrame = root.CFrame + moveDir
         end
-        root.Velocity = Vector3.zero
+        
+        -- [[ FIX: PHYSICS FREEZE ]]
+        -- Instantly kill gravity and momentum so you don't fall
         root.AssemblyLinearVelocity = Vector3.zero
+        root.AssemblyAngularVelocity = Vector3.zero
+        root.Velocity = Vector3.zero 
 
     elseif Config.Toggles.SafeFly then
+        -- Safe Fly Logic (Unchanged, physics based)
         hum:ChangeState(Enum.HumanoidStateType.Physics)
         hum.PlatformStand = false
         local moveDir = Vector3.zero
