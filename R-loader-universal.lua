@@ -479,11 +479,23 @@ function Tab:Toggle(text, default, callback)
                 end)
             end
 
-            function Tab:Dropdown(text, callback)
+function Tab:Dropdown(text, callback)
                 local Frame = create("Frame", {Size = UDim2.new(1,0,0,35), BackgroundColor3 = theme.ButtonBg, BackgroundTransparency=0.2, Parent = TabFrame, ClipsDescendants=true})
                 roundify(Frame, 6)
                 local Header = create("TextButton", {Text = text .. " ▼", Size = UDim2.new(1,0,0,35), BackgroundTransparency=1, TextColor3=theme.Text, Font=theme.Font, TextSize=14, Parent=Frame})
-                local List = create("Frame", {Size=UDim2.new(1,0,0,0), Position=UDim2.new(0,0,0,35), BackgroundTransparency=1, Parent=Frame})
+                
+                -- [[ SCROLLBAR UPDATE ]]
+                -- Changed from "Frame" to "ScrollingFrame"
+                local List = create("ScrollingFrame", {
+                    Size=UDim2.new(1,0,1,-35), 
+                    Position=UDim2.new(0,0,0,35), 
+                    BackgroundTransparency=1, 
+                    Parent=Frame,
+                    CanvasSize = UDim2.new(0,0,0,0),
+                    AutomaticCanvasSize = Enum.AutomaticSize.Y, -- Auto-calculates scroll height
+                    ScrollBarThickness = 4,
+                    ScrollBarImageColor3 = theme.Accent
+                })
                 create("UIListLayout", {Parent=List})
                 
                 local function Refresh()
@@ -491,7 +503,12 @@ function Tab:Toggle(text, default, callback)
                     for _, p in pairs(Players:GetPlayers()) do
                         if p ~= LocalPlayer then
                             local OptBtn = create("TextButton", {Text = p.Name, Size = UDim2.new(1,0,0,30), BackgroundColor3 = theme.Panel, BackgroundTransparency=0.2, TextColor3 = theme.Text, Font = theme.Font, TextSize = 13, Parent = List})
-                            OptBtn.MouseButton1Click:Connect(function() callback(p.Name); Window:Notify("System", "Selected: "..p.Name) end)
+                            OptBtn.MouseButton1Click:Connect(function() 
+                                callback(p.Name)
+                                Window:Notify("System", "Selected: "..p.Name) 
+                                -- Optional: Close on select
+                                -- tween(Frame, {Size = UDim2.new(1,0,0,35)}, 0.2)
+                            end)
                         end
                     end
                 end
@@ -501,6 +518,7 @@ function Tab:Toggle(text, default, callback)
                     open = not open
                     if open then
                         Refresh()
+                        -- Expand to 200px (Scrolling area)
                         tween(Frame, {Size = UDim2.new(1,0,0, 200)}, 0.2)
                     else
                         tween(Frame, {Size = UDim2.new(1,0,0,35)}, 0.2)
@@ -872,6 +890,17 @@ MiscTab:Slider("Safe Fly Speed", 10, 200, Config.Movement.SafeFlySpeed, function
 
 MiscTab:Toggle("Noclip", Config.Toggles.Noclip, function(v) Config.Toggles.Noclip = v end)
 
+MiscTab:Toggle("Force 3rd Person", false, function(v)
+    if v then
+        LocalPlayer.CameraMode = Enum.CameraMode.Classic
+        LocalPlayer.CameraMaxZoomDistance = 100
+        LocalPlayer.CameraMinZoomDistance = 10 -- Forces camera back 10 studs
+    else
+        LocalPlayer.CameraMaxZoomDistance = 128
+        LocalPlayer.CameraMinZoomDistance = 0.5 -- Allows scrolling back in
+    end
+end)
+
 
 -- // FUN TAB & WEATHER SYSTEM //
 local FunTab = Window:CreateCategory("Fun", "🎉")
@@ -1059,6 +1088,23 @@ FunTab:Toggle("Enable Rain", Config.Fun.Rain, function(v)
         if RainConnection then RainConnection:Disconnect() RainConnection = nil end
         -- Clean up parts
         for _, v in pairs(WeatherFolder:GetChildren()) do if v.Name == "RL_Raindrop" then v:Destroy() end end
+    end
+end)
+
+-- [[ SPECTATE SYSTEM ]]
+FunTab:Label("--- Spectate ---")
+FunTab:Dropdown("Spectate Player", function(name)
+    local target = Players:FindFirstChild(name)
+    if target and target.Character then
+        workspace.CurrentCamera.CameraSubject = target.Character:FindFirstChild("Humanoid")
+        Window:Notify("System", "Spectating: " .. name)
+    end
+end)
+
+FunTab:Button("Stop Spectating", function()
+    if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+        workspace.CurrentCamera.CameraSubject = LocalPlayer.Character.Humanoid
+        Window:Notify("System", "Stopped Spectating")
     end
 end)
 
