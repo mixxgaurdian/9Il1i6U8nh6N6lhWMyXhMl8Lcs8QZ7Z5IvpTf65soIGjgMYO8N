@@ -543,7 +543,147 @@ local TPTab = Window:CreateCategory("Players", "👥")
 local MiscTab = Window:CreateCategory("Misc", "⚙️")
 local KeybindsTab = Window:CreateCategory("Binds", "⌨️")
 
--- // MAIN TAB //
+-- [[ MODULAR CMD SYSTEM ]] --
+local CMD_Enabled = false
+local CMD_Frame = nil
+local CMD_Input = nil
+local CMD_Scroll = nil 
+local CommandList = {} -- Now empty, filled by CMD_Add
+
+-- 1. The "Add Command" Function
+-- Paste CMD_Add("name", "desc", function(args) ... end) anywhere to add commands!
+getgenv().CMD_Add = function(name, desc, callback)
+    -- Prevent duplicates: Remove if exists
+    for i, cmd in pairs(CommandList) do
+        if cmd.name == name:lower() then table.remove(CommandList, i) break end
+    end
+    -- Add new command
+    table.insert(CommandList, {name = name:lower(), desc = desc, func = callback})
+end
+
+-- 2. Helper to split "speed 100" into "speed" and {"100"}
+local function ParseCommand(text)
+    local args = {}
+    for word in text:gmatch("%S+") do table.insert(args, word) end
+    local cmd = table.remove(args, 1)
+    return cmd and cmd:lower() or "", args
+end
+
+-- 3. CMD UI & Logic
+getgenv().ToggleCMDMode = function(state)
+    CMD_Enabled = state
+    
+    -- Hide Main UI when CMD is open
+    if Window and Window.Container then
+        Window.Container.Visible = not state 
+    end
+
+    if state then
+        -- Initialize UI if missing
+        if not CMD_Frame then
+            local Screen = Window.ScreenGui
+            
+            -- Bar
+            CMD_Frame = Instance.new("Frame", Screen)
+            CMD_Frame.Name = "CMD_Bar"
+            CMD_Frame.Size = UDim2.new(0, 300, 0, 35)
+            CMD_Frame.Position = UDim2.new(1, -310, 1, -45) 
+            CMD_Frame.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+            CMD_Frame.BorderSizePixel = 0
+            Instance.new("UICorner", CMD_Frame).CornerRadius = UDim.new(0, 6)
+            Instance.new("UIStroke", CMD_Frame).Color = Color3.fromRGB(138, 100, 255)
+            
+            -- Input
+            CMD_Input = Instance.new("TextBox", CMD_Frame)
+            CMD_Input.Size = UDim2.new(1, -20, 1, 0)
+            CMD_Input.Position = UDim2.new(0, 10, 0, 0)
+            CMD_Input.BackgroundTransparency = 1
+            CMD_Input.Text = ""
+            CMD_Input.PlaceholderText = "Type 'ui' to exit..."
+            CMD_Input.TextColor3 = Color3.fromRGB(255, 255, 255)
+            CMD_Input.Font = Enum.Font.Code
+            CMD_Input.TextSize = 14
+            CMD_Input.TextXAlignment = Enum.TextXAlignment.Left
+
+            -- Scrollable Popup
+            CMD_Scroll = Instance.new("ScrollingFrame", CMD_Frame)
+            CMD_Scroll.Size = UDim2.new(1, 0, 0, 0) -- Auto resized
+            CMD_Scroll.Position = UDim2.new(0, 0, 0, 0) -- Auto positioned
+            CMD_Scroll.BackgroundColor3 = Color3.fromRGB(15, 15, 25)
+            CMD_Scroll.BackgroundTransparency = 0.1
+            CMD_Scroll.Visible = false
+            CMD_Scroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+            CMD_Scroll.ScrollBarThickness = 2
+            Instance.new("UICorner", CMD_Scroll).CornerRadius = UDim.new(0, 6)
+            Instance.new("UIListLayout", CMD_Scroll).SortOrder = Enum.SortOrder.LayoutOrder
+            Instance.new("UIPadding", CMD_Scroll).PaddingTop = UDim.new(0, 5)
+
+            -- Update List Logic
+            local function UpdateSuggestions(filter)
+                for _, v in pairs(CMD_Scroll:GetChildren()) do if v:IsA("TextButton") then v:Destroy() end end
+                local count = 0
+                
+                for _, cmd in pairs(CommandList) do
+                    if filter == "" or cmd.name:find(filter:lower()) then
+                        count = count + 1
+                        local btn = Instance.new("TextButton", CMD_Scroll)
+                        btn.Size = UDim2.new(1, -10, 0, 25)
+                        btn.BackgroundTransparency = 1
+                        btn.Text = "  " .. cmd.name .. "  -  " .. (cmd.desc or "")
+                        btn.TextColor3 = Color3.fromRGB(200, 200, 200)
+                        btn.TextXAlignment = Enum.TextXAlignment.Left
+                        btn.Font = Enum.Font.Code
+                        btn.TextSize = 13
+                        btn.MouseButton1Click:Connect(function()
+                            CMD_Input.Text = cmd.name .. " "
+                            CMD_Input:CaptureFocus()
+                        end)
+                    end
+                end
+                
+                local height = math.min(count * 25 + 10, 250)
+                CMD_Scroll.Size = UDim2.new(1, 0, 0, height)
+                CMD_Scroll.Position = UDim2.new(0, 0, 0, -height - 5)
+                CMD_Scroll.Visible = (count > 0)
+            end
+
+            -- Event Listeners
+            CMD_Frame.MouseEnter:Connect(function() UpdateSuggestions(CMD_Input.Text) end)
+            CMD_Frame.MouseLeave:Connect(function() if not CMD_Input:IsFocused() then CMD_Scroll.Visible = false end end)
+            CMD_Input.Focused:Connect(function() UpdateSuggestions(CMD_Input.Text) end)
+            CMD_Input.Changed:Connect(function(p) if p == "Text" then UpdateSuggestions(CMD_Input.Text) end end)
+            
+            CMD_Input.FocusLost:Connect(function(enter) 
+                if not enter then CMD_Scroll.Visible = false; return end
+                local cmdName, args = ParseCommand(CMD_Input.Text)
+                local found = false
+                
+                for _, cmd in pairs(CommandList) do
+                    if cmd.name == cmdName then
+                        local msg = cmd.func(args) -- Run the command!
+                        Window:Notify("CMD", msg)
+                        found = true
+                        break
+                    end
+                end
+                
+                if not found and cmdName ~= "" then Window:Notify("Error", "Unknown: " .. cmdName) end
+                CMD_Input.Text = ""
+                CMD_Scroll.Visible = false
+            end)
+        end
+        CMD_Frame.Visible = true
+        Window:Notify("CMD", "Type 'ui' to exit")
+    else
+        if CMD_Frame then CMD_Frame.Visible = false end
+        if Window and Window.Container then Window.Container.Visible = true end
+    end
+end
+
+-- Default System Commands
+CMD_Add("ui", "Restore Main UI", function() ToggleCMDMode(false); return "Restoring UI..." end)
+CMD_Add("exit", "Restore Main UI", function() ToggleCMDMode(false); return "Restoring UI..." end)
+
 -- // MAIN TAB //
 MainTab:Label("Welcome to R-Loader Universal")
 MainTab:Label("User: " .. LocalPlayer.Name)
@@ -570,6 +710,12 @@ TgtBtn = CombatTab:Button("Target Mode: " .. Config.Aimbot.TargetMode, function(
     -- 2. Update the button text immediately
     TgtBtn.Text = "Target Mode: " .. Config.Aimbot.TargetMode
     Window:Notify("System", "Target Set to: " .. Config.Aimbot.TargetMode)
+end)
+
+-- [[ TEAM CHECK TOGGLE ]]
+CombatTab:Toggle("Team Check", Config.Aimbot.TeamCheck or false, function(v) 
+    Config.Aimbot.TeamCheck = v 
+    Window:Notify("System", "Team Check: " .. tostring(v))
 end)
 
 CombatTab:Toggle("Object Lockon", Config.Aimbot.ObjectLockon, function(v) 
@@ -888,7 +1034,14 @@ else
     Players.PlayerAdded:Connect(ConnectChat)
 end
 
+
 -- // MISC TAB //
+
+MiscTab:Label("--- Modes ---")
+MiscTab:Toggle("CMD Mode (BETA not fully tested)", false, function(v)
+    ToggleCMDMode(v)
+end)
+
 MiscTab:Toggle("Fly", Config.Toggles.Fly, function(v) 
     Config.Toggles.Fly = v 
     if not v then ResetMovement() end
@@ -1101,6 +1254,83 @@ FunTab:Toggle("Enable Rain", Config.Fun.Rain, function(v)
         if RainConnection then RainConnection:Disconnect() RainConnection = nil end
         -- Clean up parts
         for _, v in pairs(WeatherFolder:GetChildren()) do if v.Name == "RL_Raindrop" then v:Destroy() end end
+    end
+end)
+
+-- [[ AIR WALK - ANTI-ASCEND & NO FALL ]]
+local AirWalkPart = nil
+local AirWalkCon = nil
+local AirParticles = nil
+local LockedY = nil 
+
+FunTab:Toggle("Air Walk", false, function(v)
+    if v then
+        -- 1. Create Platform
+        AirWalkPart = Instance.new("Part")
+        AirWalkPart.Name = "RL_AirWalk"
+        AirWalkPart.Size = Vector3.new(6, 1, 6)
+        AirWalkPart.Transparency = 1 
+        AirWalkPart.Anchored = true
+        AirWalkPart.CanCollide = true
+        AirWalkPart.Parent = workspace
+
+        -- 2. Particles
+        AirParticles = Instance.new("ParticleEmitter")
+        AirParticles.Parent = AirWalkPart
+        AirParticles.Texture = "rbxassetid://4758322939"
+        AirParticles.Color = ColorSequence.new(Color3.new(1,1,1))
+        AirParticles.Size = NumberSequence.new(1.5)
+        AirParticles.Rate = 500
+        AirParticles.Lifetime = NumberRange.new(0.5, 1)
+        AirParticles.Transparency = NumberSequence.new(0.5, 1)
+        AirParticles.Enabled = false
+
+        -- 3. Logic Loop
+        AirWalkCon = RunService.Heartbeat:Connect(function()
+            local char = LocalPlayer.Character
+            local root = char and char:FindFirstChild("HumanoidRootPart")
+            local hum = char and char:FindFirstChild("Humanoid")
+
+            if root and hum and AirWalkPart then
+                local vel = root.AssemblyLinearVelocity
+                
+                -- Raycast for Real Ground
+                local rayParams = RaycastParams.new()
+                rayParams.FilterDescendantsInstances = {char, AirWalkPart}
+                rayParams.FilterType = Enum.RaycastFilterType.Exclude
+                local hitGround = workspace:Raycast(root.Position, Vector3.new(0, -6, 0), rayParams)
+
+                -- [[ 1. RESET CONDITIONS (Jump/Land) ]]
+                if vel.Y > 0 or hitGround then
+                    -- If jumping OR on real ground, hide platform
+                    AirWalkPart.Position = Vector3.new(0, -1000, 0)
+                    AirParticles.Enabled = false
+                    LockedY = nil 
+
+                -- [[ 2. AIR WALK ACTIVE ]]
+                else
+                    -- Capture Height ONCE
+                    if LockedY == nil then
+                        -- Calculation: Exact Foot Level - 0.5 stud buffer to prevent collision pushing
+                        LockedY = root.Position.Y - (hum.HipHeight + (root.Size.Y / 2) + 0.5)
+                    end
+
+                    -- Update Platform (X/Z follows player, Y is FROZEN)
+                    AirWalkPart.CFrame = CFrame.new(root.Position.X, LockedY, root.Position.Z)
+                    AirParticles.Enabled = true
+                    
+                    -- [[ THE FIX: DISABLE FALLING ]]
+                    -- If we are supposed to be Air Walking, force Y velocity to 0.
+                    -- This prevents gravity from pulling you down, and physics from pushing you up.
+                    root.AssemblyLinearVelocity = Vector3.new(vel.X, 0, vel.Z)
+                end
+            end
+        end)
+    else
+        -- Cleanup
+        if AirWalkCon then AirWalkCon:Disconnect(); AirWalkCon = nil end
+        if AirWalkPart then AirWalkPart:Destroy(); AirWalkPart = nil end
+        LockedY = nil
     end
 end)
 
@@ -1384,8 +1614,19 @@ UserInputService.InputBegan:Connect(function(input, gpe)
         Config.Toggles.Noclip = not Config.Toggles.Noclip
         Window:Notify("System", "Noclip: " .. tostring(Config.Toggles.Noclip))
     
-    elseif input.KeyCode == Config.Binds.Teleport then
+elseif input.KeyCode == Config.Binds.Teleport then
         if not Config.Movement.SavedCFrame then return end
+        
+        -- [[ FIX: ADD INSTANT TP CHECK ]]
+        if Config.Movement.InstantTP then
+            if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                LocalPlayer.Character.HumanoidRootPart.CFrame = Config.Movement.SavedCFrame
+                Window:Notify("System", "Teleported Instantly")
+            end
+            return -- Exit function so we don't run the slow tween below
+        end
+
+        -- Legacy Tween Logic (Runs only if InstantTP is false)
         if isTeleporting then isTeleporting = false; Window:Notify("System", "TP Stopped"); return end
         
         isTeleporting = true
@@ -1463,7 +1704,6 @@ RunService.RenderStepped:Connect(function(deltaTime)
     end
 end)
 
--- Noclip & Stats Loop
 -- Noclip & Stats Loop
 local lastNoclipState = false
 RunService.Stepped:Connect(function()
@@ -1599,10 +1839,11 @@ RunService.RenderStepped:Connect(function()
     if aiming and Config.Aimbot.Enabled then
         local closest, maxDist = nil, Config.Aimbot.FOV
         local mousePos = UserInputService:GetMouseLocation()
+        
         -- 1. OBJECT LOCKON LOGIC
         if Config.Aimbot.ObjectLockon then
             for _, obj in pairs(InteractableCache) do
-                if obj and obj.Parent then -- Ensure valid
+                if obj and obj.Parent then 
                     local targetPart = obj:IsA("Model") and obj.PrimaryPart or obj:FindFirstChild("Handle") or obj
                     if targetPart and targetPart:IsA("BasePart") then
                         local pos, vis = Camera:WorldToViewportPoint(targetPart.Position)
@@ -1618,7 +1859,14 @@ RunService.RenderStepped:Connect(function()
         -- 2. PLAYER LOCKON LOGIC (Only if no object found or Object Lockon is off)
         if not closest then
             for _, p in pairs(Players:GetPlayers()) do
-                if p ~= LocalPlayer and p.Character and not Config.Aimbot.Whitelist[p.Name] then
+                -- [[ TEAM CHECK LOGIC ]]
+                -- Checks if TeamCheck is ON, and if teams match (ignoring nil teams)
+                local isTeammate = false
+                if Config.Aimbot.TeamCheck and p.Team and LocalPlayer.Team and p.Team == LocalPlayer.Team then
+                    isTeammate = true
+                end
+
+                if p ~= LocalPlayer and p.Character and not Config.Aimbot.Whitelist[p.Name] and not isTeammate then
                     -- Determine Target Part
                     local targetP = nil
                     if Config.Aimbot.TargetMode == "Head" then targetP = p.Character:FindFirstChild("Head")
@@ -1653,6 +1901,290 @@ RunService.RenderStepped:Connect(function()
         end
     end
 end)
+
+-- // AUTO-ADD FEATURES TO CMD (FIXED LOGIC) // --------------------------------------------
+
+-- [ MOVEMENT ]
+CMD_Add("speed", "Set Speed [val] (Empty=Off)", function(args)
+    local val = tonumber(args[1])
+    if val then
+        Config.Toggles.Speed = true
+        Config.Movement.WalkSpeed = val
+        if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+            LocalPlayer.Character.Humanoid.WalkSpeed = val
+        end
+        return "Speed set to " .. val
+    else
+        Config.Toggles.Speed = false
+        if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+            LocalPlayer.Character.Humanoid.WalkSpeed = 16 
+        end
+        return "Speed Reset (16)"
+    end
+end)
+
+CMD_Add("jump", "Set Jump [val] (Empty=Off)", function(args)
+    local val = tonumber(args[1])
+    if val then
+        Config.Toggles.Jump = true
+        Config.Movement.JumpPower = val
+        if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+            LocalPlayer.Character.Humanoid.UseJumpPower = true
+            LocalPlayer.Character.Humanoid.JumpPower = val
+        end
+        return "Jump set to " .. val
+    else
+        Config.Toggles.Jump = false
+        if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+            LocalPlayer.Character.Humanoid.JumpPower = 50
+        end
+        return "Jump Reset (50)"
+    end
+end)
+
+CMD_Add("fly", "Toggle Fly", function() 
+    Config.Toggles.Fly = not Config.Toggles.Fly
+    if not Config.Toggles.Fly then ResetMovement() end
+    return "Fly: "..(Config.Toggles.Fly and "ON" or "OFF")
+end)
+
+CMD_Add("flyspeed", "Set Fly Speed [val]", function(args)
+    local val = tonumber(args[1])
+    if val then Config.Movement.FlySpeed = val; return "FlySpeed: "..val end
+    return "Current FlySpeed: "..Config.Movement.FlySpeed
+end)
+
+CMD_Add("noclip", "Toggle Noclip", function() 
+    Config.Toggles.Noclip = not Config.Toggles.Noclip
+    return "Noclip: "..(Config.Toggles.Noclip and "ON" or "OFF")
+end)
+
+CMD_Add("safefly", "Toggle Safe Fly", function() 
+    Config.Toggles.SafeFly = not Config.Toggles.SafeFly
+    if not Config.Toggles.SafeFly then ResetMovement() end
+    return "SafeFly: "..(Config.Toggles.SafeFly and "ON" or "OFF")
+end)
+
+CMD_Add("instanttp", "Toggle Instant TP", function()
+    Config.Movement.InstantTP = not Config.Movement.InstantTP
+    return "InstantTP: "..(Config.Movement.InstantTP and "ON" or "OFF")
+end)
+
+CMD_Add("phase", "Phase Forward", function()
+    local char = LocalPlayer.Character
+    if char and char:FindFirstChild("HumanoidRootPart") then
+        local cam = workspace.CurrentCamera
+        char.HumanoidRootPart.CFrame = char.HumanoidRootPart.CFrame + (cam.CFrame.LookVector * Config.Movement.PhaseDist)
+        return "Phased " .. Config.Movement.PhaseDist .. " studs"
+    end
+    return "Character not found"
+end)
+
+CMD_Add("time", "Set Time (0-24)", function(args)
+    local val = tonumber(args[1])
+    if val then 
+        Config.Fun.Time = val
+        game:GetService("Lighting").ClockTime = val
+        return "Time set to "..val 
+    end
+    return "Invalid Time"
+end)
+
+CMD_Add("rain", "Toggle Rain", function()
+    Config.Fun.Rain = not Config.Fun.Rain
+    local v = Config.Fun.Rain -- New State
+    
+    if v then
+        if Config.Fun.Snow then -- Turn off Snow if active
+            Config.Fun.Snow = false 
+            if SnowConnection then SnowConnection:Disconnect() SnowConnection = nil end
+        end
+        SetCustomSky("Rain")
+        if not RainConnection then
+            RainConnection = RunService.Heartbeat:Connect(function()
+                for i = 1, 3 do CreateRainDrop() end
+            end)
+        end
+    else
+        SetCustomSky(nil)
+        if RainConnection then RainConnection:Disconnect() RainConnection = nil end
+        -- Clean up parts
+        if WeatherFolder then
+            for _, obj in pairs(WeatherFolder:GetChildren()) do if obj.Name == "RL_Raindrop" then obj:Destroy() end end
+        end
+    end
+    return "Rain: "..(v and "ON" or "OFF")
+end)
+
+CMD_Add("snow", "Toggle Snow", function()
+    Config.Fun.Snow = not Config.Fun.Snow
+    local v = Config.Fun.Snow
+    
+    if v then
+        if Config.Fun.Rain then -- Turn off Rain if active
+            Config.Fun.Rain = false 
+            if RainConnection then RainConnection:Disconnect() RainConnection = nil end
+        end
+        SetCustomSky("Snow")
+        if not SnowConnection then
+            SnowConnection = RunService.Heartbeat:Connect(function()
+                if math.random() < 0.3 then 
+                    CreateSnowflake()
+                    if math.random() < 0.5 then CreateSnowflake() end
+                end
+            end)
+        end
+    else
+        SetCustomSky(nil)
+        if SnowConnection then SnowConnection:Disconnect() SnowConnection = nil end
+        if WeatherFolder then
+            for _, obj in pairs(WeatherFolder:GetChildren()) do if obj.Name == "RL_Snowflake" then obj:Destroy() end end
+        end
+    end
+    return "Snow: "..(v and "ON" or "OFF")
+end)
+
+CMD_Add("3rdperson", "Force 3rd Person View", function(args)
+    LocalPlayer.CameraMode = Enum.CameraMode.Classic
+    LocalPlayer.CameraMaxZoomDistance = 100
+    LocalPlayer.CameraMinZoomDistance = 10
+    return "Forced 3rd Person"
+end)
+
+CMD_Add("resetview", "Reset Camera View", function(args)
+    LocalPlayer.CameraMaxZoomDistance = 128
+    LocalPlayer.CameraMinZoomDistance = 0.5
+    return "Camera Reset"
+end)
+
+-- [ PLAYER ACTIONS ]
+CMD_Add("spectate", "Spectate [player]", function(args)
+    local name = args[1]
+    if not name then return "Usage: spectate [name]" end
+    local target = nil
+    for _, p in pairs(Players:GetPlayers()) do
+        if p.Name:lower():sub(1, #name) == name:lower() then target = p break end
+    end
+    if target and target.Character then
+        workspace.CurrentCamera.CameraSubject = target.Character:FindFirstChild("Humanoid")
+        return "Spectating: "..target.Name
+    end
+    return "Player not found"
+end)
+
+CMD_Add("unspectate", "Stop Spectating", function()
+    if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+        workspace.CurrentCamera.CameraSubject = LocalPlayer.Character.Humanoid
+    end
+    return "View Reset"
+end)
+
+CMD_Add("fling", "Fling [player]", function(args)
+    local name = args[1]
+    if not name then return "Usage: fling [name]" end
+    
+    -- 1. Find Player
+    local target = nil
+    for _, p in pairs(Players:GetPlayers()) do
+        if p.Name:lower():sub(1, #name) == name:lower() then target = p break end
+    end
+    
+    if target then
+        -- 2. Setup Variables matching the logic used in UI
+        FlingTargetName = target.Name
+        FlingingSingle = true
+        
+        -- 3. Start Fling Loop (Duplicated logic to ensure it runs without UI interaction)
+        Window:Notify("System", "Flinging: " .. target.Name)
+        EnablePhysics(true)
+        
+        task.spawn(function()
+            while FlingingSingle do
+                -- Logic: Check target valid -> ProcessFling
+                if target and target.Character and target.Character:FindFirstChild("HumanoidRootPart") then
+                    ProcessFling(target.Character.HumanoidRootPart)
+                end
+                RunService.Heartbeat:Wait() 
+            end
+            -- Cleanup
+            EnablePhysics(false)
+            if SafePos and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                LocalPlayer.Character.HumanoidRootPart.CFrame = SafePos
+            end
+        end)
+        return "Flinging: "..target.Name
+    end
+    return "Player not found"
+end)
+
+CMD_Add("stopfling", "Stop Flinging", function()
+    FlingingSingle = false
+    FlingingCycle = false
+    return "Fling Stopped"
+end)
+
+CMD_Add("tp", "TP to [player]", function(args)
+    local name = args[1]
+    if not name then return "Usage: tp [name]" end
+    local target = nil
+    for _, p in pairs(Players:GetPlayers()) do
+        if p.Name:lower():sub(1, #name) == name:lower() then target = p break end
+    end
+    if target then
+        TeleportToPlayer(target) -- Reuses the function defined in TPTab
+        return "Teleporting to "..target.Name
+    end
+    return "Player not found"
+end)
+
+-- [ COMBAT ]
+CMD_Add("aimbot", "Toggle Aimbot", function() 
+    Config.Aimbot.Enabled = not Config.Aimbot.Enabled
+    return "Aimbot: "..(Config.Aimbot.Enabled and "ON" or "OFF")
+end)
+
+CMD_Add("teamcheck", "Toggle Team Check", function() 
+    Config.Aimbot.TeamCheck = not Config.Aimbot.TeamCheck
+    return "TeamCheck: "..(Config.Aimbot.TeamCheck and "ON" or "OFF") 
+end)
+
+CMD_Add("fov", "Set Aimbot FOV [val]", function(args)
+    local val = tonumber(args[1])
+    if val then Config.Aimbot.FOV = val; return "FOV set to "..val end
+    return "Current FOV: "..Config.Aimbot.FOV
+end)
+
+CMD_Add("target", "Set Target (Head/Body)", function(args)
+    local mode = args[1] and args[1]:lower()
+    if mode == "head" then Config.Aimbot.TargetMode = "Head"
+    elseif mode == "body" then Config.Aimbot.TargetMode = "Body"
+    else Config.Aimbot.TargetMode = "Both" end
+    return "Target: "..Config.Aimbot.TargetMode
+end)
+
+-- [ VISUALS / ESP ]
+CMD_Add("esp", "Toggle ESP Master", function(args) 
+    Config.ESP.Enabled = not Config.ESP.Enabled
+    return "ESP: "..(Config.ESP.Enabled and "ON" or "OFF") 
+end)
+CMD_Add("names", "Toggle Name ESP", function(args) 
+    Config.ESP.ShowNames = not Config.ESP.ShowNames
+    return "Names: "..(Config.ESP.ShowNames and "ON" or "OFF") 
+end)
+CMD_Add("objects", "Toggle Object ESP", function(args) 
+    Config.ESP.ShowObjects = not Config.ESP.ShowObjects
+    return "Objects: "..(Config.ESP.ShowObjects and "ON" or "OFF") 
+end)
+CMD_Add("fullbright", "Toggle Fullbright", function(args) 
+    Config.ESP.Fullbright = not Config.ESP.Fullbright
+    if ToggleFullbright then ToggleFullbright(Config.ESP.Fullbright) end
+    return "Fullbright: "..(Config.ESP.Fullbright and "ON" or "OFF") 
+end)
+
+-- [ SYSTEM ]
+CMD_Add("ui", "Close CMD & Show UI", function(args) ToggleCMDMode(false); return "Restoring UI..." end)
+CMD_Add("exit", "Close CMD & Show UI", function(args) ToggleCMDMode(false); return "Restoring UI..." end)
+
 
 Window:Notify("System", "R-Loader Universal Injected")
 
