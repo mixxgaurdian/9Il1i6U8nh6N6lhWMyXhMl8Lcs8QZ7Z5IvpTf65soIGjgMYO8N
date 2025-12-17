@@ -926,30 +926,86 @@ FunTab:Toggle("Enable Rain", Config.Fun.Rain, function(v)
     Config.Fun.Rain = v; if v then Config.Fun.Snow = false; if SnowConnection then SnowConnection:Disconnect() end SetCustomSky("Rain"); if not RainConnection then RainConnection = RunService.Heartbeat:Connect(function() for i = 1, 3 do CreateRainDrop() end end) end else SetCustomSky(nil); if RainConnection then RainConnection:Disconnect(); RainConnection = nil end end
 end)
 
--- [[ AIR WALK ]]
-local AirWalkPart, AirWalkCon, AirParticles, LockedY = nil, nil, nil, nil
+-- [[ AIR WALK - ANTI-ASCEND & NO FALL + DESCEND ]]
+local AirWalkPart = nil
+local AirWalkCon = nil
+local AirParticles = nil
+local LockedY = nil 
+local UIS = game:GetService("UserInputService") 
+
 FunTab:Toggle("Air Walk", false, function(v)
     if v then
-        AirWalkPart = Instance.new("Part", workspace); AirWalkPart.Name = "RL_AirWalk"; AirWalkPart.Size = Vector3.new(6, 1, 6); AirWalkPart.Transparency = 1; AirWalkPart.Anchored = true
-        AirParticles = Instance.new("ParticleEmitter", AirWalkPart); AirParticles.Texture = "rbxassetid://4758322939"; AirParticles.Color = ColorSequence.new(Color3.new(1,1,1)); AirParticles.Enabled = false
+        -- 1. Create Platform
+        AirWalkPart = Instance.new("Part")
+        AirWalkPart.Name = "RL_AirWalk"
+        AirWalkPart.Size = Vector3.new(6, 1, 6)
+        AirWalkPart.Transparency = 1 
+        AirWalkPart.Anchored = true
+        AirWalkPart.CanCollide = true
+        AirWalkPart.Parent = workspace
+
+        -- 2. Particles
+        AirParticles = Instance.new("ParticleEmitter")
+        AirParticles.Parent = AirWalkPart
+        AirParticles.Texture = "rbxassetid://4758322939"
+        AirParticles.Color = ColorSequence.new(Color3.new(1,1,1))
+        AirParticles.Size = NumberSequence.new(1.5)
+        AirParticles.Rate = 500
+        AirParticles.Lifetime = NumberRange.new(0.5, 1)
+        AirParticles.Transparency = NumberSequence.new(0.5, 1)
+        AirParticles.Enabled = false
+
+        -- 3. Logic Loop
         AirWalkCon = RunService.Heartbeat:Connect(function()
-            local char = LocalPlayer.Character; local root = char and char:FindFirstChild("HumanoidRootPart")
-            if root and AirWalkPart then
-                local vel = root.AssemblyLinearVelocity; local hitGround = workspace:Raycast(root.Position, Vector3.new(0, -6, 0), RaycastParams.new())
-                if vel.Y > 0 or hitGround then AirWalkPart.Position = Vector3.new(0, -1000, 0); AirParticles.Enabled = false; LockedY = nil
+            local char = LocalPlayer.Character
+            local root = char and char:FindFirstChild("HumanoidRootPart")
+            local hum = char and char:FindFirstChild("Humanoid")
+
+            if root and hum and AirWalkPart then
+                local vel = root.AssemblyLinearVelocity
+                
+                -- Raycast for Real Ground
+                local rayParams = RaycastParams.new()
+                rayParams.FilterDescendantsInstances = {char, AirWalkPart}
+                rayParams.FilterType = Enum.RaycastFilterType.Exclude
+                local hitGround = workspace:Raycast(root.Position, Vector3.new(0, -6, 0), rayParams)
+
+                -- [[ 1. RESET CONDITIONS (Jump/Land) ]]
+                if vel.Y > 0 or hitGround then
+                    -- If jumping OR on real ground, hide platform
+                    AirWalkPart.Position = Vector3.new(0, -1000, 0)
+                    AirParticles.Enabled = false
+                    LockedY = nil 
+
+                -- [[ 2. AIR WALK ACTIVE ]]
                 else
-                    if LockedY == nil then LockedY = root.Position.Y - (char.Humanoid.HipHeight + (root.Size.Y / 2) + 0.5) end
-                    if UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then LockedY = LockedY - 0.5; root.AssemblyLinearVelocity = Vector3.new(vel.X, -30, vel.Z)
-                    else root.AssemblyLinearVelocity = Vector3.new(vel.X, 0, vel.Z) end
-                    AirWalkPart.CFrame = CFrame.new(root.Position.X, LockedY, root.Position.Z); AirParticles.Enabled = true
+                    -- Capture Height ONCE
+                    if LockedY == nil then
+                        LockedY = root.Position.Y - (hum.HipHeight + (root.Size.Y / 2) + 0.5)
+                    end
+
+                    -- [[ DESCEND LOGIC ]] --
+                    if UIS:IsKeyDown(Enum.KeyCode.LeftControl) then
+                        LockedY = LockedY - 0.5 -- Lower the platform
+                        root.AssemblyLinearVelocity = Vector3.new(vel.X, -30, vel.Z) -- Force player down
+                    else
+                        -- Freeze Y (Normal Air Walk)
+                        root.AssemblyLinearVelocity = Vector3.new(vel.X, 0, vel.Z)
+                    end
+
+                    -- Update Platform Position
+                    AirWalkPart.CFrame = CFrame.new(root.Position.X, LockedY, root.Position.Z)
+                    AirParticles.Enabled = true
                 end
             end
         end)
     else
-        if AirWalkCon then AirWalkCon:Disconnect(); AirWalkCon = nil end; if AirWalkPart then AirWalkPart:Destroy(); AirWalkPart = nil end; LockedY = nil
+        -- Cleanup
+        if AirWalkCon then AirWalkCon:Disconnect(); AirWalkCon = nil end
+        if AirWalkPart then AirWalkPart:Destroy(); AirWalkPart = nil end
+        LockedY = nil
     end
 end)
-
 -- [[ SPECTATE SYSTEM ]]
 FunTab:Label("--- Spectate ---")
 FunTab:Dropdown("Spectate Player", function(name) local t = Players:FindFirstChild(name) if t and t.Character then workspace.CurrentCamera.CameraSubject = t.Character.Humanoid end end)
