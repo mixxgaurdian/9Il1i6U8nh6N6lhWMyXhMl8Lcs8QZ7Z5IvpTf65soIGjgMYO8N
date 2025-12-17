@@ -1054,7 +1054,19 @@ MiscTab:Toggle("Enable Safe Fly", Config.Toggles.SafeFly, function(v)
 end)
 MiscTab:Slider("Safe Fly Speed", 10, 200, Config.Movement.SafeFlySpeed, function(v) Config.Movement.SafeFlySpeed = v end)
 
-
+MiscTab:Toggle("Force Shiftlock", false, function(v)
+    LocalPlayer.DevEnableMouseLock = v
+    
+    -- Optional: Loop to keep it enabled if the game tries to fight back
+    if v then
+        task.spawn(function()
+            while LocalPlayer.DevEnableMouseLock == false and v do
+                LocalPlayer.DevEnableMouseLock = true
+                task.wait(1)
+            end
+        end)
+    end
+end)
 
 MiscTab:Toggle("Noclip", Config.Toggles.Noclip, function(v) Config.Toggles.Noclip = v end)
 
@@ -2105,6 +2117,12 @@ CMD_Add("resetview", "Reset Camera View", function(args)
     LocalPlayer.CameraMaxZoomDistance = 128
     LocalPlayer.CameraMinZoomDistance = 0.5
     return "Camera Reset"
+end)
+
+CMD_Add("shiftlock", "Force Enable Shiftlock", function()
+    local state = not LocalPlayer.DevEnableMouseLock
+    LocalPlayer.DevEnableMouseLock = state
+    return "Shiftlock Allowed: "..(state and "TRUE" or "FALSE")
 end)
 
 -- [ PLAYER ACTIONS ]
