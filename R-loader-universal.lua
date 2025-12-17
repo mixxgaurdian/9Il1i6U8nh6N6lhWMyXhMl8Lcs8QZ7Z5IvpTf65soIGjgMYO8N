@@ -1303,11 +1303,12 @@ FunTab:Toggle("Enable Rain", Config.Fun.Rain, function(v)
     end
 end)
 
--- [[ AIR WALK - ANTI-ASCEND & NO FALL ]]
+-- [[ AIR WALK - ANTI-ASCEND & NO FALL + DESCEND ]]
 local AirWalkPart = nil
 local AirWalkCon = nil
 local AirParticles = nil
 local LockedY = nil 
+local UIS = game:GetService("UserInputService") -- Needed for input check
 
 FunTab:Toggle("Air Walk", false, function(v)
     if v then
@@ -1357,18 +1358,21 @@ FunTab:Toggle("Air Walk", false, function(v)
                 else
                     -- Capture Height ONCE
                     if LockedY == nil then
-                        -- Calculation: Exact Foot Level - 0.5 stud buffer to prevent collision pushing
                         LockedY = root.Position.Y - (hum.HipHeight + (root.Size.Y / 2) + 0.5)
                     end
 
-                    -- Update Platform (X/Z follows player, Y is FROZEN)
+                    -- [[ DESCEND LOGIC ]] --
+                    if UIS:IsKeyDown(Enum.KeyCode.LeftControl) then
+                        LockedY = LockedY - 0.5 -- Lower the platform
+                        root.AssemblyLinearVelocity = Vector3.new(vel.X, -30, vel.Z) -- Force player down
+                    else
+                        -- Freeze Y (Normal Air Walk)
+                        root.AssemblyLinearVelocity = Vector3.new(vel.X, 0, vel.Z)
+                    end
+
+                    -- Update Platform Position
                     AirWalkPart.CFrame = CFrame.new(root.Position.X, LockedY, root.Position.Z)
                     AirParticles.Enabled = true
-                    
-                    -- [[ THE FIX: DISABLE FALLING ]]
-                    -- If we are supposed to be Air Walking, force Y velocity to 0.
-                    -- This prevents gravity from pulling you down, and physics from pushing you up.
-                    root.AssemblyLinearVelocity = Vector3.new(vel.X, 0, vel.Z)
                 end
             end
         end)
