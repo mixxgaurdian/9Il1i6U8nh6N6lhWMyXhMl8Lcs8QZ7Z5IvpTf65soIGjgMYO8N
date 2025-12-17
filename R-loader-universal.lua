@@ -1399,6 +1399,84 @@ CMD_Add("noclip", "Toggle Noclip", function() Config.Toggles.Noclip = not Config
 CMD_Add("nograv", "Toggle No Gravity", function() Window:Notify("CMD", "Use UI for now"); return "Check UI" end)
 CMD_Add("phase", "Phase Forward", function() local c = LocalPlayer.Character; if c and c:FindFirstChild("HumanoidRootPart") then c.HumanoidRootPart.CFrame = c.HumanoidRootPart.CFrame + (Camera.CFrame.LookVector * Config.Movement.PhaseDist); return "Phased" end return "Error" end)
 CMD_Add("instanttp", "Toggle Instant TP", function() Config.Movement.InstantTP = not Config.Movement.InstantTP; return "InstantTP: "..tostring(Config.Movement.InstantTP) end)
+CMD_Add("airwalk", "Toggle AirWalk", function()
+    -- Check if it is currently running (based on the connection variable)
+    local isEnabled = (AirWalkCon ~= nil)
+    
+    -- If it's ON, we turn it OFF. If it's OFF, we turn it ON.
+    local newState = not isEnabled
+
+    -- Reuse the exact logic from your UI Toggle
+    if newState then
+        -- [[ TURN ON ]]
+        
+        -- 1. Create Platform
+        if AirWalkPart then AirWalkPart:Destroy() end -- Safety check
+        AirWalkPart = Instance.new("Part")
+        AirWalkPart.Name = "RL_AirWalk"
+        AirWalkPart.Size = Vector3.new(6, 1, 6)
+        AirWalkPart.Transparency = 1 
+        AirWalkPart.Anchored = true
+        AirWalkPart.CanCollide = true
+        AirWalkPart.Parent = workspace
+
+        -- 2. Particles
+        AirParticles = Instance.new("ParticleEmitter")
+        AirParticles.Parent = AirWalkPart
+        AirParticles.Texture = "rbxassetid://4758322939"
+        AirParticles.Color = ColorSequence.new(Color3.new(1,1,1))
+        AirParticles.Size = NumberSequence.new(1.5)
+        AirParticles.Rate = 500
+        AirParticles.Lifetime = NumberRange.new(0.5, 1)
+        AirParticles.Transparency = NumberSequence.new(0.5, 1)
+        AirParticles.Enabled = false
+
+        -- 3. Logic Loop
+        AirWalkCon = game:GetService("RunService").Heartbeat:Connect(function()
+            local char = game:GetService("Players").LocalPlayer.Character
+            local root = char and char:FindFirstChild("HumanoidRootPart")
+            local hum = char and char:FindFirstChild("Humanoid")
+
+            if root and hum and AirWalkPart then
+                local vel = root.AssemblyLinearVelocity
+                local rayParams = RaycastParams.new()
+                rayParams.FilterDescendantsInstances = {char, AirWalkPart}
+                rayParams.FilterType = Enum.RaycastFilterType.Exclude
+                local hitGround = workspace:Raycast(root.Position, Vector3.new(0, -6, 0), rayParams)
+
+                -- Reset if jumping or on ground
+                if vel.Y > 0 or hitGround then
+                    AirWalkPart.Position = Vector3.new(0, -1000, 0)
+                    AirParticles.Enabled = false
+                    LockedY = nil 
+                else
+                    -- Active AirWalk
+                    if LockedY == nil then
+                        LockedY = root.Position.Y - (hum.HipHeight + (root.Size.Y / 2) + 0.5)
+                    end
+
+                    -- Descend with Left Control
+                    if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.LeftControl) then
+                        LockedY = LockedY - 0.5
+                        root.AssemblyLinearVelocity = Vector3.new(vel.X, -30, vel.Z)
+                    else
+                        root.AssemblyLinearVelocity = Vector3.new(vel.X, 0, vel.Z)
+                    end
+
+                    AirWalkPart.CFrame = CFrame.new(root.Position.X, LockedY, root.Position.Z)
+                    AirParticles.Enabled = true
+                end
+            end
+        end)
+        return "AirWalk: ON"
+    else
+        -- [[ TURN OFF ]]
+        if AirWalkCon then AirWalkCon:Disconnect(); AirWalkCon = nil end
+        if AirWalkPart then AirWalkPart:Destroy(); AirWalkPart = nil end
+        LockedY = nil
+        return "AirWalk: OFF"
+    end
+end)
 
 -- Visuals
 CMD_Add("esp", "Toggle ESP", function() Config.ESP.Enabled = not Config.ESP.Enabled; return "ESP: "..tostring(Config.ESP.Enabled) end)
