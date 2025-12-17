@@ -1054,7 +1054,53 @@ MiscTab:Toggle("Enable Safe Fly", Config.Toggles.SafeFly, function(v)
 end)
 MiscTab:Slider("Safe Fly Speed", 10, 200, Config.Movement.SafeFlySpeed, function(v) Config.Movement.SafeFlySpeed = v end)
 
+
+
 MiscTab:Toggle("Noclip", Config.Toggles.Noclip, function(v) Config.Toggles.Noclip = v end)
+
+-- [[ NO GRAVITY (ANTI-FALL + FLY CONTROL) ]]
+local NoGravCon = nil
+local NoGravSpeed = 50 -- Default Speed
+
+MiscTab:Slider("No Grav Speed", 10, 200, NoGravSpeed, function(v)
+    NoGravSpeed = v
+end)
+
+MiscTab:Toggle("No Gravity", false, function(v)
+    if v then
+        NoGravCon = RunService.Heartbeat:Connect(function()
+            local char = LocalPlayer.Character
+            local root = char and char:FindFirstChild("HumanoidRootPart")
+            
+            if root then
+                local vel = root.AssemblyLinearVelocity
+                local targetY = vel.Y
+                
+                -- 1. Ascend (Space)
+                if UserInputService:IsKeyDown(Enum.KeyCode.Space) then
+                    targetY = NoGravSpeed
+                    
+                -- 2. Descend (Left Control)
+                elseif UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then
+                    targetY = -NoGravSpeed
+                    
+                -- 3. Neutral (Anti-Fall)
+                -- If not pressing buttons, allow Jumping (Positive Y) but stop Falling (Negative Y)
+                elseif vel.Y < -0.01 then
+                    targetY = 0
+                end
+                
+                -- Apply changes if needed
+                if targetY ~= vel.Y then
+                    root.AssemblyLinearVelocity = Vector3.new(vel.X, targetY, vel.Z)
+                end
+            end
+        end)
+    else
+        if NoGravCon then NoGravCon:Disconnect(); NoGravCon = nil end
+    end
+end)
+
 
 MiscTab:Toggle("Force 3rd Person", false, function(v)
     if v then
