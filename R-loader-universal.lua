@@ -188,7 +188,11 @@ local function LoadConfig()
             end
         end
 
-        if decoded.Aimbot then for k,v in pairs(decoded.Aimbot) do SafeLoad("Aimbot", k, v) end end
+        if decoded.Aimbot then 
+            for k,v in pairs(decoded.Aimbot) do SafeLoad("Aimbot", k, v) end 
+            -- [[ FIX: Force Whitelist Load ]] --
+            if decoded.Aimbot.Whitelist then Config.Aimbot.Whitelist = decoded.Aimbot.Whitelist end
+        end
         if decoded.ESP then for k,v in pairs(decoded.ESP) do SafeLoad("ESP", k, v) end end
         if decoded.Movement then for k,v in pairs(decoded.Movement) do SafeLoad("Movement", k, v) end end
         
@@ -652,7 +656,8 @@ VisualsTab:Toggle("Show Objects", Config.ESP.ShowObjects, function(v) Config.ESP
 local ObjBtn
 ObjBtn = VisualsTab:Button("Obj Mode: " .. Config.ESP.ObjectMode, function()
     if Config.ESP.ObjectMode == "Interactable" then Config.ESP.ObjectMode = "Tools"
-    elseif Config.ESP.ObjectMode == "Tools" then Config.ESP.ObjectMode = "All"
+    elseif Config.ESP.ObjectMode == "Tools" then Config.ESP.ObjectMode = "NPCs" -- Added NPCs
+    elseif Config.ESP.ObjectMode == "NPCs" then Config.ESP.ObjectMode = "All"
     else Config.ESP.ObjectMode = "Interactable" end
     ObjBtn.Text = "Obj Mode: " .. Config.ESP.ObjectMode
 end)
@@ -945,6 +950,7 @@ MiscTab:Toggle("No Gravity", false, function(v)
                 elseif vel.Y < -0.01 then targetY = 0 end
                 if targetY ~= vel.Y then root.AssemblyLinearVelocity = Vector3.new(vel.X, targetY, vel.Z) end
             end
+            SaveConfig()
         end)
     else
         if NoGravCon then NoGravCon:Disconnect(); NoGravCon = nil end
@@ -1331,22 +1337,49 @@ end)
 -- ESP System
 local ESPFolder = Instance.new("Folder", CoreGui); ESPFolder.Name = "RLoaderESP_Universal"
 local InteractableCache = {}
+
 local function CacheInteractable(obj)
+    -- 1. Check for Interactive Items
     if obj:IsA("ProximityPrompt") or obj:IsA("ClickDetector") then
-        if obj.Parent and (obj.Parent:IsA("BasePart") or obj.Parent:IsA("Model")) then table.insert(InteractableCache, obj.Parent) end
+        if obj.Parent and (obj.Parent:IsA("BasePart") or obj.Parent:IsA("Model")) then 
+            table.insert(InteractableCache, obj.Parent) 
+        end
+    -- 2. Check for NPCs (Models with Humanoids that are NOT players)
+    elseif obj:IsA("Model") then
+        -- We wait a split second to ensure children load (like Humanoid)
+        task.delay(0.1, function()
+            if obj:FindFirstChild("Humanoid") and not Players:GetPlayerFromCharacter(obj) then
+                table.insert(InteractableCache, obj)
+            end
+        end)
     end
 end
+
 for _, descendant in pairs(workspace:GetDescendants()) do CacheInteractable(descendant) end
 workspace.DescendantAdded:Connect(CacheInteractable)
 
 RunService.RenderStepped:Connect(function()
+    -- [[ PLAYER ESP ]] --
     if Config.ESP.Enabled then
         for _, plr in pairs(Players:GetPlayers()) do
             if plr ~= LocalPlayer and plr.Character and plr.Character:FindFirstChild("Head") then
-                local hlName = plr.Name .. "_Highlight"; local hl = ESPFolder:FindFirstChild(hlName)
+                local hlName = plr.Name .. "_Highlight"
+                local hl = ESPFolder:FindFirstChild(hlName)
                 if not hl then hl = Instance.new("Highlight", ESPFolder); hl.Name = hlName; hl.FillTransparency = 0.5; hl.OutlineTransparency = 0 end
-                hl.Adornee = plr.Character; hl.FillColor = Color3.fromRGB(Config.ESP.Fill.R, Config.ESP.Fill.G, Config.ESP.Fill.B); hl.OutlineColor = Color3.fromRGB(Config.ESP.Outline.R, Config.ESP.Outline.G, Config.ESP.Outline.B)
-                local tagName = plr.Name .. "_Tag"; local tag = ESPFolder:FindFirstChild(tagName)
+                
+                hl.Adornee = plr.Character
+                
+                -- Team Check Colors
+                if Config.Aimbot.TeamCheck and plr.Team == LocalPlayer.Team then
+                    hl.FillColor = Color3.fromRGB(0, 255, 0) -- Green for Team
+                    hl.OutlineColor = Color3.fromRGB(0, 255, 0)
+                else
+                    hl.FillColor = Color3.fromRGB(Config.ESP.Fill.R, Config.ESP.Fill.G, Config.ESP.Fill.B)
+                    hl.OutlineColor = Color3.fromRGB(Config.ESP.Outline.R, Config.ESP.Outline.G, Config.ESP.Outline.B)
+                end
+
+                local tagName = plr.Name .. "_Tag"
+                local tag = ESPFolder:FindFirstChild(tagName)
                 if Config.ESP.ShowNames then
                     if not tag then
                         tag = Instance.new("BillboardGui", ESPFolder); tag.Name = tagName; tag.AlwaysOnTop = true; tag.Size = UDim2.new(0, 200, 0, 50); tag.StudsOffset = Vector3.new(0, -5, 0)
@@ -1356,22 +1389,46 @@ RunService.RenderStepped:Connect(function()
                 elseif tag then tag:Destroy() end
             end
         end
-    else ESPFolder:ClearAllChildren() end
+    else 
+        -- If Main ESP is off, clear players (but careful not to clear objects if they are independent)
+        for _, v in pairs(ESPFolder:GetChildren()) do
+            if not v.Name:find("_ObjHighlight") then v:Destroy() end
+        end
+    end
     
+    -- [[ OBJECT ESP ]] --
     if Config.ESP.ShowObjects then
         for _, object in pairs(InteractableCache) do
             if object and object.Parent then
                 local show = false
+                
                 if Config.ESP.ObjectMode == "All" then show = true
                 elseif Config.ESP.ObjectMode == "Tools" and (object:IsA("Tool") or object:FindFirstChildWhichIsA("Tool")) then show = true
-                elseif Config.ESP.ObjectMode == "Interactable" and (object:FindFirstChildWhichIsA("ProximityPrompt", true) or object:FindFirstChildWhichIsA("ClickDetector", true)) then show = true end
+                elseif Config.ESP.ObjectMode == "Interactable" and (object:FindFirstChildWhichIsA("ProximityPrompt", true) or object:FindFirstChildWhichIsA("ClickDetector", true)) then show = true 
+                elseif Config.ESP.ObjectMode == "NPCs" and object:IsA("Model") and object:FindFirstChild("Humanoid") then show = true 
+                end
+
                 if show then
-                    local objName = object.Name .. "_ObjHighlight"; local hl = ESPFolder:FindFirstChild(objName)
+                    local objName = object.Name .. "_ObjHighlight"
+                    local hl = ESPFolder:FindFirstChild(objName)
                     if not hl then hl = Instance.new("Highlight", ESPFolder); hl.Name = objName; hl.FillTransparency = 0.5; hl.OutlineTransparency = 0 end
-                    hl.Adornee = object; hl.FillColor = Color3.new(0, 1, 0)
+                    hl.Adornee = object
+                    
+                    if object:FindFirstChild("Humanoid") then
+                        hl.FillColor = Color3.fromRGB(255, 170, 0) -- Orange for NPCs
+                    else
+                        hl.FillColor = Color3.new(0, 1, 0) -- Green for Objects
+                    end
                 else
                     local hl = ESPFolder:FindFirstChild(object.Name .. "_ObjHighlight"); if hl then hl:Destroy() end
                 end
+            end
+        end
+    else
+        -- [[ FIX: CLEANUP OBJECTS WHEN TOGGLED OFF ]] --
+        for _, child in pairs(ESPFolder:GetChildren()) do
+            if child.Name:find("_ObjHighlight") then
+                child:Destroy()
             end
         end
     end
