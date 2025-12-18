@@ -1556,6 +1556,15 @@ CMD_Add("airwalk", "Toggle AirWalk", function()
     end
 end)
 
+CMD_Add("carspeed", "Set Car Fly Speed [val]", function(args)
+    local v = tonumber(args[1])
+    if v then 
+        CarFlySpeed = v
+        return "CarSpeed: " .. v
+    end
+    return "Current Speed: " .. CarFlySpeed
+end)
+
 CMD_Add("carfly", "Toggle Car Fly", function()
     local isEnabled = (CarFlyCon ~= nil)
     local newState = not isEnabled
