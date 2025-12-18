@@ -832,6 +832,8 @@ MoveTab:Slider("TP Speed Interval", 0.01, 1, Config.Movement.IntervalSpeed, func
 local TPPage = TPTab.ScrollFrame
 local isTPingToPlayer = false
 local liveUpdateEnabled = true
+
+-- Switch Buttons (List vs Logs)
 local SwitchContainer = Instance.new("Frame", TPPage)
 SwitchContainer.Size = UDim2.new(1, 0, 0, 35); SwitchContainer.BackgroundTransparency = 1
 local ListLayout = Instance.new("UIListLayout", SwitchContainer)
@@ -845,21 +847,33 @@ local ModeLogsBtn = Instance.new("TextButton", SwitchContainer)
 ModeLogsBtn.Size = UDim2.new(0.5, -5, 1, 0); ModeLogsBtn.BackgroundColor3 = Theme.ButtonBg; ModeLogsBtn.Text = "Logs"; ModeLogsBtn.TextColor3 = Theme.TextDim; ModeLogsBtn.Font = Theme.Font
 Instance.new("UICorner", ModeLogsBtn).CornerRadius = UDim.new(0, 6)
 
+-- Containers
 local ListContainer = Instance.new("ScrollingFrame", TPPage)
 ListContainer.Size = UDim2.new(1, 0, 0, 300); ListContainer.BackgroundTransparency = 1; ListContainer.Visible = true
 ListContainer.AutomaticCanvasSize = Enum.AutomaticSize.Y; ListContainer.ScrollBarThickness = 4; ListContainer.ScrollBarImageColor3 = Theme.Accent
 
 local LogsContainer = Instance.new("ScrollingFrame", TPPage)
 LogsContainer.Size = UDim2.new(1, 0, 0, 300); LogsContainer.BackgroundTransparency = 1; LogsContainer.Visible = false
-LogsContainer.ScrollBarThickness = 2
+LogsContainer.ScrollBarThickness = 4; LogsContainer.ScrollBarImageColor3 = Theme.Accent; LogsContainer.AutomaticCanvasSize = Enum.AutomaticSize.Y
 local LogsLayout = Instance.new("UIListLayout", LogsContainer); LogsLayout.SortOrder = Enum.SortOrder.LayoutOrder
 
-ModeListBtn.MouseButton1Click:Connect(function() ListContainer.Visible = true; LogsContainer.Visible = false; ModeListBtn.BackgroundColor3 = Theme.Accent; ModeListBtn.TextColor3 = Theme.Text; ModeLogsBtn.BackgroundColor3 = Theme.ButtonBg; ModeLogsBtn.TextColor3 = Theme.TextDim end)
-ModeLogsBtn.MouseButton1Click:Connect(function() ListContainer.Visible = false; LogsContainer.Visible = true; ModeListBtn.BackgroundColor3 = Theme.ButtonBg; ModeListBtn.TextColor3 = Theme.TextDim; ModeLogsBtn.BackgroundColor3 = Theme.Accent; ModeLogsBtn.TextColor3 = Theme.Text end)
+-- Button Logic
+ModeListBtn.MouseButton1Click:Connect(function() 
+    ListContainer.Visible = true; LogsContainer.Visible = false
+    ModeListBtn.BackgroundColor3 = Theme.Accent; ModeListBtn.TextColor3 = Theme.Text
+    ModeLogsBtn.BackgroundColor3 = Theme.ButtonBg; ModeLogsBtn.TextColor3 = Theme.TextDim 
+end)
+ModeLogsBtn.MouseButton1Click:Connect(function() 
+    ListContainer.Visible = false; LogsContainer.Visible = true
+    ModeListBtn.BackgroundColor3 = Theme.ButtonBg; ModeListBtn.TextColor3 = Theme.TextDim
+    ModeLogsBtn.BackgroundColor3 = Theme.Accent; ModeLogsBtn.TextColor3 = Theme.Text 
+end)
 
+-- [[ 1. TELEPORT LOGIC ]] --
 local function TeleportToPlayer(targetPlayer)
     if isTPingToPlayer then isTPingToPlayer = false; Window:Notify("System", "TP Stopped"); ResetMovement(); return end
     if not targetPlayer.Character or not targetPlayer.Character:FindFirstChild("HumanoidRootPart") then Window:Notify("Error", "Player invalid!"); return end
+    
     if Config.Movement.InstantTP then
         if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             LocalPlayer.Character.HumanoidRootPart.CFrame = targetPlayer.Character.HumanoidRootPart.CFrame
@@ -867,6 +881,7 @@ local function TeleportToPlayer(targetPlayer)
         end
         return
     end
+
     isTPingToPlayer = true
     Window:Notify("System", "Going to: " .. targetPlayer.Name)
     task.spawn(function()
@@ -908,18 +923,49 @@ local function RefreshPlayerList()
 end
 task.spawn(function() while true do if liveUpdateEnabled and ListContainer.Visible then RefreshPlayerList() end task.wait(1) end end)
 
+-- [[ 2. CHAT LOGS LOGIC (Fixed) ]] --
 local function AddLog(text, color)
-    local label = Instance.new("TextLabel", LogsContainer); label.BackgroundTransparency = 1; label.Size = UDim2.new(1, 0, 0, 20); label.Font = Enum.Font.Code; label.TextSize = 13; label.Text = text; label.TextColor3 = color; label.TextXAlignment = Enum.TextXAlignment.Left
+    local label = Instance.new("TextLabel", LogsContainer)
+    label.BackgroundTransparency = 1
+    label.Size = UDim2.new(1, 0, 0, 20)
+    label.Font = Enum.Font.Code
+    label.TextSize = 13
+    label.Text = text
+    label.TextColor3 = color
+    label.TextXAlignment = Enum.TextXAlignment.Left
+    label.TextWrapped = true
+    
+    -- Auto Scroll to Bottom
     LogsContainer.CanvasPosition = Vector2.new(0, 99999)
 end
+
+-- Method A: New TextChatService
 if TextChatService.ChatVersion == Enum.ChatVersion.TextChatService then
     TextChatService.MessageReceived:Connect(function(msgObj)
-        if msgObj.TextSource then local plr = Players:GetPlayerByUserId(msgObj.TextSource.UserId) if plr and plr ~= LocalPlayer then AddLog("["..plr.Name.."]: " .. msgObj.Text, Color3.fromRGB(255, 235, 59)) end end
+        if msgObj.TextSource then
+            local plr = Players:GetPlayerByUserId(msgObj.TextSource.UserId)
+            local name = plr and plr.Name or "Unknown"
+            if name ~= LocalPlayer.Name then
+                AddLog("["..name.."]: " .. msgObj.Text, Color3.fromRGB(255, 235, 59))
+            end
+        end
     end)
-else
-    local function ConnectChat(plr) plr.Chatted:Connect(function(msg) AddLog("["..plr.Name.."]: " .. msg, Color3.fromRGB(255, 235, 59)) end) end
-    for _, p in pairs(Players:GetPlayers()) do ConnectChat(p) end; Players.PlayerAdded:Connect(ConnectChat)
 end
+
+-- Method B: Legacy Chat (Backups)
+-- We run this regardless, just in case the game uses a custom chat or hybrid system
+local function ConnectChat(plr)
+    plr.Chatted:Connect(function(msg)
+        AddLog("["..plr.Name.."]: " .. msg, Color3.fromRGB(255, 235, 59))
+    end)
+end
+
+for _, p in pairs(Players:GetPlayers()) do 
+    if p ~= LocalPlayer then ConnectChat(p) end 
+end
+Players.PlayerAdded:Connect(function(p) 
+    if p ~= LocalPlayer then ConnectChat(p) end 
+end)
 
 -- // MISC TAB //
 MiscTab:Label("--- Modes ---")
