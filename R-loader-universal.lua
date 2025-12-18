@@ -677,6 +677,83 @@ local function ResetMovement()
     end
 end
 
+MoveTab:Label("--- Vehicle ---")
+
+local CarFlyCon = nil
+local CarFlySpeed = 50 -- Default speed
+
+MoveTab:Slider("Car Fly Speed", 10, 300, CarFlySpeed, function(v)
+    CarFlySpeed = v
+end)
+
+MoveTab:Toggle("Car Fly (Can glitch sometimes)", false, function(v)
+    if v then
+        -- START CAR FLY
+        CarFlyCon = RunService.Stepped:Connect(function()
+            local char = LocalPlayer.Character
+            local hum = char and char:FindFirstChild("Humanoid")
+            
+            -- Check if sitting in a seat
+            if hum and hum.SeatPart then
+                local seat = hum.SeatPart
+                -- Get the main model (The Car)
+                local vehicleModel = seat:FindFirstAncestorWhichIsA("Model")
+                
+                if vehicleModel then
+                    -- 1. FREEZE EVERYTHING (Stops physics fighting)
+                    for _, part in pairs(vehicleModel:GetDescendants()) do
+                        if part:IsA("BasePart") then
+                            part.Anchored = true
+                            part.CanCollide = false 
+                            part.AssemblyLinearVelocity = Vector3.zero
+                            part.AssemblyAngularVelocity = Vector3.zero
+                        end
+                    end
+                    
+                    -- 2. Calculate Movement
+                    local camCF = workspace.CurrentCamera.CFrame
+                    local moveDir = Vector3.zero
+                    
+                    if UserInputService:IsKeyDown(Enum.KeyCode.W) then moveDir = moveDir + camCF.LookVector end
+                    if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - camCF.LookVector end
+                    if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - camCF.RightVector end
+                    if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveDir = moveDir + camCF.RightVector end
+                    if UserInputService:IsKeyDown(Enum.KeyCode.Space) then moveDir = moveDir + Vector3.new(0, 1, 0) end
+                    if UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then moveDir = moveDir - Vector3.new(0, 1, 0) end
+                    
+                    -- 3. MOVE THE WHOLE MODEL (PivotTo moves all anchored parts together)
+                    if moveDir.Magnitude > 0 then
+                        local currentPivot = vehicleModel:GetPivot()
+                        local newPivot = currentPivot + (moveDir.Unit * (CarFlySpeed * RunService.Heartbeat:Wait()))
+                        vehicleModel:PivotTo(newPivot)
+                    end
+                end
+            end
+        end)
+        Window:Notify("System", "Car Fly Enabled")
+    else
+        -- STOP CAR FLY
+        if CarFlyCon then CarFlyCon:Disconnect(); CarFlyCon = nil end
+        
+        -- Unanchor everything to let the car drive normally again
+        if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") and LocalPlayer.Character.Humanoid.SeatPart then
+            local seat = LocalPlayer.Character.Humanoid.SeatPart
+            local vehicleModel = seat:FindFirstAncestorWhichIsA("Model")
+            
+            if vehicleModel then
+                for _, part in pairs(vehicleModel:GetDescendants()) do
+                    if part:IsA("BasePart") then
+                        part.Anchored = false
+                        part.CanCollide = true
+                        part.AssemblyLinearVelocity = Vector3.zero
+                    end
+                end
+            end
+        end
+        Window:Notify("System", "Car Fly Disabled")
+    end
+end)
+
 MoveTab:Toggle("Enable Speed", Config.Toggles.Speed, function(v) 
     Config.Toggles.Speed = v 
     if not v and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
@@ -692,6 +769,7 @@ MoveTab:Toggle("Enable Jump", Config.Toggles.Jump, function(v)
     end
 end)
 MoveTab:Slider("JumpPower", 50, 300, Config.Movement.JumpPower, function(v) Config.Movement.JumpPower = v end)
+
 
 MoveTab:Label("--- Teleportation ---")
 MoveTab:Slider("Phase Distance", 1, 50, Config.Movement.PhaseDist, function(v) Config.Movement.PhaseDist = v end)
@@ -1475,6 +1553,73 @@ CMD_Add("airwalk", "Toggle AirWalk", function()
         if AirWalkPart then AirWalkPart:Destroy(); AirWalkPart = nil end
         LockedY = nil
         return "AirWalk: OFF"
+    end
+end)
+
+CMD_Add("carfly", "Toggle Car Fly", function()
+    local isEnabled = (CarFlyCon ~= nil)
+    local newState = not isEnabled
+    
+    if newState then
+        -- [[ TURN ON ]]
+        CarFlyCon = RunService.Stepped:Connect(function()
+            local char = LocalPlayer.Character
+            local hum = char and char:FindFirstChild("Humanoid")
+            
+            if hum and hum.SeatPart then
+                local seat = hum.SeatPart
+                local vehicleModel = seat:FindFirstAncestorWhichIsA("Model")
+                
+                if vehicleModel then
+                    -- Freeze Everything
+                    for _, part in pairs(vehicleModel:GetDescendants()) do
+                        if part:IsA("BasePart") then
+                            part.Anchored = true
+                            part.CanCollide = false
+                            part.AssemblyLinearVelocity = Vector3.zero
+                            part.AssemblyAngularVelocity = Vector3.zero
+                        end
+                    end
+                    
+                    -- Calculate Move
+                    local camCF = workspace.CurrentCamera.CFrame
+                    local moveDir = Vector3.zero
+                    
+                    if UserInputService:IsKeyDown(Enum.KeyCode.W) then moveDir = moveDir + camCF.LookVector end
+                    if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - camCF.LookVector end
+                    if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - camCF.RightVector end
+                    if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveDir = moveDir + camCF.RightVector end
+                    if UserInputService:IsKeyDown(Enum.KeyCode.Space) then moveDir = moveDir + Vector3.new(0, 1, 0) end
+                    if UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then moveDir = moveDir - Vector3.new(0, 1, 0) end
+                    
+                    -- Move Whole Model
+                    if moveDir.Magnitude > 0 then
+                        local currentPivot = vehicleModel:GetPivot()
+                        local newPivot = currentPivot + (moveDir.Unit * (CarFlySpeed * RunService.Heartbeat:Wait()))
+                        vehicleModel:PivotTo(newPivot)
+                    end
+                end
+            end
+        end)
+        return "CarFly: ON can glitch sometimes"
+    else
+        -- [[ TURN OFF ]]
+        if CarFlyCon then CarFlyCon:Disconnect(); CarFlyCon = nil end
+        
+        local hum = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid")
+        if hum and hum.SeatPart then
+            local vehicleModel = hum.SeatPart:FindFirstAncestorWhichIsA("Model")
+            if vehicleModel then
+                for _, part in pairs(vehicleModel:GetDescendants()) do
+                    if part:IsA("BasePart") then
+                        part.Anchored = false
+                        part.CanCollide = true
+                        part.AssemblyLinearVelocity = Vector3.zero
+                    end
+                end
+            end
+        end
+        return "CarFly: OFF"
     end
 end)
 
