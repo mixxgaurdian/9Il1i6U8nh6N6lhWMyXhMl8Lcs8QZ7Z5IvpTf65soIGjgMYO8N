@@ -51,7 +51,7 @@ end
 local GameSpecificConfigs = {
     [9356971415] = {"Fly", "Noclip"}, 
     [1234567890] = {"Instant Teleport"},
-    [5456952508] = {"noclip"},
+    [5456952508] = {"Fly", "Noclip"}, 
 }
 
 -- // 2. CONFIGURATION DATA // ------------------------------------
