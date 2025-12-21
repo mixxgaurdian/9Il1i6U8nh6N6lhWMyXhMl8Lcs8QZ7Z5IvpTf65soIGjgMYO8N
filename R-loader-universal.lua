@@ -60,10 +60,10 @@ local Config = {
         FOV = 300,
         TargetPart = "Head", 
         TargetMode = "Head", 
-        Range = 2000,
+        Range = 2000, -- [NEW] Max Distance
         ObjectLockon = false,
         TeamCheck = false,
-        HealthDetach = false,
+        HealthDetach = false, -- [NEW] Stop locking when dead
         Whitelist = {}
     },
     ESP = {
@@ -108,6 +108,7 @@ local Config = {
         Teleport = Enum.KeyCode.J,
         Fly = Enum.KeyCode.V,
         Noclip = Enum.KeyCode.B,
+        CarFly = Enum.KeyCode.Unknown, -- [NEW]
         SafeFly = Enum.KeyCode.Unknown,
         Speed = Enum.KeyCode.Unknown,
         Jump = Enum.KeyCode.Unknown,
@@ -118,7 +119,6 @@ local Config = {
         Aimbot = Enum.KeyCode.Unknown,
         Rain = Enum.KeyCode.Unknown,
         Snow = Enum.KeyCode.Unknown,
-        
     },
     Toggles = {
         Fly = false,
@@ -128,6 +128,9 @@ local Config = {
         SafeFly = false,
     }
 }
+
+-- Forward Declaration for AntiVoid function
+local UpdateAntiVoid = nil 
 
 -- Apply Game Configs
 local currentGameId = game.GameId
@@ -143,7 +146,6 @@ if configToApply then
         DisableFeature(featureName, true)
         if Config.Toggles[featureName] ~= nil then Config.Toggles[featureName] = false end
     end
-    
 end
 
 
@@ -208,10 +210,13 @@ local function LoadConfig()
                 end
             end
         end
+        
+        -- [[ FIX: Activate AntiVoid if it was saved as true ]] --
+        if Config.Misc.AntiVoid and UpdateAntiVoid then
+            UpdateAntiVoid(true)
+        end
     end
 end
-
-LoadConfig()
 
 -- // 3. UI LIBRARY // -----------------------------------------------
 local Library = (function()
@@ -606,7 +611,7 @@ MainTab:Button("Unload UI", function() SaveConfig(); Window.ScreenGui:Destroy() 
 
 -- // COMBAT TAB //
 local TgtBtn
-CombatTab:Slider("Aimbot Range", 100, 5000, Config.Aimbot.Range, function(v) Config.Aimbot.Range = v end)
+CombatTab:Slider("Aimbot Range", 100, 5000, Config.Aimbot.Range, function(v) Config.Aimbot.Range = v end) -- [NEW]
 CombatTab:Toggle("Aimbot Enabled", Config.Aimbot.Enabled, function(v) Config.Aimbot.Enabled = v end)
 TgtBtn = CombatTab:Button("Target Mode: " .. Config.Aimbot.TargetMode, function()
     if Config.Aimbot.TargetMode == "Head" then Config.Aimbot.TargetMode = "Body"
@@ -617,8 +622,6 @@ end)
 
 CombatTab:Toggle("Team Check", Config.Aimbot.TeamCheck or false, function(v) Config.Aimbot.TeamCheck = v end)
 CombatTab:Toggle("Health Detach", Config.Aimbot.HealthDetach, function(v) Config.Aimbot.HealthDetach = v end) -- [NEW]
-
-CombatTab:Toggle("Team Check", Config.Aimbot.TeamCheck or false, function(v) Config.Aimbot.TeamCheck = v end)
 CombatTab:Toggle("Object Lockon", Config.Aimbot.ObjectLockon, function(v) Config.Aimbot.ObjectLockon = v end)
 CombatTab:Slider("Smoothness", 1, 20, Config.Aimbot.Smoothness, function(v) Config.Aimbot.Smoothness = v end)
 CombatTab:Slider("FOV Size", 50, 800, Config.Aimbot.FOV, function(v) Config.Aimbot.FOV = v end)
@@ -696,24 +699,27 @@ MoveTab:Slider("Car Fly Speed", 10, 300, CarFlySpeed, function(v)
     CarFlySpeed = v
 end)
 
-MoveTab:Toggle("Car Fly (Velocity)", false, function(v)
-    if v then
+-- [[ GLOBAL CAR FLY FUNCTION ]] --
+getgenv().ToggleCarFly = function(state)
+    if state then
         -- START CAR FLY
         CarFlyCon = RunService.RenderStepped:Connect(function()
             local char = LocalPlayer.Character
             local hum = char and char:FindFirstChild("Humanoid")
             
-            -- Check if sitting in a seat
             if hum and hum.SeatPart then
                 local seat = hum.SeatPart
                 local vehicleModel = seat:FindFirstAncestorWhichIsA("Model")
                 local rootPart = vehicleModel and (vehicleModel.PrimaryPart or seat)
                 
-                if rootPart then
-                    -- 1. UN-ANCHOR (Important for replication)
+                if rootPart and vehicleModel then
+                    -- 1. UN-ANCHOR & NOCLIP
                     rootPart.Anchored = false
+                    for _, part in pairs(vehicleModel:GetDescendants()) do
+                        if part:IsA("BasePart") then part.CanCollide = false end
+                    end
                     
-                    -- 2. Calculate Movement Direction
+                    -- 2. MOVEMENT CALCULATION
                     local camCF = workspace.CurrentCamera.CFrame
                     local moveDir = Vector3.zero
                     
@@ -728,11 +734,8 @@ MoveTab:Toggle("Car Fly (Velocity)", false, function(v)
                     if moveDir.Magnitude > 0 then
                         rootPart.AssemblyLinearVelocity = moveDir.Unit * CarFlySpeed
                     else
-                        -- Hover in place (Counteract gravity)
                         rootPart.AssemblyLinearVelocity = Vector3.new(0, 0, 0) 
                     end
-                    
-                    -- 4. Prevent Spinning/Flipping
                     rootPart.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
                 end
             end
@@ -743,18 +746,27 @@ MoveTab:Toggle("Car Fly (Velocity)", false, function(v)
         if CarFlyCon then CarFlyCon:Disconnect(); CarFlyCon = nil end
         Window:Notify("System", "Car Fly Disabled")
         
-        -- Reset Velocity to drop naturally
         local char = LocalPlayer.Character
         local hum = char and char:FindFirstChild("Humanoid")
         if hum and hum.SeatPart then
-            local rootPart = hum.SeatPart:FindFirstAncestorWhichIsA("Model").PrimaryPart or hum.SeatPart
+            local vehicleModel = hum.SeatPart:FindFirstAncestorWhichIsA("Model")
+            local rootPart = vehicleModel and (vehicleModel.PrimaryPart or hum.SeatPart)
+            
+            -- RESTORE COLLISIONS & VELOCITY
+            if vehicleModel then
+                for _, part in pairs(vehicleModel:GetDescendants()) do
+                    if part:IsA("BasePart") then part.CanCollide = true end
+                end
+            end
             if rootPart then
                 rootPart.AssemblyLinearVelocity = Vector3.zero
                 rootPart.AssemblyAngularVelocity = Vector3.zero
             end
         end
     end
-end)
+end
+
+MoveTab:Toggle("Car Fly (Velocity)", false, function(v) ToggleCarFly(v) end)
 
 MoveTab:Toggle("Enable Speed", Config.Toggles.Speed, function(v) 
     Config.Toggles.Speed = v 
@@ -1009,7 +1021,8 @@ MiscTab:Label("--- Safety ---")
 local AntiVoidPart = nil
 local AntiVoidConnection = nil
 
-local function UpdateAntiVoid(state)
+-- Define the function in scope so LoadConfig can access it
+UpdateAntiVoid = function(state)
     if state then
         if not AntiVoidConnection then
             AntiVoidConnection = RunService.Heartbeat:Connect(function()
@@ -1303,6 +1316,7 @@ KeybindsTab:Binder("Teleport to Saved", Config.Binds.Teleport, function(k) Confi
 KeybindsTab:Label("--- Toggles ---")
 KeybindsTab:Binder("Toggle Fly", Config.Binds.Fly, function(k) Config.Binds.Fly = k end)
 KeybindsTab:Binder("Toggle Noclip", Config.Binds.Noclip, function(k) Config.Binds.Noclip = k end)
+KeybindsTab:Binder("Toggle CarFly", Config.Binds.CarFly, function(k) Config.Binds.CarFly = k end) -- [NEW]
 KeybindsTab:Binder("Toggle SafeFly", Config.Binds.SafeFly, function(k) Config.Binds.SafeFly = k end)
 KeybindsTab:Binder("Toggle Speed", Config.Binds.Speed, function(k) Config.Binds.Speed = k end)
 KeybindsTab:Binder("Toggle Jump", Config.Binds.Jump, function(k) Config.Binds.Jump = k end)
@@ -1329,6 +1343,9 @@ end)
 
 
 -- // 5. LOGIC LOOPS & RUNTIME // -------------------------------------------------------------
+
+-- Load config at end of setup (and trigger antivoid if needed)
+LoadConfig()
 
 -- Input Handling for Keybinds
 UserInputService.InputBegan:Connect(function(input, gpe)
@@ -1365,6 +1382,12 @@ UserInputService.InputBegan:Connect(function(input, gpe)
     -- Toggles
     elseif IsBind("Fly") then Config.Toggles.Fly = not Config.Toggles.Fly; if not Config.Toggles.Fly then ResetMovement() end; Window:Notify("System", "Fly: "..tostring(Config.Toggles.Fly))
     elseif IsBind("Noclip") then Config.Toggles.Noclip = not Config.Toggles.Noclip; Window:Notify("System", "Noclip: "..tostring(Config.Toggles.Noclip))
+    
+    -- [[ NEW: CarFly Bind ]] --
+    elseif IsBind("CarFly") then
+        local isEnabled = (CarFlyCon ~= nil)
+        ToggleCarFly(not isEnabled)
+        
     elseif IsBind("SafeFly") then Config.Toggles.SafeFly = not Config.Toggles.SafeFly; if not Config.Toggles.SafeFly then ResetMovement() end; Window:Notify("System", "SafeFly: "..tostring(Config.Toggles.SafeFly))
     elseif IsBind("Speed") then Config.Toggles.Speed = not Config.Toggles.Speed; Window:Notify("System", "Speed: "..tostring(Config.Toggles.Speed))
     elseif IsBind("Jump") then Config.Toggles.Jump = not Config.Toggles.Jump; Window:Notify("System", "Jump: "..tostring(Config.Toggles.Jump))
@@ -1433,7 +1456,7 @@ RunService.Stepped:Connect(function()
     end
 end)
 
--- // ESP SYSTEM (Correctly Integrated) // ------------------------------------------------------------------
+-- // ESP SYSTEM (FIXED) // ------------------------------------------------------------------
 local ESPFolder = Instance.new("Folder", CoreGui); ESPFolder.Name = "RLoaderESP_Universal"
 local ESP_2D = Instance.new("ScreenGui", CoreGui)
 ESP_2D.Name = "RLoaderESP_2D_Overlay"
@@ -1442,12 +1465,10 @@ ESP_2D.IgnoreGuiInset = true
 local InteractableCache = {}
 
 local function CacheInteractable(obj)
-    -- 1. Check for Interactive Items
     if obj:IsA("ProximityPrompt") or obj:IsA("ClickDetector") then
         if obj.Parent and (obj.Parent:IsA("BasePart") or obj.Parent:IsA("Model")) then 
             table.insert(InteractableCache, obj.Parent) 
         end
-    -- 2. Check for NPCs (Models with Humanoids that are NOT players)
     elseif obj:IsA("Model") then
         task.delay(0.1, function()
             if obj:FindFirstChild("Humanoid") and not Players:GetPlayerFromCharacter(obj) then
@@ -1460,194 +1481,198 @@ end
 for _, descendant in pairs(workspace:GetDescendants()) do CacheInteractable(descendant) end
 workspace.DescendantAdded:Connect(CacheInteractable)
 
+-- [[ NEW: DEDICATED CLEANUP FUNCTION ]] --
+local function CleanupESP(plrName)
+    -- Cleanup 3D (Highlights/Billboards)
+    local suffix3D = {"_Highlight", "_Tag", "_ObjHighlight"}
+    for _, s in pairs(suffix3D) do
+        local obj = ESPFolder:FindFirstChild(plrName .. s)
+        if obj then obj:Destroy() end
+    end
+    
+    -- Cleanup 2D (Boxes, Tracers, Bars)
+    local suffix2D = {"_Box", "_Tracer", "_HealthBar"}
+    for _, s in pairs(suffix2D) do
+        local obj = ESP_2D:FindFirstChild(plrName .. s)
+        if obj then obj:Destroy() end
+    end
+end
+
+-- [[ NEW: EVENT LISTENERS FOR LEAVING/DYING ]] --
+Players.PlayerRemoving:Connect(function(plr)
+    CleanupESP(plr.Name)
+end)
+
+local function MonitorCharacter(plr)
+    if plr.Character then
+        local humanoid = plr.Character:FindFirstChild("Humanoid")
+        if humanoid then
+            humanoid.Died:Connect(function()
+                CleanupESP(plr.Name)
+            end)
+        end
+    end
+    plr.CharacterAdded:Connect(function(char)
+        -- Cleanup old ESP on respawn to prevent ghosting
+        CleanupESP(plr.Name)
+        local humanoid = char:WaitForChild("Humanoid", 5)
+        if humanoid then
+            humanoid.Died:Connect(function()
+                CleanupESP(plr.Name)
+            end)
+        end
+    end)
+end
+
+for _, p in pairs(Players:GetPlayers()) do MonitorCharacter(p) end
+Players.PlayerAdded:Connect(MonitorCharacter)
+
+-- [[ MAIN RENDER LOOP ]] --
 RunService.RenderStepped:Connect(function()
     -- [[ PLAYER ESP ]] --
     if Config.ESP.Enabled then
         for _, plr in pairs(Players:GetPlayers()) do
+            -- Valid Check: Must be alive, not local, have Root and Head
             if plr ~= LocalPlayer and plr.Character and plr.Character:FindFirstChild("Head") and plr.Character:FindFirstChild("HumanoidRootPart") then
                 local char = plr.Character
                 local root = char.HumanoidRootPart
                 local head = char.Head
                 local hum = char:FindFirstChild("Humanoid")
                 
-                -- 1. HIGHLIGHTS (Chams)
-                local hlName = plr.Name .. "_Highlight"
-                local hl = ESPFolder:FindFirstChild(hlName)
-                if not hl then hl = Instance.new("Highlight", ESPFolder); hl.Name = hlName; hl.FillTransparency = 0.5; hl.OutlineTransparency = 0 end
-                
-                hl.Adornee = char
-                
-                -- Team Check Colors
-                if Config.Aimbot.TeamCheck and plr.Team == LocalPlayer.Team then
-                    hl.FillColor = Color3.fromRGB(0, 255, 0)
-                    hl.OutlineColor = Color3.fromRGB(0, 255, 0)
-                else
-                    hl.FillColor = Color3.fromRGB(Config.ESP.Fill.R, Config.ESP.Fill.G, Config.ESP.Fill.B)
-                    hl.OutlineColor = Color3.fromRGB(Config.ESP.Outline.R, Config.ESP.Outline.G, Config.ESP.Outline.B)
-                end
-
-                -- 2. BILLBOARD TAGS (Names & Health)
-                local tagName = plr.Name .. "_Tag"
-                local tag = ESPFolder:FindFirstChild(tagName)
-                
-                if Config.ESP.ShowNames or Config.ESP.Health then
-                    if not tag then
-                        tag = Instance.new("BillboardGui", ESPFolder); tag.Name = tagName; tag.AlwaysOnTop = true; tag.Size = UDim2.new(0, 200, 0, 50); tag.StudsOffset = Vector3.new(0, -5, 0)
-                        local label = Instance.new("TextLabel", tag); label.BackgroundTransparency = 1; label.Size = UDim2.new(1,0,1,0); label.TextColor3 = Color3.new(1,1,1); label.TextSize = 13; label.Font = Enum.Font.GothamBold
-                    end
-                    tag.Adornee = root
+                -- LOGIC CHANGE: Instead of 'continue', we only draw if Health > 0
+                if hum and hum.Health > 0 then
+                    -- 1. HIGHLIGHTS (Chams)
+                    local hlName = plr.Name .. "_Highlight"
+                    local hl = ESPFolder:FindFirstChild(hlName)
+                    if not hl then hl = Instance.new("Highlight", ESPFolder); hl.Name = hlName; hl.FillTransparency = 0.5; hl.OutlineTransparency = 0 end
+                    hl.Adornee = char
                     
-                    local textStr = ""
-                    if Config.ESP.ShowNames then textStr = textStr .. plr.Name end
-                    if Config.ESP.Health and hum then 
-                        local hp = math.floor(hum.Health)
-                        textStr = textStr .. " [" .. hp .. "]"
+                    if Config.Aimbot.TeamCheck and plr.Team == LocalPlayer.Team then
+                        hl.FillColor = Color3.fromRGB(0, 255, 0)
+                        hl.OutlineColor = Color3.fromRGB(0, 255, 0)
+                    else
+                        hl.FillColor = Color3.fromRGB(Config.ESP.Fill.R, Config.ESP.Fill.G, Config.ESP.Fill.B)
+                        hl.OutlineColor = Color3.fromRGB(Config.ESP.Outline.R, Config.ESP.Outline.G, Config.ESP.Outline.B)
                     end
-                    tag:FindFirstChildOfClass("TextLabel").Text = textStr
-                elseif tag then tag:Destroy() end
 
-                -- [[ 2D VISUALS (Boxes & Tracers) ]] --
-                local vector, onScreen = Camera:WorldToViewportPoint(root.Position)
+                    -- 2. BILLBOARD TAGS
+                    local tagName = plr.Name .. "_Tag"
+                    local tag = ESPFolder:FindFirstChild(tagName)
+                    if Config.ESP.ShowNames then
+                        if not tag then
+                            tag = Instance.new("BillboardGui", ESPFolder); tag.Name = tagName; tag.AlwaysOnTop = true; tag.Size = UDim2.new(0, 200, 0, 50); tag.StudsOffset = Vector3.new(0, -5, 0)
+                            local label = Instance.new("TextLabel", tag); label.BackgroundTransparency = 1; label.Size = UDim2.new(1,0,1,0); label.TextColor3 = Color3.new(1,1,1); label.TextSize = 13; label.Font = Enum.Font.GothamBold
+                        end
+                        tag.Adornee = root
+                        tag:FindFirstChildOfClass("TextLabel").Text = plr.Name
+                    elseif tag then tag:Destroy() end
 
-                -- 3. BOXES
-                local boxName = plr.Name .. "_Box"
-                local box = ESP_2D:FindFirstChild(boxName)
-                
-                if Config.ESP.Boxes and onScreen then
-                    if not box then
-                        box = Instance.new("Frame", ESP_2D); box.Name = boxName; box.BackgroundTransparency = 1; box.BorderSizePixel = 0
-                        local s = Instance.new("UIStroke", box); s.Thickness = 1.5
-                    end
+                    -- [[ 2D VISUALS ]] --
+                    local vector, onScreen = Camera:WorldToViewportPoint(root.Position)
+
+                    -- 3. BOXES
+                    local boxName = plr.Name .. "_Box"
+                    local box = ESP_2D:FindFirstChild(boxName)
                     
-                    local headPos = Camera:WorldToViewportPoint(head.Position + Vector3.new(0, 0.5, 0))
-                    local legPos = Camera:WorldToViewportPoint(root.Position - Vector3.new(0, 3, 0))
-                    local height = legPos.Y - headPos.Y
-                    local width = height / 1.5
-
-                    box.Size = UDim2.new(0, width, 0, height)
-                    box.Position = UDim2.new(0, vector.X - (width/2), 0, headPos.Y)
-                    box:FindFirstChild("UIStroke").Color = hl.FillColor
-                    box.Visible = true
-                elseif box then box:Destroy() end
-
-                -- [[ 3. BOXES (Existing) ]] --
-                -- ... (Keep your existing Box logic here) ...
-
-                -- [[ 4. HEALTH BAR (NEW) ]] --
-                local barName = plr.Name .. "_HealthBar"
-                local barOutline = ESP_2D:FindFirstChild(barName)
-                
-                if Config.ESP.Health and onScreen and hum then
-                    if not barOutline then
-                        -- Create Outline (Background)
-                        barOutline = Instance.new("Frame", ESP_2D)
-                        barOutline.Name = barName
-                        barOutline.BorderSizePixel = 1
-                        barOutline.BorderColor3 = Color3.new(0,0,0)
-                        barOutline.BackgroundColor3 = Color3.fromRGB(60, 60, 60) -- Dark grey background
-                        barOutline.ZIndex = 2
+                    if Config.ESP.Boxes and onScreen then
+                        if not box then
+                            box = Instance.new("Frame", ESP_2D); box.Name = boxName; box.BackgroundTransparency = 1; box.BorderSizePixel = 0
+                            local s = Instance.new("UIStroke", box); s.Thickness = 1.5
+                        end
                         
-                        -- Create Fill (Green Bar)
-                        local fill = Instance.new("Frame", barOutline)
-                        fill.Name = "Fill"
-                        fill.BorderSizePixel = 0
-                        fill.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- Green
-                        fill.AnchorPoint = Vector2.new(0, 1) -- Anchor to bottom
-                        fill.Position = UDim2.new(0, 0, 1, 0)
-                        fill.ZIndex = 3
-                    end
+                        local headPos = Camera:WorldToViewportPoint(head.Position + Vector3.new(0, 0.5, 0))
+                        local legPos = Camera:WorldToViewportPoint(root.Position - Vector3.new(0, 3, 0))
+                        local height = legPos.Y - headPos.Y
+                        local width = height / 1.5
+
+                        box.Size = UDim2.new(0, width, 0, height)
+                        box.Position = UDim2.new(0, vector.X - (width/2), 0, headPos.Y)
+                        box:FindFirstChild("UIStroke").Color = hl.FillColor
+                        box.Visible = true
+                    elseif box then box:Destroy() end
                     
-                    -- Calculate Position (Right side of the box)
-                    local headPos = Camera:WorldToViewportPoint(head.Position + Vector3.new(0, 0.5, 0))
-                    local legPos = Camera:WorldToViewportPoint(root.Position - Vector3.new(0, 3, 0))
-                    local height = legPos.Y - headPos.Y
-                    local width = height / 1.5
-                    local boxX = vector.X - (width/2)
+                    -- 4. HEALTH BAR
+                    local barName = plr.Name .. "_HealthBar"
+                    local barOutline = ESP_2D:FindFirstChild(barName)
                     
-                    -- Update Bar Size & Position
-                    barOutline.Size = UDim2.new(0, 4, 0, height) -- 4 pixels wide
-                    barOutline.Position = UDim2.new(0, boxX + width + 2, 0, headPos.Y) -- 2 pixels to the right of box
+                    if Config.ESP.Health and onScreen and hum then
+                        if not barOutline then
+                            barOutline = Instance.new("Frame", ESP_2D); barOutline.Name = barName; barOutline.BorderSizePixel = 1; barOutline.BorderColor3 = Color3.new(0,0,0); barOutline.BackgroundColor3 = Color3.fromRGB(60, 60, 60); barOutline.ZIndex = 2
+                            local fill = Instance.new("Frame", barOutline); fill.Name = "Fill"; fill.BorderSizePixel = 0; fill.BackgroundColor3 = Color3.fromRGB(0, 255, 0); fill.AnchorPoint = Vector2.new(0, 1); fill.Position = UDim2.new(0, 0, 1, 0); fill.ZIndex = 3
+                        end
+                        
+                        local headPos = Camera:WorldToViewportPoint(head.Position + Vector3.new(0, 0.5, 0))
+                        local legPos = Camera:WorldToViewportPoint(root.Position - Vector3.new(0, 3, 0))
+                        local height = legPos.Y - headPos.Y
+                        local width = height / 1.5
+                        
+                        barOutline.Size = UDim2.new(0, 4, 0, height)
+                        barOutline.Position = UDim2.new(0, (vector.X - (width/2)) + width + 2, 0, headPos.Y)
+                        
+                        local healthPercent = math.clamp(hum.Health / hum.MaxHealth, 0, 1)
+                        barOutline.Fill.Size = UDim2.new(1, 0, healthPercent, 0)
+                        barOutline.Visible = true
+                    elseif barOutline then barOutline:Destroy() end
+
+                    -- 5. TRACERS
+                    local lineName = plr.Name .. "_Tracer"
+                    local line = ESP_2D:FindFirstChild(lineName)
                     
-                    -- Update Fill Height
-                    local healthPercent = math.clamp(hum.Health / hum.MaxHealth, 0, 1)
-                    barOutline.Fill.Size = UDim2.new(1, 0, healthPercent, 0)
-                    
-                    barOutline.Visible = true
-                elseif barOutline then 
-                    barOutline:Destroy() 
+                    if Config.ESP.Tracers and onScreen then
+                        if not line then
+                            line = Instance.new("Frame", ESP_2D); line.Name = lineName; line.BorderSizePixel = 0; line.AnchorPoint = Vector2.new(0.5, 0.5)
+                        end
+                        
+                        local startPos = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y)
+                        local endPos = Vector2.new(vector.X, vector.Y)
+                        local length = (endPos - startPos).Magnitude
+                        local angle = math.atan2(endPos.Y - startPos.Y, endPos.X - startPos.X)
+
+                        line.Size = UDim2.new(0, length, 0, 1.5)
+                        line.Position = UDim2.new(0, (startPos.X + endPos.X) / 2, 0, (startPos.Y + endPos.Y) / 2)
+                        line.Rotation = math.deg(angle)
+                        line.BackgroundColor3 = hl.FillColor
+                        line.Visible = true
+                    elseif line then line:Destroy() end
+
+                else
+                    -- Player is dead, cleanup
+                    CleanupESP(plr.Name)
                 end
-                -- 5. TRACERS
-                local lineName = plr.Name .. "_Tracer"
-                local line = ESP_2D:FindFirstChild(lineName)
-                
-                if Config.ESP.Tracers and onScreen then
-                    if not line then
-                        line = Instance.new("Frame", ESP_2D); line.Name = lineName; line.BorderSizePixel = 0; line.AnchorPoint = Vector2.new(0.5, 0.5)
-                    end
-                    
-                    local startPos = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y) -- Bottom Middle
-                    local endPos = Vector2.new(vector.X, vector.Y)
-                    local length = (endPos - startPos).Magnitude
-                    local angle = math.atan2(endPos.Y - startPos.Y, endPos.X - startPos.X)
-
-                    line.Size = UDim2.new(0, length, 0, 1.5)
-                    line.Position = UDim2.new(0, (startPos.X + endPos.X) / 2, 0, (startPos.Y + endPos.Y) / 2)
-                    line.Rotation = math.deg(angle)
-                    line.BackgroundColor3 = hl.FillColor
-                    line.Visible = true
-                elseif line then line:Destroy() end
-
             else
-                -- Cleanup specific player ESP if they are invalid/off-screen
-                if ESPFolder:FindFirstChild(plr.Name.."_Highlight") then ESPFolder:FindFirstChild(plr.Name.."_Highlight"):Destroy() end
-                if ESPFolder:FindFirstChild(plr.Name.."_Tag") then ESPFolder:FindFirstChild(plr.Name.."_Tag"):Destroy() end
-                if ESP_2D:FindFirstChild(plr.Name.."_Box") then ESP_2D:FindFirstChild(plr.Name.."_Box"):Destroy() end
-                if ESP_2D:FindFirstChild(plr.Name.."_Tracer") then ESP_2D:FindFirstChild(plr.Name.."_Tracer"):Destroy() end
+                -- Player is invalid/loading, cleanup
+                CleanupESP(plr.Name)
             end
         end
     else 
-        -- Full Cleanup when Master ESP Switch is OFF
-        for _, v in pairs(ESPFolder:GetChildren()) do
-            if not v.Name:find("_ObjHighlight") then v:Destroy() end
-        end
+        -- Master Switch OFF - Clean everything
+        for _, v in pairs(ESPFolder:GetChildren()) do if not v.Name:find("_ObjHighlight") then v:Destroy() end end
         ESP_2D:ClearAllChildren()
     end
     
-    -- [[ OBJECT ESP ]] --
+    -- [[ OBJECT ESP LOGIC ]] --
     if Config.ESP.ShowObjects then
         for _, object in pairs(InteractableCache) do
             if object and object.Parent then
                 local show = false
-                
                 if Config.ESP.ObjectMode == "All" then show = true
                 elseif Config.ESP.ObjectMode == "Tools" and (object:IsA("Tool") or object:FindFirstChildWhichIsA("Tool")) then show = true
                 elseif Config.ESP.ObjectMode == "Interactable" and (object:FindFirstChildWhichIsA("ProximityPrompt", true) or object:FindFirstChildWhichIsA("ClickDetector", true)) then show = true 
-                elseif Config.ESP.ObjectMode == "NPCs" and object:IsA("Model") and object:FindFirstChild("Humanoid") then show = true 
-                end
+                elseif Config.ESP.ObjectMode == "NPCs" and object:IsA("Model") and object:FindFirstChild("Humanoid") then show = true end
 
                 if show then
                     local objName = object.Name .. "_ObjHighlight"
                     local hl = ESPFolder:FindFirstChild(objName)
                     if not hl then hl = Instance.new("Highlight", ESPFolder); hl.Name = objName; hl.FillTransparency = 0.5; hl.OutlineTransparency = 0 end
                     hl.Adornee = object
-                    
-                    if object:FindFirstChild("Humanoid") then
-                        hl.FillColor = Color3.fromRGB(255, 170, 0) -- Orange for NPCs
-                    else
-                        hl.FillColor = Color3.new(0, 1, 0) -- Green for Objects
-                    end
+                    hl.FillColor = object:FindFirstChild("Humanoid") and Color3.fromRGB(255, 170, 0) or Color3.new(0, 1, 0)
                 else
                     local hl = ESPFolder:FindFirstChild(object.Name .. "_ObjHighlight"); if hl then hl:Destroy() end
                 end
             end
         end
     else
-        -- Cleanup Objects when Toggled Off
-        for _, child in pairs(ESPFolder:GetChildren()) do
-            if child.Name:find("_ObjHighlight") then
-                child:Destroy()
-            end
-        end
+        for _, child in pairs(ESPFolder:GetChildren()) do if child.Name:find("_ObjHighlight") then child:Destroy() end end
     end
 end)
 
@@ -1893,69 +1918,8 @@ end)
 
 CMD_Add("carfly", "Toggle Car Fly", function()
     local isEnabled = (CarFlyCon ~= nil)
-    local newState = not isEnabled
-    
-    if newState then
-        -- [[ TURN ON ]]
-        CarFlyCon = RunService.Stepped:Connect(function()
-            local char = LocalPlayer.Character
-            local hum = char and char:FindFirstChild("Humanoid")
-            
-            if hum and hum.SeatPart then
-                local seat = hum.SeatPart
-                local vehicleModel = seat:FindFirstAncestorWhichIsA("Model")
-                
-                if vehicleModel then
-                    -- Freeze Everything
-                    for _, part in pairs(vehicleModel:GetDescendants()) do
-                        if part:IsA("BasePart") then
-                            part.Anchored = true
-                            part.CanCollide = false
-                            part.AssemblyLinearVelocity = Vector3.zero
-                            part.AssemblyAngularVelocity = Vector3.zero
-                        end
-                    end
-                    
-                    -- Calculate Move
-                    local camCF = workspace.CurrentCamera.CFrame
-                    local moveDir = Vector3.zero
-                    
-                    if UserInputService:IsKeyDown(Enum.KeyCode.W) then moveDir = moveDir + camCF.LookVector end
-                    if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - camCF.LookVector end
-                    if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - camCF.RightVector end
-                    if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveDir = moveDir + camCF.RightVector end
-                    if UserInputService:IsKeyDown(Enum.KeyCode.Space) then moveDir = moveDir + Vector3.new(0, 1, 0) end
-                    if UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then moveDir = moveDir - Vector3.new(0, 1, 0) end
-                    
-                    -- Move Whole Model
-                    if moveDir.Magnitude > 0 then
-                        local currentPivot = vehicleModel:GetPivot()
-                        local newPivot = currentPivot + (moveDir.Unit * (CarFlySpeed * RunService.Heartbeat:Wait()))
-                        vehicleModel:PivotTo(newPivot)
-                    end
-                end
-            end
-        end)
-        return "CarFly: ON can glitch sometimes"
-    else
-        -- [[ TURN OFF ]]
-        if CarFlyCon then CarFlyCon:Disconnect(); CarFlyCon = nil end
-        
-        local hum = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid")
-        if hum and hum.SeatPart then
-            local vehicleModel = hum.SeatPart:FindFirstAncestorWhichIsA("Model")
-            if vehicleModel then
-                for _, part in pairs(vehicleModel:GetDescendants()) do
-                    if part:IsA("BasePart") then
-                        part.Anchored = false
-                        part.CanCollide = true
-                        part.AssemblyLinearVelocity = Vector3.zero
-                    end
-                end
-            end
-        end
-        return "CarFly: OFF"
-    end
+    ToggleCarFly(not isEnabled)
+    return "CarFly Toggled"
 end)
 
 -- Visuals
