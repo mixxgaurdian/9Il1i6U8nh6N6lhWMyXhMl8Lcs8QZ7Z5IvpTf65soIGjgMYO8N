@@ -887,8 +887,8 @@ local FullCatalog = {
         {
             Name = "Slayers Battleground/R-Loader",
             Icon = BG_christmas_1,
-            Description = "Mini version of absence-hub for BB Legends.",
-            Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/vnausea/absence-mini/refs/heads/main/absencemini.lua'))()"
+            Description = "Gives you infinite Ult.",
+            Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/scripts/SlayerBattleGrounds.lua'))()"
         },
     },
 
