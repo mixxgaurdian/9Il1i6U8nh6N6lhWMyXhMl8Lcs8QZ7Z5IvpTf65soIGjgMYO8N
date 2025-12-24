@@ -885,9 +885,9 @@ local FullCatalog = {
     },
     ["Slayers Battleground"] = {
         {
-            Name = "InfiniteUlt/R-Loader",
+            Name = "No Cooldown/R-Loader",
             Icon = BG_christmas_1,
-            Description = "Gives you infinite Ult.",
+            Description = "No cooldowns for Slayers Battlegrounds.",
             Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/scripts/SlayerBattleGrounds.lua'))()"
         },
                 {
