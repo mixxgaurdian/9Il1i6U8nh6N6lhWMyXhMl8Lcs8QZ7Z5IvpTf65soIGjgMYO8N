@@ -418,27 +418,93 @@ local Library = (function()
                 ContactBtn.MouseButton1Click:Connect(function() setclipboard(Config.Misc.ContactInfo or ""); WindowObj:Notify("System", "Contact info copied!") end)
             end
 
-            -- [[ UPDATED TAB OBJECTS FOR SEARCH ]] --
-            function TabObj:Button(text, callback)
-                local Btn = create("TextButton", {Text = text, Size = UDim2.new(1,0,0,28), BackgroundColor3 = theme.ButtonBg, TextColor3 = theme.Text, Font = theme.Font, TextSize = 12, Parent = TabFrame})
+           function TabObj:Button(text, callback)
+                local Btn = create("TextButton", {
+                    Text = text,
+                    Size = UDim2.new(1, 0, 0, 28),
+                    BackgroundColor3 = theme.ButtonBg,
+                    TextColor3 = theme.Text,
+                    Font = theme.Font,
+                    TextSize = 12,
+                    Parent = TabFrame
+                })
                 roundify(Btn, 4)
-                Btn.MouseButton1Click:Connect(function() tween(Btn, {BackgroundColor3 = theme.AccentHover}, 0.1); task.wait(0.1); tween(Btn, {BackgroundColor3 = theme.ButtonBg}, 0.1); callback() end)
-                table.insert(SearchableElements, {Name = text, Type = "Button", Callback = callback}) 
+
+                -- [[ FIX: Check Disabled Status Immediately ]] --
+                if DisabledFeatures[text] then
+                    Btn.Text = text .. " (Disabled)"
+                    Btn.TextColor3 = Color3.fromRGB(150, 50, 50)
+                end
+
+                Btn.MouseButton1Click:Connect(function()
+                    if DisabledFeatures[text] then
+                        WindowObj:Notify("Restricted", text .. " disabled.")
+                        return
+                    end
+                    tween(Btn, {BackgroundColor3 = theme.AccentHover}, 0.1)
+                    task.wait(0.1)
+                    tween(Btn, {BackgroundColor3 = theme.ButtonBg}, 0.1)
+                    callback()
+                end)
+                
+                table.insert(SearchableElements, {Name = text, Type = "Button", Callback = callback})
                 return Btn
             end
 
             function TabObj:Toggle(text, default, callback)
                 local state = default
-                local Frame = create("TextButton", {Text = "", Size = UDim2.new(1,0,0,28), BackgroundColor3 = theme.ButtonBg, AutoButtonColor = false, Parent = TabFrame})
+                local Frame = create("TextButton", {
+                    Text = "",
+                    Size = UDim2.new(1, 0, 0, 28),
+                    BackgroundColor3 = theme.ButtonBg,
+                    AutoButtonColor = false,
+                    Parent = TabFrame
+                })
                 roundify(Frame, 4)
-                local Label = create("TextLabel", {Text = text, Size = UDim2.new(1,-40,1,0), Position = UDim2.new(0,10,0,0), BackgroundTransparency = 1, TextColor3 = theme.Text, Font = theme.Font, TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left, Parent = Frame})
-                local Indicator = create("Frame", {Size=UDim2.new(0,18,0,18), Position=UDim2.new(1,-24,0.5,-9), BackgroundColor3 = default and theme.Accent or theme.Panel, Parent=Frame}); roundify(Indicator, 4)
-                local function UpdateVisual(s) tween(Indicator, {BackgroundColor3 = s and theme.Accent or theme.Panel}, 0.2); tween(Label, {TextColor3 = s and theme.Text or theme.TextDim}, 0.2) end
+                
+                local Label = create("TextLabel", {
+                    Text = text,
+                    Size = UDim2.new(1, -40, 1, 0),
+                    Position = UDim2.new(0, 10, 0, 0),
+                    BackgroundTransparency = 1,
+                    TextColor3 = theme.Text,
+                    Font = theme.Font,
+                    TextSize = 12,
+                    TextXAlignment = Enum.TextXAlignment.Left,
+                    Parent = Frame
+                })
+                
+                local Indicator = create("Frame", {
+                    Size = UDim2.new(0, 18, 0, 18),
+                    Position = UDim2.new(1, -24, 0.5, -9),
+                    BackgroundColor3 = default and theme.Accent or theme.Panel,
+                    Parent = Frame
+                })
+                roundify(Indicator, 4)
+
+                -- [[ FIX: Check Disabled Status Immediately ]] --
+                if DisabledFeatures[text] then
+                    Label.Text = text .. " (Disabled)"
+                    Label.TextColor3 = Color3.fromRGB(150, 50, 50)
+                end
+
+                local function UpdateVisual(s)
+                    tween(Indicator, {BackgroundColor3 = s and theme.Accent or theme.Panel}, 0.2)
+                    tween(Label, {TextColor3 = s and theme.Text or theme.TextDim}, 0.2)
+                end
+
                 Frame.MouseButton1Click:Connect(function()
-                    if DisabledFeatures[text] then WindowObj:Notify("Restricted", text.." disabled."); return end
-                    state = not state; UpdateVisual(state); callback(state); SaveConfig()
+                    if DisabledFeatures[text] then
+                        WindowObj:Notify("Restricted", text .. " disabled.")
+                        return
+                    end
+                    state = not state
+                    UpdateVisual(state)
+                    callback(state)
+                    SaveConfig()
                 end)
-                table.insert(SearchableElements, {Name = text, Type = "Toggle", Callback = callback, CurrentState = default, UpdateFunc = UpdateVisual}) 
+                
+                table.insert(SearchableElements, {Name = text, Type = "Toggle", Callback = callback, CurrentState = default, UpdateFunc = UpdateVisual})
                 return Frame
             end
 
@@ -983,6 +1049,39 @@ TPTab:Toggle("Local Loop (Stick)", false, function(v)
     else
         if LocalLoopCon then LocalLoopCon:Disconnect(); LocalLoopCon = nil end
         Window:Notify("System", "Unstuck")
+    end
+end)
+
+-- [[ LOCAL BRING ALL LOOP ]] --
+local LoopBringAllCon = nil
+
+TPTab:Toggle("Local Bring All Loop", false, function(v)
+    if v then
+        Window:Notify("System", "Loop Bringing ALL players...")
+        
+        LoopBringAllCon = RunService.RenderStepped:Connect(function()
+            local c = LocalPlayer.Character
+            if c and c:FindFirstChild("HumanoidRootPart") then
+                for _, plr in pairs(Players:GetPlayers()) do
+                    if plr ~= LocalPlayer and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
+                        local tRoot = plr.Character.HumanoidRootPart
+                        
+                        -- Set their CFrame to 4 studs in front of you
+                        tRoot.CFrame = c.HumanoidRootPart.CFrame * CFrame.new(0, 0, -4)
+                        
+                        -- Zero out velocity to keep them from sliding away
+                        tRoot.AssemblyLinearVelocity = Vector3.zero
+                        tRoot.AssemblyAngularVelocity = Vector3.zero
+                    end
+                end
+            end
+        end)
+    else
+        if LoopBringAllCon then 
+            LoopBringAllCon:Disconnect()
+            LoopBringAllCon = nil 
+        end
+        Window:Notify("System", "Stopped Bring All")
     end
 end)
 
