@@ -885,13 +885,13 @@ local FullCatalog = {
     },
     ["Slayers Battleground"] = {
         {
-            Name = "Slayers Battleground/R-Loader",
+            Name = "InfiniteUlt/R-Loader",
             Icon = BG_christmas_1,
             Description = "Gives you infinite Ult.",
             Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/scripts/SlayerBattleGrounds.lua'))()"
         },
                 {
-            Name = "Slayers Battleground/R-Loader",
+            Name = "Crasher/R-Loader",
             Icon = BG_christmas_1,
             Description = "Crashes the game.",
             Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/scripts/SlayerBattleGroundsCrasher.lua'))()"
