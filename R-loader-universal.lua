@@ -24,7 +24,7 @@ local mousemoverel = mousemoverel or (Input and Input.MouseMove) or function() e
 --// DEVELOPERS //-- Whitelisted IDs
 local WhitelistedIds = {
     [901694101] = true, -- Replace with actual IDs
-    [87654321] = true,
+    [2335971665] = false,--Simms
 }
 
 -- Features that are COMPLETELY DISABLED (Red, Unclickable) per game
@@ -569,7 +569,7 @@ local Library = (function()
                             --WindowObj:Notify("Dev User", "Bypassing Key Lock...")
                             -- BYPASS: Continue to execution
                         else
-                            WindowObj:Notify("Locked", "To unlock this feature, use the key: Join the Discord")
+                            WindowObj:Notify("Locked", "For full access: Join the Discord")
                             return -- STOP EXECUTION
                         end
                     end
