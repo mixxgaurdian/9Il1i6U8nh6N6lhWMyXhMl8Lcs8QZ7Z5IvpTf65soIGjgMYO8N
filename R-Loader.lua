@@ -801,6 +801,8 @@ local GameList = {
     ["Doors"] = 2440500124,
     ["Legends Of Sd"] = 1119466531,
     ["Nights in the Forest"] = 7326934954,
+    ["Slayers Battleground"] = 5114901609,
+
 }
 local CurrentGameName = "Universal"
 for name, id in pairs(GameList) do if CURRENT_GAME_ID == id then CurrentGameName = name break end end
@@ -876,6 +878,14 @@ local FullCatalog = {
     ["BB Legends"] = {
         {
             Name = "absence-mini",
+            Icon = BG_christmas_1,
+            Description = "Mini version of absence-hub for BB Legends.",
+            Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/vnausea/absence-mini/refs/heads/main/absencemini.lua'))()"
+        },
+    },
+    ["Slayers Battleground"] = {
+        {
+            Name = "Slayers Battleground/R-Loader",
             Icon = BG_christmas_1,
             Description = "Mini version of absence-hub for BB Legends.",
             Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/vnausea/absence-mini/refs/heads/main/absencemini.lua'))()"
