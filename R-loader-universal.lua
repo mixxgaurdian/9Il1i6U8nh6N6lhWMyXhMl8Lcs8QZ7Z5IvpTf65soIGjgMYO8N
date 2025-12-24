@@ -357,9 +357,11 @@ local Library = (function()
 
         CloseBtn.MouseButton1Click:Connect(function() ScreenGui:Destroy() end)
         MinBtn.MouseButton1Click:Connect(function()
-            isMinimized = not isMinimized
-            if isMinimized then tween(Container, {Size = UDim2.new(0, 650, 0, 40)}, 0.3)
-            else tween(Container, {Size = UDim2.new(0, 650, 0, 450)}, 0.3) end
+            Container.Visible = false
+            -- Optional: Notify the user how to get it back
+            if WindowObj and WindowObj.Notify then
+                WindowObj:Notify("System", "UI Hidden. Press Keybind to open.")
+            end
         end)
 
         -- Dragging
@@ -1298,11 +1300,6 @@ MiscTab:Slider("Fly Speed", 10, 200, Config.Movement.FlySpeed, function(v) Confi
 
 MiscTab:Toggle("Enable Safe Fly", Config.Toggles.SafeFly, function(v) Config.Toggles.SafeFly = v; if not v then ResetMovement() end end)
 MiscTab:Slider("Safe Fly Speed", 10, 200, Config.Movement.SafeFlySpeed, function(v) Config.Movement.SafeFlySpeed = v end)
-
-MiscTab:Toggle("Force Shiftlock", false, function(v)
-    LocalPlayer.DevEnableMouseLock = v
-    if v then task.spawn(function() while LocalPlayer.DevEnableMouseLock == false and v do LocalPlayer.DevEnableMouseLock = true; task.wait(1) end end) end
-end)
 MiscTab:Toggle("Noclip", Config.Toggles.Noclip, function(v) Config.Toggles.Noclip = v end)
 
 local NoGravCon = nil
@@ -1325,10 +1322,46 @@ MiscTab:Toggle("No Gravity", false, function(v)
     end
 end)
 
+MiscTab:Label("--- Self ---")
+
+MiscTab:Toggle("Force Shiftlock", false, function(v)
+    LocalPlayer.DevEnableMouseLock = v
+    if v then task.spawn(function() while LocalPlayer.DevEnableMouseLock == false and v do LocalPlayer.DevEnableMouseLock = true; task.wait(1) end end) end
+end)
+
 MiscTab:Toggle("Force 3rd Person", false, function(v)
     if v then LocalPlayer.CameraMode = Enum.CameraMode.Classic; LocalPlayer.CameraMaxZoomDistance = 100; LocalPlayer.CameraMinZoomDistance = 10
     else LocalPlayer.CameraMaxZoomDistance = 128; LocalPlayer.CameraMinZoomDistance = 0.5 end
 end)
+
+MiscTab:Toggle("Freeze Self", false, function(v)
+    local char = LocalPlayer.Character
+    local root = char and char:FindFirstChild("HumanoidRootPart")
+    local hum = char and char:FindFirstChild("Humanoid")
+
+    if v then
+        -- HARD FREEZE
+        if root then 
+            root.Anchored = true 
+            root.AssemblyLinearVelocity = Vector3.zero
+            root.AssemblyAngularVelocity = Vector3.zero
+        end
+        if hum then 
+            hum.PlatformStand = true -- Disables inputs and physics
+        end
+        Window:Notify("System", "Frozen (Hard)")
+    else
+        -- UNFREEZE
+        if root then 
+            root.Anchored = false 
+        end
+        if hum then 
+            hum.PlatformStand = false 
+        end
+        Window:Notify("System", "Unfrozen")
+    end
+end)
+
 MiscTab:Label("--- Safety ---")
 -- // ANTI-VOID LOGIC // ----------------------------------------------------------------------
 local AntiVoidPart = nil
