@@ -20,24 +20,63 @@ local delfile = delfile or function() end
 local getcustomasset = getcustomasset or function(path) return path end
 local mousemoverel = mousemoverel or (Input and Input.MouseMove) or function() end
 
--- // DISABLE SYSTEM // -----------------------------------------------------------------------
-local DisabledFeatures = {}
+-- // CONFIGURATION // -----------------------------------------------------------------------
+--// DEVELOPERS //-- Whitelisted IDs
+local WhitelistedIds = {
+    [901694101] = true, -- Replace with actual IDs
+    [87654321] = true,
+}
 
+-- Features that are COMPLETELY DISABLED (Red, Unclickable) per game
+local GameSpecificConfigs = {
+    [9356971415] = {"Fly", "Noclip"}, 
+    [1234567890] = {"Instant Teleport"},
+    [5456952508] = {"Fly", "Noclip"},
+    [5114901609] = {"Local Loop (Stick)","Local Bring All Loop"}, 
+}
+
+local GlobalBetaFeatures = {
+    "FE Bring (object fix coming soon)",
+}
+
+getgenv().KeySystemEnabled = true  -- Enable/Disable Key System
+getgenv().TempKey = "TEMP-KEY-2025"
+
+-- // STATE MANAGEMENT // ---------------------------------------------------------------------
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Core = game:GetService("CoreGui")
+
+-- State Tables
+getgenv().DisabledFeatures = {}
+getgenv().BetaFeatures = {}
+
+-- Helper: Check Permissions
+local function IsUserWhitelisted()
+    if LocalPlayer and WhitelistedIds[LocalPlayer.UserId] then return true end
+    return false
+end
+
+-- [FUNCTION 1] DISABLE SYSTEM (Priority: High - Blocks Usage)
 getgenv().DisableFeature = function(featureName, shouldDisable)
-    DisabledFeatures[featureName] = shouldDisable
-    local Core = game:GetService("CoreGui")
+    if shouldDisable and IsUserWhitelisted() then shouldDisable = false end 
+    getgenv().DisabledFeatures[featureName] = shouldDisable
+    
+    -- Visual Update
     if Core:FindFirstChild("RLoader_Universal_Remaster") then
         local UI = Core["RLoader_Universal_Remaster"]
         for _, obj in pairs(UI:GetDescendants()) do
-            if obj:IsA("TextLabel") and obj.Text == featureName then
-                local parentBtn = obj.Parent
-                if parentBtn:IsA("Frame") or parentBtn:IsA("TextButton") then
-                    if shouldDisable then
-                        obj.Text = featureName .. " (Disabled)"
-                        obj.TextColor3 = Color3.fromRGB(150, 50, 50) 
+            if obj:IsA("TextLabel") and (obj.Text == featureName or obj.Text:find(featureName)) then
+                if shouldDisable then
+                    obj.Text = featureName .. " (Disabled)"
+                    obj.TextColor3 = Color3.fromRGB(150, 50, 50) 
+                else
+
+                    if getgenv().BetaFeatures[featureName] then
+                        getgenv().SetBetaStatus(featureName, true)
                     else
                         obj.Text = featureName
-                        obj.TextColor3 = Color3.fromRGB(230, 230, 240) 
+                        obj.TextColor3 = Color3.fromRGB(230, 230, 240)
                     end
                 end
             end
@@ -45,11 +84,49 @@ getgenv().DisableFeature = function(featureName, shouldDisable)
     end
 end
 
-local GameSpecificConfigs = {
-    [9356971415] = {"Fly", "Noclip"}, 
-    [1234567890] = {"Instant Teleport"},
-    [5456952508] = {"Fly", "Noclip"}, 
-}
+-- [FUNCTION 2] BETA/KEY SYSTEM (Priority: Medium - Warns User)
+getgenv().SetBetaStatus = function(featureName, isBeta)
+    getgenv().BetaFeatures[featureName] = isBeta
+
+    -- If the feature is currently Disabled, do NOT update visuals (Red overrides Yellow)
+    if getgenv().DisabledFeatures[featureName] then return end
+
+    -- Visual Update
+    if Core:FindFirstChild("RLoader_Universal_Remaster") then
+        local UI = Core["RLoader_Universal_Remaster"]
+        for _, obj in pairs(UI:GetDescendants()) do
+            if obj:IsA("TextLabel") and (obj.Text == featureName or obj.Text:find(featureName)) then
+                if isBeta then
+                    if getgenv().KeySystemEnabled then
+                        obj.Text = featureName .. " (Locked)"
+                        obj.TextColor3 = Color3.fromRGB(255, 140, 0) -- Orange
+                    else
+                        obj.Text = featureName .. " (Beta)"
+                        obj.TextColor3 = Color3.fromRGB(255, 215, 0) -- Yellow
+                    end
+                else
+                    -- Reset to normal
+                    obj.Text = featureName
+                    obj.TextColor3 = Color3.fromRGB(230, 230, 240)
+                end
+            end
+        end
+    end
+end
+
+-- // INITIALIZATION // -----------------------------------------------------------------------
+-- 1. Apply Game Specific Disables
+local currentPlaceId = game.PlaceId
+if GameSpecificConfigs[currentPlaceId] then
+    for _, feature in pairs(GameSpecificConfigs[currentPlaceId]) do
+        getgenv().DisableFeature(feature, true)
+    end
+end
+
+-- 2. Apply Global Beta Features
+for _, feature in pairs(GlobalBetaFeatures) do
+    getgenv().SetBetaStatus(feature, true)
+end
 
 -- // 2. CONFIGURATION DATA // ------------------------------------
 local Config = {
@@ -102,6 +179,7 @@ local Config = {
         AntiVoid = false,
         AntiVoidHeight = -50,
         ContactInfo = "Discord: Rloader_Community",
+        ContactInfolink = "https://discord.gg/MaJPqA6k",
     },
     Binds = {
         ToggleUI = Enum.KeyCode.M,
@@ -415,12 +493,24 @@ local Library = (function()
                 create("TextLabel", {Text = LocalPlayer.DisplayName, Size=UDim2.new(0,200,0,20), Position=UDim2.new(0,80,0,15), BackgroundTransparency=1, TextColor3=theme.Text, Font=Enum.Font.GothamBold, TextSize=16, TextXAlignment=Enum.TextXAlignment.Left, Parent=PFrame})
                 create("TextLabel", {Text = "@" .. LocalPlayer.Name, Size=UDim2.new(0,200,0,15), Position=UDim2.new(0,80,0,35), BackgroundTransparency=1, TextColor3=theme.TextDim, Font=theme.Font, TextSize=12, TextXAlignment=Enum.TextXAlignment.Left, Parent=PFrame})
                 create("TextLabel", {Text = "Status: Undetected", Size=UDim2.new(0,200,0,15), Position=UDim2.new(0,80,0,52), BackgroundTransparency=1, TextColor3=theme.Success, Font=theme.Font, TextSize=11, TextXAlignment=Enum.TextXAlignment.Left, Parent=PFrame})
-                local ContactBtn = create("TextButton", {Text = Config.Misc.ContactInfo or "Discord: N/A", Size = UDim2.new(0, 120, 0, 20), Position = UDim2.new(1, -130, 0, 55), BackgroundColor3 = theme.Panel, TextColor3 = theme.Accent, Font = theme.Font, TextSize = 10, Parent = PFrame}); roundify(ContactBtn, 4)
-                
-                ContactBtn.MouseButton1Click:Connect(function() setclipboard(Config.Misc.ContactInfo or ""); WindowObj:Notify("System", "Contact info copied!") end)
-            end
+                local ContactBtn = create("TextButton", {
+                    Text = Config.Misc.ContactInfo or "Discord: N/A", 
+                    Size = UDim2.new(0, 130, 0, 20), 
+                    Position = UDim2.new(1, -145, 0, 55), 
+                    BackgroundTransparency = 1, 
+                    TextColor3 = theme.Accent, 
+                    Font = theme.Font, 
+                    TextSize = 10, 
+                    Parent = PFrame
+                })
 
-           function TabObj:Button(text, callback)
+                -- Hover Effects (Green on hover, theme Accent on leave)
+                ContactBtn.MouseEnter:Connect(function() tween(ContactBtn, {TextColor3 = Color3.fromRGB(80, 255, 120)}, 0.2) end)
+                ContactBtn.MouseLeave:Connect(function() tween(ContactBtn, {TextColor3 = theme.Accent}, 0.2) end)
+
+                ContactBtn.MouseButton1Click:Connect(function() setclipboard(Config.Misc.ContactInfolink); WindowObj:Notify("System", "Contact info copied!") end)
+            end
+                function TabObj:Button(text, callback)
                 local Btn = create("TextButton", {
                     Text = text,
                     Size = UDim2.new(1, 0, 0, 28),
@@ -432,17 +522,64 @@ local Library = (function()
                 })
                 roundify(Btn, 4)
 
-                -- [[ FIX: Check Disabled Status Immediately ]] --
-                if DisabledFeatures[text] then
-                    Btn.Text = text .. " (Disabled)"
-                    Btn.TextColor3 = Color3.fromRGB(150, 50, 50)
+                -- [[ 1. VISUAL SETUP ]]
+                if getgenv().DisabledFeatures[text] then
+                    if IsUserWhitelisted() then
+                        -- DEV: Green & Accessible
+                        Btn.Text = text .. " (Dev Access)"
+                        Btn.TextColor3 = Color3.fromRGB(80, 255, 120) -- Green
+                    else
+                        -- USER: Red & Disabled
+                        Btn.Text = text .. " (Disabled)"
+                        Btn.TextColor3 = Color3.fromRGB(150, 50, 50) -- Red
+                    end
+                elseif getgenv().BetaFeatures[text] then
+                    if getgenv().KeySystemEnabled then
+                        if IsUserWhitelisted() then
+                            -- DEV: Cyan & Accessible
+                            Btn.Text = text .. " (Dev Access)"
+                            Btn.TextColor3 = Color3.fromRGB(0, 255, 200) -- Cyan
+                        else
+                            -- USER: Orange & Locked
+                            Btn.Text = text .. " (Locked)"
+                            Btn.TextColor3 = Color3.fromRGB(255, 140, 0) -- Orange
+                        end
+                    else
+                        Btn.Text = text .. " (Beta)"
+                        Btn.TextColor3 = Color3.fromRGB(255, 215, 0) -- Yellow
+                    end
                 end
 
+                -- [[ 2. CLICK LOGIC ]]
                 Btn.MouseButton1Click:Connect(function()
-                    if DisabledFeatures[text] then
-                        WindowObj:Notify("Restricted", text .. " disabled.")
-                        return
+                    -- A. Check Hard Disable
+                    if getgenv().DisabledFeatures[text] then
+                        if IsUserWhitelisted() then
+                            --WindowObj:Notify("Dev User", "Bypassing Disable...")
+                            -- BYPASS: Continue to execution
+                        else
+                           -- WindowObj:Notify("Restricted", text .. " is disabled for this game.")
+                            return -- STOP EXECUTION
+                        end
                     end
+
+                    -- B. Check Key Lock
+                    if getgenv().BetaFeatures[text] and getgenv().KeySystemEnabled then
+                        if IsUserWhitelisted() then
+                            --WindowObj:Notify("Dev User", "Bypassing Key Lock...")
+                            -- BYPASS: Continue to execution
+                        else
+                            WindowObj:Notify("Locked", "To unlock this feature, use the key: Join the Discord")
+                            return -- STOP EXECUTION
+                        end
+                    end
+
+                    -- C. Check Beta Warning
+                    if getgenv().BetaFeatures[text] and not getgenv().KeySystemEnabled then
+                        WindowObj:Notify("Beta Feature", "Warning: Bugs may occur.")
+                    end
+
+                    -- D. Execute Normal
                     tween(Btn, {BackgroundColor3 = theme.AccentHover}, 0.1)
                     task.wait(0.1)
                     tween(Btn, {BackgroundColor3 = theme.ButtonBg}, 0.1)
@@ -484,10 +621,32 @@ local Library = (function()
                 })
                 roundify(Indicator, 4)
 
-                -- [[ FIX: Check Disabled Status Immediately ]] --
-                if DisabledFeatures[text] then
-                    Label.Text = text .. " (Disabled)"
-                    Label.TextColor3 = Color3.fromRGB(150, 50, 50)
+                -- [[ 1. VISUAL SETUP ]]
+                if getgenv().DisabledFeatures[text] then
+                    if IsUserWhitelisted() then
+                         -- DEV: Green & Accessible
+                        Label.Text = text .. " (Dev Access)"
+                        Label.TextColor3 = Color3.fromRGB(80, 255, 120) -- Green
+                    else
+                        -- USER: Red & Disabled
+                        Label.Text = text .. " (Disabled)"
+                        Label.TextColor3 = Color3.fromRGB(150, 50, 50) -- Red
+                    end
+                elseif getgenv().BetaFeatures[text] then
+                    if getgenv().KeySystemEnabled then
+                        if IsUserWhitelisted() then
+                            -- DEV: Cyan & Accessible
+                            Label.Text = text .. " (Dev Access)"
+                            Label.TextColor3 = Color3.fromRGB(0, 255, 200) -- Cyan
+                        else
+                            -- USER: Orange & Locked
+                            Label.Text = text .. " (Locked)"
+                            Label.TextColor3 = Color3.fromRGB(255, 140, 0) -- Orange
+                        end
+                    else
+                        Label.Text = text .. " (Beta)"
+                        Label.TextColor3 = Color3.fromRGB(255, 215, 0) -- Yellow
+                    end
                 end
 
                 local function UpdateVisual(s)
@@ -495,11 +654,35 @@ local Library = (function()
                     tween(Label, {TextColor3 = s and theme.Text or theme.TextDim}, 0.2)
                 end
 
+                -- [[ 2. CLICK LOGIC ]]
                 Frame.MouseButton1Click:Connect(function()
-                    if DisabledFeatures[text] then
-                        WindowObj:Notify("Restricted", text .. " disabled.")
-                        return
+                    -- A. Check Hard Disable
+                    if getgenv().DisabledFeatures[text] then
+                        if IsUserWhitelisted() then
+                            --WindowObj:Notify("Dev User", "Bypassing Disable...")
+                            -- BYPASS
+                        else
+                            WindowObj:Notify("Restricted", text .. " is disabled.")
+                            return -- STOP EXECUTION
+                        end
                     end
+
+                    -- B. Check Key Lock
+                    if getgenv().BetaFeatures[text] and getgenv().KeySystemEnabled then
+                        if IsUserWhitelisted() then
+                            --WindowObj:Notify("Dev User", "Bypassing Key Lock...")
+                            -- BYPASS
+                        else
+                            WindowObj:Notify("Locked", "To unlock this feature, use the key: Join the Discord")
+                            return -- STOP EXECUTION
+                        end
+                    end
+
+                    -- C. Check Beta Warning
+                    if getgenv().BetaFeatures[text] and not getgenv().KeySystemEnabled then
+                        WindowObj:Notify("Beta Feature", "Warning: Bugs may occur.")
+                    end
+
                     state = not state
                     UpdateVisual(state)
                     callback(state)
@@ -509,7 +692,6 @@ local Library = (function()
                 table.insert(SearchableElements, {Name = text, Type = "Toggle", Callback = callback, CurrentState = default, UpdateFunc = UpdateVisual})
                 return Frame
             end
-
             function TabObj:Slider(text, min, max, default, callback)
                 local Frame = create("Frame", {Size = UDim2.new(1,0,0,40), BackgroundColor3 = theme.ButtonBg, Parent = TabFrame}); roundify(Frame, 4)
                 create("TextLabel", {Text = text, Size=UDim2.new(1,-10,0,15), Position=UDim2.new(0,10,0,5), BackgroundTransparency=1, TextColor3=theme.Text, Font=theme.Font, TextSize=12, TextXAlignment=Enum.TextXAlignment.Left, Parent=Frame})
@@ -676,7 +858,7 @@ CMD_Add("exit", "Restore Main UI", function() ToggleCMDMode(false); return "Rest
 
 -- // MAIN TAB //
 MainTab:Label("Description:")
-MainTab:Label("Not Found Ps. Mr.Simms I CANT Fu*cking Find The Color to change it back so cry")
+MainTab:Label("Not Found: To Mr.Simms I CANT Fu*cking Find The Color to change it back so cry")
 
 -- // COMBAT TAB //
 local TgtBtn
@@ -2337,4 +2519,11 @@ CMD_Add("spectate", "Spectate [player]", function(args)
 end)
 CMD_Add("unspectate", "Stop Spectating", function() if LocalPlayer.Character then workspace.CurrentCamera.CameraSubject = LocalPlayer.Character.Humanoid end return "Camera Reset" end)
 
+-- // FINAL INITIALIZATION // ----------------------------------------------------------------
 Window:Notify("System", "R-Loader Universal Injected")
+
+-- Check for Whitelist and Notify
+if IsUserWhitelisted() then
+    task.wait(0.5) -- Slight delay to ensure the first notify doesn't overlap too quickly
+    Window:Notify("Is Developer", "Full Access Granted: " .. LocalPlayer.Name)
+end
