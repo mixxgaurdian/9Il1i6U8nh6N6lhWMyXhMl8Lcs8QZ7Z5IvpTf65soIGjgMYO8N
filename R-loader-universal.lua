@@ -91,6 +91,7 @@ local Config = {
         SafeFlySpeed = 50,
         InstantTP = false,
         NoGravSpeed = 50,
+        BringSpeed = 75,
     },
     Fun = { 
         Time = 12,
@@ -931,8 +932,221 @@ local function RefreshPlayerList()
     end
 end
 task.spawn(function() while true do if liveUpdateEnabled and ListContainer.Visible then RefreshPlayerList() end task.wait(1) end end)
+-- [[ 1. SHARED SELECTION ]] --
+local BringTarget = nil
+local LocalLoopCon = nil
 
--- [[ 2. CHAT LOGS LOGIC (Fixed) ]] --
+TPTab:Label("--- Player Selection ---")
+TPTab:Dropdown("Select Player", function(name)
+    BringTarget = Players:FindFirstChild(name)
+    if BringTarget then Window:Notify("System", "Selected: " .. name) end
+end)
+
+-- [[ 2. LOCAL BRING (CLIENT SIDE) ]] --
+TPTab:Label("--- Local Bring (Client) ---")
+
+TPTab:Button("Local Bring (Once)", function()
+    if not BringTarget then Window:Notify("Error", "Select a player first!"); return end
+    
+    local c = LocalPlayer.Character
+    local t = BringTarget.Character
+    
+    if c and c:FindFirstChild("HumanoidRootPart") and t and t:FindFirstChild("HumanoidRootPart") then
+        -- FIXED: Move TARGET to LOCALPLAYER
+        -- We put them 3 studs in front of you (-3 on Z axis)
+        t.HumanoidRootPart.CFrame = c.HumanoidRootPart.CFrame * CFrame.new(0, 0, -3)
+    end
+end)
+
+TPTab:Toggle("Local Loop (Stick)", false, function(v)
+    if v then
+        if not BringTarget then Window:Notify("Error", "Select a player first!"); return end
+        Window:Notify("System", "Sticking player to me...")
+        
+        LocalLoopCon = RunService.RenderStepped:Connect(function()
+            local c = LocalPlayer.Character
+            local t = BringTarget.Character
+            
+            if c and c:FindFirstChild("HumanoidRootPart") and t and t:FindFirstChild("HumanoidRootPart") then
+                local tRoot = t.HumanoidRootPart
+                local myRoot = c.HumanoidRootPart
+                
+                -- FIXED: Constantly set TARGET CFrame to YOUR CFrame
+                -- We use specific CFrame setting rather than Lerp for "Stick" to fight replication harder
+                tRoot.CFrame = myRoot.CFrame * CFrame.new(0, 0, -3)
+                
+                -- Zero out their velocity so they don't slide away
+                tRoot.AssemblyLinearVelocity = Vector3.zero
+                tRoot.AssemblyAngularVelocity = Vector3.zero
+            end
+        end)
+    else
+        if LocalLoopCon then LocalLoopCon:Disconnect(); LocalLoopCon = nil end
+        Window:Notify("System", "Unstuck")
+    end
+end)
+
+TPTab:Button("FE Bring (object fix coming soon)", function()
+    if not BringTarget then Window:Notify("Error", "Select a player first!"); return end
+    
+    local c = LocalPlayer.Character
+    local c1 = BringTarget.Character
+    
+    if not (c and c1) then Window:Notify("Error", "Character missing"); return end
+    
+    local hrp = c:FindFirstChild("HumanoidRootPart")
+    local hum = c:FindFirstChild("Humanoid")
+    local hrp1 = c1:FindFirstChild("HumanoidRootPart")
+    
+    if not (hrp and hrp1) then Window:Notify("Error", "RootPart missing"); return end
+
+    Window:Notify("System", "Attempting Smart Bring...")
+
+    -- --- CONSTANTS ---
+    local speeding = 32      
+    local maxspeed = 75      
+    local dodgeSpeed = 40    
+    local reactionTime = 0.5 -- SECONDS TO WAIT BEFORE DODGING
+    local off = CFrame.Angles(-1.5707963267948966, 0, 0) 
+    local v3_0 = Vector3.new(0, 0, 0)
+    
+    local rayParams = RaycastParams.new()
+    rayParams.FilterType = Enum.RaycastFilterType.Exclude
+    rayParams.FilterDescendantsInstances = {c, c1, workspace.CurrentCamera}
+    -- -----------------
+
+    -- 1. SAVE HOME & CONFIG
+    local HomeCFrame = hrp.CFrame
+    
+    -- 2. TELEPORT INITIAL 
+    local TargetCFrame = hrp1.CFrame
+    hrp.CFrame = (TargetCFrame * CFrame.new(0, -3, 0)) * off
+    
+    if hum then hum.PlatformStand = true end
+    task.wait(1) 
+    
+    -- 3. SETUP PATH VARIABLES
+    local startPos = hrp.Position
+    local endPos = HomeCFrame.Position + Vector3.new(0, 3, 0) 
+    startPos = Vector3.new(startPos.X, endPos.Y, startPos.Z)
+
+    local totalDistance = (startPos - endPos).Magnitude 
+    local forwardDir = (endPos - startPos).Unit 
+    local rightDir = forwardDir:Cross(Vector3.new(0,1,0)) 
+
+    local forwardVel = 0
+    local currentDistanceTraveled = 0
+    local dodgeOffset = Vector3.new(0,0,0) 
+    
+    -- STATE VARIABLES
+    local sine = os.clock()
+    local lastsine = sine
+    local bringing = true
+    
+    local isBlocked = false       -- Are we currently stuck?
+    local blockedTimestamp = 0    -- When did we get stuck?
+
+    -- 4. MOVEMENT LOOP
+    while bringing and c.Parent and c1.Parent do
+        sine = os.clock()
+        local deltaTime = sine - lastsine
+        lastsine = sine
+
+        -- A. OBSTACLE CHECK
+        local currentRealPos = startPos + (forwardDir * currentDistanceTraveled) + dodgeOffset
+        local hitFront = workspace:Raycast(currentRealPos, forwardDir * 10, rayParams)
+
+        if hitFront then
+            -- === OBSTACLE DETECTED ===
+            
+            -- 1. HARD STOP FORWARD
+            forwardVel = 0 
+
+            -- 2. HANDLE TIMER
+            if not isBlocked then
+                isBlocked = true
+                blockedTimestamp = os.clock() -- Start the timer NOW
+            end
+
+            -- 3. CHECK IF WE HAVE WAITED LONG ENOUGH
+            local timeStuck = os.clock() - blockedTimestamp
+            
+            if timeStuck >= reactionTime then
+                -- WE HAVE WAITED, NOW WE DODGE
+                
+                -- Check UP
+                local hitUp = workspace:Raycast(currentRealPos, Vector3.new(0, 10, 0), rayParams)
+                if not hitUp then
+                    dodgeOffset = dodgeOffset + (Vector3.new(0, 1, 0) * dodgeSpeed * deltaTime)
+                else
+                    -- Check RIGHT
+                    local hitRight = workspace:Raycast(currentRealPos, rightDir * 8, rayParams)
+                    if not hitRight then
+                         dodgeOffset = dodgeOffset + (rightDir * dodgeSpeed * deltaTime)
+                    else
+                         -- Check LEFT
+                         dodgeOffset = dodgeOffset - (rightDir * dodgeSpeed * deltaTime)
+                    end
+                end
+            else
+                -- WE ARE STILL WAITING (Do nothing, just hover)
+                -- This allows the player/physics to settle before we jerk them sideways
+            end
+            
+        else
+            -- === PATH CLEAR ===
+            isBlocked = false -- Reset blocked status
+            
+            -- Resume Acceleration
+            if currentDistanceTraveled < totalDistance / 2 then
+                 forwardVel = forwardVel + (speeding * deltaTime)
+            else
+                 if currentDistanceTraveled > totalDistance - 20 then 
+                    forwardVel = forwardVel - (speeding * deltaTime)
+                 else
+                    forwardVel = forwardVel + (speeding * deltaTime)
+                 end
+            end
+            
+            if forwardVel > maxspeed then forwardVel = maxspeed end
+            if forwardVel < 10 then forwardVel = 10 end 
+            
+            currentDistanceTraveled = currentDistanceTraveled + (forwardVel * deltaTime)
+        end
+
+        if currentDistanceTraveled >= totalDistance then
+            break
+        end
+
+        -- B. APPLY POSITION
+        if not (hrp:IsGrounded()) then 
+            local finalPos = startPos + (forwardDir * currentDistanceTraveled) + dodgeOffset
+            
+            hrp.CFrame = CFrame.new(finalPos, endPos) * off
+            
+            if forwardVel <= 1 then
+                -- Hover velocity while waiting/stopped
+                hrp.Velocity = Vector3.new(0, 2, 0)
+            else
+                hrp.Velocity = forwardDir * forwardVel
+            end
+            
+            hrp.RotVelocity = v3_0
+        end
+
+        task.wait()
+    end
+
+    -- 5. FINISH
+    hrp.CFrame = HomeCFrame
+    hrp.Velocity = v3_0
+    hrp.RotVelocity = v3_0
+    if hum then hum.PlatformStand = false end
+    Window:Notify("System", "Bring Finished")
+end)
+
+
+-- [[ 2. CHAT LOGS LOGIC ]] --
 local function AddLog(text, color)
     local label = Instance.new("TextLabel", LogsContainer)
     label.BackgroundTransparency = 1
@@ -1069,11 +1283,21 @@ UpdateAntiVoid = function(state)
     end
 end
 
-MiscTab:Toggle("Anti-Void (Toggle Only)", Config.Misc.AntiVoid or false, function(v)
+MiscTab:Toggle("Anti-Void", Config.Misc.AntiVoid or false, function(v)
     if not Config.Misc.AntiVoidHeight then Config.Misc.AntiVoidHeight = -50 end
     Config.Misc.AntiVoid = v
     UpdateAntiVoid(v)
     Window:Notify("System", "Anti-Void: " .. tostring(v))
+end)
+MiscTab:Button("Rejoin Server", function()
+    Window:Notify("System", "Rejoining...")
+    if #Players:GetPlayers() <= 1 then
+        LocalPlayer:Kick("\nRejoining...")
+        task.wait()
+        game:GetService("TeleportService"):Teleport(game.PlaceId, LocalPlayer)
+    else
+        game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, LocalPlayer)
+    end
 end)
 
 -- // FUN & WEATHER //
