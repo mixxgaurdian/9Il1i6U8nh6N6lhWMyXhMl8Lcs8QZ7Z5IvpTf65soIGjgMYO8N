@@ -23,7 +23,7 @@ local mousemoverel = mousemoverel or (Input and Input.MouseMove) or function() e
 -- // CONFIGURATION // -----------------------------------------------------------------------
 --// DEVELOPERS //-- Whitelisted IDs
 local WhitelistedIds = {
-    [901694101] = true, -- Replace with actual IDs
+    [9016941031] = true, -- Replace with actual IDs
     [2335971665] = false,--Simms
 }
 
