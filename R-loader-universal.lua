@@ -25,6 +25,8 @@ local mousemoverel = mousemoverel or (Input and Input.MouseMove) or function() e
 local WhitelistedIds = {
     [9016941031] = true, -- Replace with actual IDs
     [2335971665] = true,--Simms
+    [10104221280] = true,--Simms
+
 }
 
 -- Features that are COMPLETELY DISABLED (Red, Unclickable) per game
