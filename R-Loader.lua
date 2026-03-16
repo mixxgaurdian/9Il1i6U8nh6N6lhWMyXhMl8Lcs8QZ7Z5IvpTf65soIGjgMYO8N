@@ -846,7 +846,7 @@ local FullCatalog = {
             Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/blackowl1231/Z3US/refs/heads/main/Games/Z3US%20Arsenal%20Beta.lua'))()"
         },
         {
-            Name = "Vapa-v2",
+            Name = "R-Loader | Rivals Demo",
             Icon = BG_christmas_1,
             Description = "Advanced Arsenal script with combat utilities.",
             Load = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/Nickyangtpe/Vapa-v2/refs/heads/main/Vapav2-Arsenal.lua", true))()'
@@ -861,6 +861,15 @@ local FullCatalog = {
             Load = [[
                 getgenv().autoload = autoloadEnabled
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/blackowl1231/Z3US/refs/heads/main/Games/Z3US%20Rivals%20Beta.lua"))()
+            ]]
+        },
+        {
+            Name = "Vapa-v2 Rivals",
+            Icon = BG_christmas_1,
+            Description = "Vapa-v2 version for Rivals with autoload support.",
+            Load = [[
+                getgenv().autoload = autoloadEnabled
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/scripts/R-Loader-aimDemo.lua", true))()
             ]]
         },
     },
