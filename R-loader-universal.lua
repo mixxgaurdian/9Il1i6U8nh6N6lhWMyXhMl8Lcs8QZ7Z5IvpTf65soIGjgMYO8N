@@ -243,6 +243,7 @@ local function SaveConfig()
         Aimbot = Config.Aimbot,
         ESP = Config.ESP,
         Movement = Config.Movement,
+        Fun = Config.Fun, -- FIXED: Added Fun to Save
         Toggles = Config.Toggles,
         Misc = Config.Misc,
         Binds = {} 
@@ -277,6 +278,7 @@ local function LoadConfig()
         end
         if decoded.ESP then for k,v in pairs(decoded.ESP) do SafeLoad("ESP", k, v) end end
         if decoded.Movement then for k,v in pairs(decoded.Movement) do SafeLoad("Movement", k, v) end end
+        if decoded.Fun then for k,v in pairs(decoded.Fun) do SafeLoad("Fun", k, v) end end -- FIXED: Added Fun to Load
         if decoded.Misc then for k,v in pairs(decoded.Misc) do SafeLoad("Misc", k, v) end end
         
         if decoded.Toggles then 
@@ -292,13 +294,11 @@ local function LoadConfig()
                 end
             end
         end
-        
-        -- [[ FIX: Activate AntiVoid if it was saved as true ]] --
-        if Config.Misc.AntiVoid and UpdateAntiVoid then
-            UpdateAntiVoid(true)
-        end
     end
 end
+
+-- [[ FIXED: Load Config immediately after creation so the UI can consume it! ]]
+LoadConfig()
 
 -- // 3. UI LIBRARY (REMASTERED & ADAPTED) // -----------------------------------------------
 local Library = (function()
@@ -339,7 +339,6 @@ local Library = (function()
         roundify(Container, 10); addStroke(Container, theme.Border)
 
         -- [[ LAYOUT SETUP (MOVED UP) ]] --
-        -- We create Sidebar and ContentArea FIRST so the search bar can access them
         local Header = create("Frame", {Size = UDim2.new(1,0,0,40), BackgroundColor3 = theme.Header, Parent = Container})
         roundify(Header, 10)
         create("Frame", {Size = UDim2.new(1,0,0,10), Position = UDim2.new(0,0,1,-10), BackgroundColor3 = theme.Header, Parent = Header, BorderSizePixel=0})
@@ -692,6 +691,12 @@ local Library = (function()
                 end)
                 
                 table.insert(SearchableElements, {Name = text, Type = "Toggle", Callback = callback, CurrentState = default, UpdateFunc = UpdateVisual})
+                
+                -- [[ FIXED: Auto-Trigger Logics on Load ]]
+                task.spawn(function()
+                    callback(default)
+                end)
+                
                 return Frame
             end
             function TabObj:Slider(text, min, max, default, callback)
@@ -699,7 +704,11 @@ local Library = (function()
                 create("TextLabel", {Text = text, Size=UDim2.new(1,-10,0,15), Position=UDim2.new(0,10,0,5), BackgroundTransparency=1, TextColor3=theme.Text, Font=theme.Font, TextSize=12, TextXAlignment=Enum.TextXAlignment.Left, Parent=Frame})
                 local ValueLabel = create("TextLabel", {Text = tostring(default), Size=UDim2.new(0,40,0,15), Position=UDim2.new(1,-45,0,5), BackgroundTransparency=1, TextColor3=theme.TextDim, Font=theme.Font, TextSize=11, TextXAlignment=Enum.TextXAlignment.Right, Parent=Frame})
                 local SliderBar = create("TextButton", {Text="", Size=UDim2.new(1,-20,0,4), Position=UDim2.new(0,10,0,28), BackgroundColor3=theme.Panel, AutoButtonColor=false, Parent=Frame}); roundify(SliderBar, 2)
-                local Fill = create("Frame", {Size=UDim2.new((default-min)/(max-min),0,1,0), BackgroundColor3=theme.Accent, Parent=SliderBar}); roundify(Fill, 2)
+                
+                -- [[ FIXED: Guard math block from breaking GUI initialization ]]
+                local fillRatio = math.clamp((default - min) / (max - min), 0, 1)
+                local Fill = create("Frame", {Size=UDim2.new(fillRatio,0,1,0), BackgroundColor3=theme.Accent, Parent=SliderBar}); roundify(Fill, 2)
+                
                 local dragging = false
                 local function update(input)
                     local pos = math.clamp((input.Position.X - SliderBar.AbsolutePosition.X) / SliderBar.AbsoluteSize.X, 0, 1)
@@ -710,6 +719,11 @@ local Library = (function()
                 SliderBar.InputBegan:Connect(function(i) if i.UserInputType == Enum.UserInputType.MouseButton1 then dragging=true; update(i) end end)
                 UserInputService.InputEnded:Connect(function(i) if i.UserInputType == Enum.UserInputType.MouseButton1 then dragging=false; SaveConfig() end end)
                 UserInputService.InputChanged:Connect(function(i) if dragging and i.UserInputType == Enum.UserInputType.MouseMovement then update(i) end end)
+                
+                -- [[ FIXED: Auto-Trigger Logics on Load ]]
+                task.spawn(function()
+                    callback(default)
+                end)
             end
 
             function TabObj:Binder(text, defaultKey, callback)
@@ -720,6 +734,11 @@ local Library = (function()
                     BindBtn.Text = "..."; BindBtn.TextColor3 = theme.Accent
                     local input = UserInputService.InputBegan:Wait()
                     if input.UserInputType == Enum.UserInputType.Keyboard then BindBtn.Text = input.KeyCode.Name; BindBtn.TextColor3 = theme.TextDim; callback(input.KeyCode); SaveConfig() else BindBtn.Text = defaultKey.Name end
+                end)
+                
+                -- [[ FIXED: Setup assignment on load ]]
+                task.spawn(function()
+                    callback(defaultKey)
                 end)
             end
 
@@ -1925,9 +1944,6 @@ end)
 
 -- // 5. LOGIC LOOPS & RUNTIME // -------------------------------------------------------------
 
--- Load config at end of setup (and trigger antivoid if needed)
-LoadConfig()
-
 -- Input Handling for Keybinds
 UserInputService.InputBegan:Connect(function(input, gpe)
     if gpe then return end
@@ -2569,4 +2585,7 @@ Window:Notify("System", "R-Loader Universal Injected")
 if IsUserWhitelisted() then
     task.wait(0.5) -- Slight delay to ensure the first notify doesn't overlap too quickly
     Window:Notify("Is Developer", "Full Access Granted: " .. LocalPlayer.Name)
+else
+    task.wait(1)
+    Window:Notify("Not Developer", "Limited Access: " .. LocalPlayer.Name)
 end
