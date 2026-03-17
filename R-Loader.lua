@@ -12,8 +12,11 @@ getgenv().RLoader_KeyVerified = false
 local SpecialUsers = {
     [1104273577] = { Title = "Welcome, Developer" },
     [2335971665] = { Title = "Welcome, 👑King" },
-    --[10104221280] = { Title = "Welcome, Dev" }
+    [10104221280] = { Title = "Welcome, Dev" }
 }
+local CORRECT_KEY = "R-LOADER-DISCORD!"
+local FREE_KEY = "R-LOADER-DISCORD!"
+local Discord_Link = "https://discord.gg/g2ufS3jV"
 
 -- // THEME & HELPERS // ----------------------------------------------------------------------
 local theme = {
@@ -82,12 +85,33 @@ local CloseBtn = create("TextButton", {Text = "X", Size = UDim2.new(0,40,0,40), 
 -- Inputs & Buttons (CENTERED & SCALED FOR 700x500)
 local KeyInput = create("TextBox", {Size = UDim2.new(0, 450, 0, 45), Position = UDim2.new(0.5, 0, 0.5, -40), AnchorPoint = Vector2.new(0.5, 0.5), BackgroundColor3 = theme.Panel, TextColor3 = theme.Text, Font = theme.Font, TextSize = 14, PlaceholderText = "Enter Key Here...", Text = "", ClearTextOnFocus = false, Parent = Container})
 roundify(KeyInput, 6); addStroke(KeyInput, theme.Border)
+local CopyKeyBtn = create("TextButton", {
+    Text = "Free Key", 
+    Size = UDim2.new(0, 100, 0, 45), 
+    Position = UDim2.new(0.5, 175, 0.5, -40), -- Aligned to the right side of the input
+    AnchorPoint = Vector2.new(0.5, 0.5), 
+    BackgroundColor3 = theme.ButtonBg, 
+    TextColor3 = theme.Text, 
+    Font = theme.Font, 
+    TextSize = 14, 
+    Parent = Container
+})
+roundify(CopyKeyBtn, 6); addStroke(CopyKeyBtn, theme.Accent)
 
-local VerifyBtn = create("TextButton", {Text = "Verify Key", Size = UDim2.new(0, 450, 0, 45), Position = UDim2.new(0.5, 0, 0.5, 20), AnchorPoint = Vector2.new(0.5, 0.5), BackgroundColor3 = theme.ButtonBg, TextColor3 = theme.Accent, Font = Enum.Font.GothamBold, TextSize = 14, Parent = Container})
+-- Functionality for Copy Button
+CopyKeyBtn.MouseButton1Click:Connect(function()
+    setclipboard(FREE_KEY)
+    Notify("Clipboard", "Free key copied to clipboard! KEY: " .. FREE_KEY)
+    Notify("Info", "Join our Discord for support and updates! " .. Discord_Link)
+end)
+
+local VerifyBtn = create("TextButton", {Text = "Verify Key", Size = UDim2.new(0, 450, 0, 45), Position = UDim2.new(0.5, 0, 0.5, 20), AnchorPoint = Vector2.new(0.5, 0.5), BackgroundColor3 = theme.ButtonBg, TextColor3 = Color3.fromRGB(255, 255, 255), Font = theme.Font, TextSize = 14, Parent = Container})
 roundify(VerifyBtn, 6); addStroke(VerifyBtn, theme.Accent)
 
 local DiscordBtn = create("TextButton", {Text = "Copy Discord Link", Size = UDim2.new(0, 450, 0, 40), Position = UDim2.new(0.5, 0, 0.5, 80), AnchorPoint = Vector2.new(0.5, 0.5), BackgroundColor3 = Color3.fromRGB(88, 101, 242), BackgroundTransparency = 0.2, TextColor3 = Color3.fromRGB(255, 255, 255), Font = theme.Font, TextSize = 14, Parent = Container})
-roundify(DiscordBtn, 6)
+roundify(DiscordBtn, 6);
+
+
 local EndLabel = create("TextLabel", {Text = "Key does change when I feel like it. Join our Discord for support and updates!", Size = UDim2.new(1, -20, 0, 30), Position = UDim2.new(0, 10, 1, -40), BackgroundTransparency = 1, TextColor3 = theme.TextDim, Font = theme.Font, TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left, Parent = Container})
 
 -- Dragging Logic
@@ -112,8 +136,6 @@ VerifyBtn.MouseLeave:Connect(function() tween(VerifyBtn, {BackgroundColor3 = the
 
 -- // LOGIC // --------------------------------------------------------------------------------
 
-local CORRECT_KEY = "R-LOADER-DISCORD!"
-local Discord_Link = "https://discord.gg/g2ufS3jV"
 
 DiscordBtn.MouseButton1Click:Connect(function()
     setclipboard(Discord_Link)
@@ -559,7 +581,7 @@ local Library = (function()
             IgnoreGuiInset = true 
         })
         --[[Loader version]]
-        local RL_VERSION="beta-b32c6wt86"
+        local RL_VERSION="rloader-b29"
 
         -- [[ APPLY SAVED SCALE ]]
         local UIScale = create("UIScale", {Parent = ScreenGui, Scale = SystemSettings.UIScale or 1})
@@ -1021,6 +1043,7 @@ local FullCatalog = {
         {
             Name = "R-Loader Old UI",
             Icon = BG_christmas_1,
+            isdown = true,
             Description = "This is the old ui of R-loader if you run into any issues happy exploiting",
             Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/scripts/R-Loader-deprecated.lua'))()"
         },
