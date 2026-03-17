@@ -1,2 +1,10 @@
+# Ignore the following specific loader files
 R-Loader.lua
 R-loader-universal.lua
+
+# Ignore the private folder (if you haven't moved it to a submodule yet)
+R-Loader-Main/
+
+# Common Roblox/Luau related ignores
+*.log
+*.tmp
