@@ -134,15 +134,15 @@ end
 local Config = {
     Aimbot = {
         Enabled = false,
-        Key = Enum.UserInputType.MouseButton2,
+        Key = "MouseButton2",
         Smoothness = 5,
         FOV = 300,
         TargetPart = "Head", 
         TargetMode = "Head", 
-        Range = 2000, -- [NEW] Max Distance
+        Range = 2000,
         ObjectLockon = false,
         TeamCheck = false,
-        HealthDetach = false, -- [NEW] Stop locking when dead
+        HealthDetach = false,
         Whitelist = {}
     },
     ESP = {
@@ -166,6 +166,7 @@ local Config = {
         IntervalSpeed = 0.05,
         FlySpeed = 50,
         WalkSpeed = 16,
+        BoostSpeed = 50,
         JumpPower = 50,
         SafeFlySpeed = 50,
         InstantTP = false,
@@ -206,8 +207,13 @@ local Config = {
         Fly = false,
         Noclip = false,
         Speed = false,
+        ShiftBoost = false,
         Jump = false,
         SafeFly = false,
+        ForceShiftlock = false,
+        Force3rdPerson = false,
+        FreezeSelf = false,
+        CMDMode = false,
     }
 }
 
@@ -883,13 +889,27 @@ MainTab:Label("Not Found: To Mr.Simms I CANT Fu*cking Find The Color to change i
 
 -- // COMBAT TAB //
 local TgtBtn
-CombatTab:Slider("Aimbot Range", 100, 5000, Config.Aimbot.Range, function(v) Config.Aimbot.Range = v end) -- [NEW]
+local LockKeyBtn
+
+CombatTab:Slider("Aimbot Range", 100, 5000, Config.Aimbot.Range, function(v) Config.Aimbot.Range = v end)
 CombatTab:Toggle("Aimbot Enabled", Config.Aimbot.Enabled, function(v) Config.Aimbot.Enabled = v end)
+
 TgtBtn = CombatTab:Button("Target Mode: " .. Config.Aimbot.TargetMode, function()
     if Config.Aimbot.TargetMode == "Head" then Config.Aimbot.TargetMode = "Body"
     elseif Config.Aimbot.TargetMode == "Body" then Config.Aimbot.TargetMode = "Both"
     else Config.Aimbot.TargetMode = "Head" end
     TgtBtn.Text = "Target Mode: " .. Config.Aimbot.TargetMode
+end)
+
+LockKeyBtn = CombatTab:Button("Lock Key: " .. (Config.Aimbot.Key == "MouseButton2" and "Right Click (MB2)" or "Left Click (MB1)"), function()
+    if Config.Aimbot.Key == "MouseButton2" then
+        Config.Aimbot.Key = "MouseButton1"
+        LockKeyBtn.Text = "Lock Key: Left Click (MB1)"
+    else
+        Config.Aimbot.Key = "MouseButton2"
+        LockKeyBtn.Text = "Lock Key: Right Click (MB2)"
+    end
+    SaveConfig()
 end)
 
 CombatTab:Toggle("Team Check", Config.Aimbot.TeamCheck or false, function(v) Config.Aimbot.TeamCheck = v end)
@@ -963,25 +983,22 @@ local function ResetMovement()
 end
 
 -- [[ SHIFT BOOST (VELOCITY - UNDETECTABLE) ]] --
-local ShiftBoost = false
-local BoostVelocity = 50 -- Default Boost Speed (Adjustable via Slider)
-
 MoveTab:Label("--- Shift Boost (Velocity) ---")
 
-MoveTab:Toggle("Shift Boost (Hold Shift)", false, function(v)
-    ShiftBoost = v
+MoveTab:Toggle("Shift Boost (Hold Shift)", Config.Toggles.ShiftBoost, function(v)
+    Config.Toggles.ShiftBoost = v
     if v then
         Window:Notify("System", "Hold SHIFT to boost. Use Slider to adjust.")
     end
 end)
 
-MoveTab:Slider("Boost Speed", 16, 300, BoostVelocity, function(v)
-    BoostVelocity = v
+MoveTab:Slider("Boost Speed", 16, 300, Config.Movement.BoostSpeed, function(v)
+    Config.Movement.BoostSpeed = v
 end)
 
 -- Physics Loop
 RunService.Heartbeat:Connect(function()
-    if not ShiftBoost then return end
+    if not Config.Toggles.ShiftBoost then return end
     
     local char = LocalPlayer.Character
     local hum = char and char:FindFirstChild("Humanoid")
@@ -995,7 +1012,7 @@ RunService.Heartbeat:Connect(function()
             -- We do NOT change 'PlatformStand' or 'Sit', so standard animations continue to play
             
             local currentVel = root.AssemblyLinearVelocity
-            local targetVel = hum.MoveDirection * BoostVelocity
+            local targetVel = hum.MoveDirection * Config.Movement.BoostSpeed
             
             root.AssemblyLinearVelocity = Vector3.new(targetVel.X, currentVel.Y, targetVel.Z)
         end
@@ -1537,8 +1554,12 @@ end)
 
 -- // MISC TAB //
 MiscTab:Label("--- Modes ---")
-MiscTab:Toggle("CMD Mode", false, function(v) ToggleCMDMode(v) end)
+MiscTab:Toggle("CMD Mode", Config.Toggles.CMDMode, function(v) 
+    Config.Toggles.CMDMode = v
+    ToggleCMDMode(v) 
+end)
 
+-- (Keep the Fly/Noclip/NoGravity stuff here exactly as it was)
 MiscTab:Toggle("Fly", Config.Toggles.Fly, function(v) Config.Toggles.Fly = v; if not v then ResetMovement() end end)
 MiscTab:Slider("Fly Speed", 10, 200, Config.Movement.FlySpeed, function(v) Config.Movement.FlySpeed = v end)
 
@@ -1568,40 +1589,35 @@ end)
 
 MiscTab:Label("--- Self ---")
 
-MiscTab:Toggle("Force Shiftlock", false, function(v)
+MiscTab:Toggle("Force Shiftlock", Config.Toggles.ForceShiftlock, function(v)
+    Config.Toggles.ForceShiftlock = v
     LocalPlayer.DevEnableMouseLock = v
-    if v then task.spawn(function() while LocalPlayer.DevEnableMouseLock == false and v do LocalPlayer.DevEnableMouseLock = true; task.wait(1) end end) end
+    if v then task.spawn(function() while LocalPlayer.DevEnableMouseLock == false and Config.Toggles.ForceShiftlock do LocalPlayer.DevEnableMouseLock = true; task.wait(1) end end) end
 end)
 
-MiscTab:Toggle("Force 3rd Person", false, function(v)
+MiscTab:Toggle("Force 3rd Person", Config.Toggles.Force3rdPerson, function(v)
+    Config.Toggles.Force3rdPerson = v
     if v then LocalPlayer.CameraMode = Enum.CameraMode.Classic; LocalPlayer.CameraMaxZoomDistance = 100; LocalPlayer.CameraMinZoomDistance = 10
     else LocalPlayer.CameraMaxZoomDistance = 128; LocalPlayer.CameraMinZoomDistance = 0.5 end
 end)
 
-MiscTab:Toggle("Freeze Self", false, function(v)
+MiscTab:Toggle("Freeze Self", Config.Toggles.FreezeSelf, function(v)
+    Config.Toggles.FreezeSelf = v
     local char = LocalPlayer.Character
     local root = char and char:FindFirstChild("HumanoidRootPart")
     local hum = char and char:FindFirstChild("Humanoid")
 
     if v then
-        -- HARD FREEZE
         if root then 
             root.Anchored = true 
             root.AssemblyLinearVelocity = Vector3.zero
             root.AssemblyAngularVelocity = Vector3.zero
         end
-        if hum then 
-            hum.PlatformStand = true -- Disables inputs and physics
-        end
+        if hum then hum.PlatformStand = true end
         Window:Notify("System", "Frozen (Hard)")
     else
-        -- UNFREEZE
-        if root then 
-            root.Anchored = false 
-        end
-        if hum then 
-            hum.PlatformStand = false 
-        end
+        if root then root.Anchored = false end
+        if hum then hum.PlatformStand = false end
         Window:Notify("System", "Unfrozen")
     end
 end)
@@ -2319,8 +2335,8 @@ end)
 
 -- Aimbot Loop
 local aiming = false
-UserInputService.InputBegan:Connect(function(i) if i.UserInputType == Config.Aimbot.Key then aiming = true end end)
-UserInputService.InputEnded:Connect(function(i) if i.UserInputType == Config.Aimbot.Key then aiming = false end end)
+UserInputService.InputBegan:Connect(function(i) if i.UserInputType.Name == Config.Aimbot.Key then aiming = true end end)
+UserInputService.InputEnded:Connect(function(i) if i.UserInputType.Name == Config.Aimbot.Key then aiming = false end end)
 
 RunService.RenderStepped:Connect(function()
     if aiming and Config.Aimbot.Enabled then

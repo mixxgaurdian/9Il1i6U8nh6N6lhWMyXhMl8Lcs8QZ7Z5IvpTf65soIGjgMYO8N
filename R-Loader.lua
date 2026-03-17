@@ -28,6 +28,8 @@ local PINS_FILE = SETTINGS_FOLDER .. "/pinned_tabs.json"
 local UI_SETTINGS_FILE = SETTINGS_FOLDER .. "/ui_settings.json"
 
 -- // ICONS / EMOJI DICTIONARY //
+-- // HEADER IMAGE (DEFAULT CAN BE OVERRIDDEN BY USER CONFIG) //
+Header_Image = "https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/Image/Icons/R-loadert-transparent.png" -- Default header icon (can be overridden by user config)
 local Icons = {
     -- Roles & Ranks (New)
     owner = "👑",
@@ -269,7 +271,7 @@ local SpecialUsers = {
     [2335971665] = { Title = "Welcome, 👑King", Background = "https://w.wallhaven.cc/full/4d/wallhaven-4d39wo.jpg" }
 }
 local DEFAULT_BACKGROUND = "https://wallpapercave.com/wp/wp5055045.jpg"
-local GreetingsList = {"Hello", "Welcome", "Greetings", "Hey there", "Sup"}
+local GreetingsList = {"Hello", "Welcome", "Greetings", "Hey there", "Sup", "Salutations", "Ahoy", "Howdy", "Welcome back", "Good to see you", "Yo", "Hiya", "Welcome aboard", "Nice to see you", "Hey", "What's up", "Welcome, player", "Salute", "G'day", "Welcome, friend"}
 local RandomGreeting = GreetingsList[math.random(1, #GreetingsList)]
 
 local isSpecial = SpecialUsers[LocalPlayer.UserId]
@@ -449,7 +451,7 @@ local Library = (function()
             Size = UDim2.new(0, 37, 0, 37),                -- Size of the image (30x30 pixels)
             Position = UDim2.new(0, 15.5, 0.38, -15),          -- 10px from left edge, centered vertically
             BackgroundTransparency = 1,                     -- Ensure background is clear for rounding
-            Image = GetProcessedIcon("https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/Image/Icons/R-loadertrans-Christmas.png"), -- PASTE YOUR PNG LINK INSIDE THESE QUOTES
+            Image = GetProcessedIcon(Header_Image), -- PASTE YOUR PNG LINK INSIDE THESE QUOTES
             Parent = Header
         })
         
@@ -701,19 +703,39 @@ function Window:CreateCategory(name, icon)
                 return Btn
             end
             
-            -- (Ensure you include the rest of the Tab functions like Tab:ScriptCard, Tab:Label, etc. here)
-            function Tab:ScriptCard(name, iconId, desc, callback)
-                 -- ... paste your existing ScriptCard logic here ...
+            function Tab:ScriptCard(name, iconId, desc, isDown, callback)
                  local Container = create("Frame", {Name = "ScriptCard_"..name, Size = UDim2.new(1, 0, 0, 110), BackgroundColor3 = theme.Panel, BackgroundTransparency = 0.2, Parent = TabFrame})
                  roundify(Container, 8); addStroke(Container, theme.Border)
+                 
                  local IconContainer = create("Frame", {Size = UDim2.new(0, 65, 0, 65), Position = UDim2.new(0, 8, 0.5, -32.5), BackgroundColor3 = Color3.fromRGB(0,0,0), BackgroundTransparency = 0.5, Parent = Container})
                  roundify(IconContainer, 8); addStroke(IconContainer, theme.Border)
                  create("ImageLabel", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, Image = (GetProcessedIcon and GetProcessedIcon(iconId)) or iconId, ScaleType = Enum.ScaleType.Fit, Parent = IconContainer})
-                 create("TextLabel", {Text = name, Size = UDim2.new(1, -85, 0, 20), Position = UDim2.new(0, 83, 0, 8), BackgroundTransparency = 1, TextColor3 = theme.Text, Font = Enum.Font.GothamBold, TextSize = 16, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd, Parent = Container})
-                 create("TextLabel", {Text = desc or "No description.", Size = UDim2.new(1, -85, 0, 40), Position = UDim2.new(0, 83, 0, 30), BackgroundTransparency = 1, TextColor3 = theme.TextDim, Font = theme.Font, TextSize = 12, TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, Parent = Container})
-                 local LoadBtn = create("TextButton", {Text = "Load Script", Size = UDim2.new(1, -85, 0, 25), Position = UDim2.new(0, 83, 1, -33), BackgroundColor3 = theme.ButtonBgLoad, BackgroundTransparency = 0.2, TextColor3 = theme.Text, Font = Enum.Font.GothamBold, TextSize = 13, Parent = Container})
-                 roundify(LoadBtn, 4)
-                 LoadBtn.MouseButton1Click:Connect(callback)
+                 
+                 create("TextLabel", {Text = name, Size = UDim2.new(1, -115, 0, 20), Position = UDim2.new(0, 83, 0, 8), BackgroundTransparency = 1, TextColor3 = theme.Text, Font = Enum.Font.GothamBold, TextSize = 16, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd, Parent = Container})
+                 
+                 -- STATUS DOT LOGIC
+                 local statusColor = isDown and Color3.fromRGB(255, 50, 50) or Color3.fromRGB(50, 255, 50) -- Red if down, Green if up
+                 local StatusDot = create("Frame", {Size = UDim2.new(0, 12, 0, 12), Position = UDim2.new(1, -20, 0, 12), BackgroundColor3 = statusColor, Parent = Container})
+                 roundify(StatusDot, 6) -- Makes it a perfect circle
+                 
+                 if not isDown then
+                     create("TextLabel", {Text = desc or "Not Found.", Size = UDim2.new(1, -85, 0, 40), Position = UDim2.new(0, 83, 0, 30), BackgroundTransparency = 1, TextColor3 = theme.TextDim, Font = theme.Font, TextSize = 12, TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, Parent = Container})
+
+                 else               
+                    create("TextLabel", {Text = "Currently Offline / Maintenance.", Size = UDim2.new(1, -85, 0, 40), Position = UDim2.new(0, 83, 0, 30), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(255, 100, 100), Font = theme.Font, TextSize = 12, TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, Parent = Container})
+                 end
+                 
+                 -- BUTTON RENDERING LOGIC
+                 if not isDown then
+                     local LoadBtn = create("TextButton", {Text = "Load Script", Size = UDim2.new(1, -85, 0, 25), Position = UDim2.new(0, 83, 1, -33), BackgroundColor3 = theme.ButtonBgLoad, BackgroundTransparency = 0.2, TextColor3 = theme.Text, Font = Enum.Font.GothamBold, TextSize = 13, Parent = Container})
+                     roundify(LoadBtn, 4)
+                     LoadBtn.MouseButton1Click:Connect(callback)
+                 else
+                     -- Optional: Text to replace the button so the UI doesn't look empty
+                     create("TextLabel", {Text = "Currently Offline / Maintenance.", Size = UDim2.new(1, -85, 0, 25), Position = UDim2.new(0, 83, 1, -33), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(255, 100, 100), Font = Enum.Font.GothamBold, TextSize = 13, TextXAlignment = Enum.TextXAlignment.Center, Parent = Container})
+                     
+                 end
+                 
                  return Container
             end
 
@@ -807,14 +829,14 @@ local GameList = {
 local CurrentGameName = "Universal"
 for name, id in pairs(GameList) do if CURRENT_GAME_ID == id then CurrentGameName = name break end end
 
-BG_christmas_1="https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/Image/Icons/R-loadertrans-Christmas.png"
+BG_christmas_1="https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/Image/Icons/R-loadert-transparent.png"
 
 local FullCatalog = {
 
     ["Universal"] = {
         {
             Name = "Mana",
-            Icon = BG_christmas_1,
+            Icon = "https://static-cdn.jtvnw.net/jtv_user_pictures/ad1760c3-166d-4238-a5ab-d20ff38d5cbd-profile_image-70x70.png",
             Description = "ManaV2 universal utility hub.",
             Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/Maanaaaa/ManaV2ForRoblox/main/MainScript.lua'))()"
         },
@@ -858,6 +880,7 @@ local FullCatalog = {
             Name = "Z3US Rivals",
             Icon = BG_christmas_1,
             Description = "Z3US version for Rivals with autoload support.",
+            isdown = true,
             Load = [[
                 getgenv().autoload = autoloadEnabled
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/blackowl1231/Z3US/refs/heads/main/Games/Z3US%20Rivals%20Beta.lua"))()
@@ -1117,7 +1140,8 @@ for categoryName, scripts in pairs(ActiveCatalog) do
     local GameTab = Window:CreateCategory(categoryName, "🎮")
     GameTab:Label("--- " .. categoryName .. " Scripts ---")
     for _, scriptData in ipairs(scripts) do
-        GameTab:ScriptCard(scriptData.Name, scriptData.Icon, scriptData.Description, function()
+        -- Pass scriptData.isdown into the ScriptCard arguments
+        GameTab:ScriptCard(scriptData.Name, scriptData.Icon, scriptData.Description, scriptData.isdown, function()
             pcall(function() loadstring(scriptData.Load)() end)
             Window:Notify("Executor Loading", scriptData.Name)
             Window:Notify("Executor", scriptData.Name .. " Loaded.")
@@ -1175,7 +1199,7 @@ Settings:Button("Download & Save", function()
         Window.Wallpaper.Visible = true
     end
     
-    Window:Notify("System", "Downloading...")
+    Window:Notify("System", "Downloading... (Rejoin Game)")
 
     task.spawn(function()
         -- // 2. ATTEMPT DOWNLOAD //
