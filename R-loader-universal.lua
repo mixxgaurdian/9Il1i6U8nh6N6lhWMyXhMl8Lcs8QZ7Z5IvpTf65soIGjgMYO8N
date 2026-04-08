@@ -191,10 +191,11 @@ local Config = {
         Teleport = Enum.KeyCode.J,
         Fly = Enum.KeyCode.V,
         Noclip = Enum.KeyCode.B,
-        CarFly = Enum.KeyCode.Unknown, -- [NEW]
+        CarFly = Enum.KeyCode.Unknown, 
         SafeFly = Enum.KeyCode.Unknown,
         Speed = Enum.KeyCode.Unknown,
         Jump = Enum.KeyCode.Unknown,
+        InfiniteJump = Enum.KeyCode.Unknown,
         NoGravity = Enum.KeyCode.Unknown,
         ESP = Enum.KeyCode.Unknown,
         WallClip = Enum.KeyCode.Unknown,
@@ -209,6 +210,7 @@ local Config = {
         Speed = false,
         ShiftBoost = false,
         Jump = false,
+        InfiniteJump = false,   
         SafeFly = false,
         ForceShiftlock = false,
         Force3rdPerson = false,
@@ -901,14 +903,20 @@ TgtBtn = CombatTab:Button("Target Mode: " .. Config.Aimbot.TargetMode, function(
     TgtBtn.Text = "Target Mode: " .. Config.Aimbot.TargetMode
 end)
 
-LockKeyBtn = CombatTab:Button("Lock Key: " .. (Config.Aimbot.Key == "MouseButton2" and "Right Click (MB2)" or "Left Click (MB1)"), function()
-    if Config.Aimbot.Key == "MouseButton2" then
-        Config.Aimbot.Key = "MouseButton1"
-        LockKeyBtn.Text = "Lock Key: Left Click (MB1)"
-    else
-        Config.Aimbot.Key = "MouseButton2"
-        LockKeyBtn.Text = "Lock Key: Right Click (MB2)"
+LockKeyBtn = CombatTab:Button("Lock Key: " .. tostring(Config.Aimbot.Key), function()
+    LockKeyBtn.Text = "Lock Key: [Press Any Key/Mouse]"
+    local input = UserInputService.InputBegan:Wait()
+    local keyName = tostring(Config.Aimbot.Key) -- Default fallback
+    
+    -- Check if it's a Keyboard key or Mouse click
+    if input.UserInputType == Enum.UserInputType.Keyboard then
+        keyName = input.KeyCode.Name
+    elseif input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.MouseButton2 or input.UserInputType == Enum.UserInputType.MouseButton3 then
+        keyName = input.UserInputType.Name
     end
+    
+    Config.Aimbot.Key = keyName
+    LockKeyBtn.Text = "Lock Key: " .. keyName
     SaveConfig()
 end)
 
@@ -1111,8 +1119,20 @@ MoveTab:Toggle("Enable Jump", Config.Toggles.Jump, function(v)
         LocalPlayer.Character.Humanoid.JumpPower = 50
     end
 end)
+MoveTab:Toggle("Infinite Jump", Config.Toggles.InfiniteJump, function(v) 
+    Config.Toggles.InfiniteJump = v 
+end)
 MoveTab:Slider("JumpPower", 50, 300, Config.Movement.JumpPower, function(v) Config.Movement.JumpPower = v end)
 
+UserInputService.JumpRequest:Connect(function()
+    if Config.Toggles.InfiniteJump then
+        local char = LocalPlayer.Character
+        local hum = char and char:FindFirstChildOfClass("Humanoid")
+        if hum then
+            hum:ChangeState(Enum.HumanoidStateType.Jumping)
+        end
+    end
+end)
 
 MoveTab:Label("--- Teleportation ---")
 MoveTab:Slider("Phase Distance", 1, 50, Config.Movement.PhaseDist, function(v) Config.Movement.PhaseDist = v end)
@@ -2335,8 +2355,16 @@ end)
 
 -- Aimbot Loop
 local aiming = false
-UserInputService.InputBegan:Connect(function(i) if i.UserInputType.Name == Config.Aimbot.Key then aiming = true end end)
-UserInputService.InputEnded:Connect(function(i) if i.UserInputType.Name == Config.Aimbot.Key then aiming = false end end)
+UserInputService.InputBegan:Connect(function(i, gpe) 
+    if gpe then return end
+    local inputName = (i.UserInputType == Enum.UserInputType.Keyboard) and i.KeyCode.Name or i.UserInputType.Name
+    if inputName == Config.Aimbot.Key then aiming = true end 
+end)
+
+UserInputService.InputEnded:Connect(function(i, gpe) 
+    local inputName = (i.UserInputType == Enum.UserInputType.Keyboard) and i.KeyCode.Name or i.UserInputType.Name
+    if inputName == Config.Aimbot.Key then aiming = false end 
+end)
 
 RunService.RenderStepped:Connect(function()
     if aiming and Config.Aimbot.Enabled then
