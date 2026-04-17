@@ -1595,7 +1595,7 @@ MiscTab:Toggle("No Gravity", false, function(v)
                 local vel = root.AssemblyLinearVelocity; local targetY = vel.Y
                 if UserInputService:IsKeyDown(Enum.KeyCode.Space) then targetY = Config.Movement.NoGravSpeed
                 elseif UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then targetY = -Config.Movement.NoGravSpeed
-                elseif vel.Y < -0.01 then targetY = 0 end
+                elseif vel.Y < -0.0001 then targetY = 0 end
                 if targetY ~= vel.Y then root.AssemblyLinearVelocity = Vector3.new(vel.X, targetY, vel.Z) end
             end
             SaveConfig()
@@ -2054,40 +2054,36 @@ UserInputService.InputBegan:Connect(function(input, gpe)
     elseif IsBind("Snow", "Enable Snow") then Config.Fun.Snow = not Config.Fun.Snow; Window:Notify("System", "Snow: "..tostring(Config.Fun.Snow))
     end
 end)
--- Movement Loop
+-- Flying rotation Loop
 local DefaultJoints = {}
 local function UpdateBodyRotation()
     local char = LocalPlayer.Character
     local hum = char and char:FindFirstChildOfClass("Humanoid")
     
     if char and hum and hum.Health > 0 then
-
-        local pitch = math.asin(Camera.CFrame.LookVector.Y)
+        -- [FIX]: Check if flying. If not, pitch is forced to 0 (resetting rotation)
+        local pitch = Config.Toggles.Fly and math.asin(Camera.CFrame.LookVector.Y) or 0
         
         if hum.RigType == Enum.HumanoidRigType.R15 then
             local waist = char:FindFirstChild("UpperTorso") and char.UpperTorso:FindFirstChild("Waist")
             local neck = char:FindFirstChild("Head") and char.Head:FindFirstChild("Neck")
             
             if waist then
-  
                 if not DefaultJoints[waist] then DefaultJoints[waist] = waist.C0 end
                 waist.C0 = DefaultJoints[waist] * CFrame.Angles(pitch * 0.5, 0, 0)
             end
             
             if neck then
                 if not DefaultJoints[neck] then DefaultJoints[neck] = neck.C0 end
-
                 neck.C0 = DefaultJoints[neck] * CFrame.Angles(pitch * 0.5, 0, 0)
             end
 
         elseif hum.RigType == Enum.HumanoidRigType.R6 then
-
             local rootJoint = char:FindFirstChild("HumanoidRootPart") and char.HumanoidRootPart:FindFirstChild("RootJoint")
             local neck = char:FindFirstChild("Torso") and char.Torso:FindFirstChild("Neck")
             
             if rootJoint then
                 if not DefaultJoints[rootJoint] then DefaultJoints[rootJoint] = rootJoint.C0 end
-                -- R6 RootJoint has a 90-degree offset built into its C0, so we apply negative pitch to the X axis
                 rootJoint.C0 = DefaultJoints[rootJoint] * CFrame.Angles(-pitch, 0, 0) 
             end
             
@@ -2108,7 +2104,6 @@ RunService.RenderStepped:Connect(function(deltaTime)
     if Config.Toggles.Fly then
         root.Anchored = Camera; hum.PlatformStand = true
         local moveDir = Vector3.zero; local camCF = Camera.CFrame
-        UpdateBodyRotation() -- Ensure body rotation is updated during flyspeed
         if UserInputService:IsKeyDown(Enum.KeyCode.W) then moveDir = moveDir + camCF.LookVector end
         if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - camCF.LookVector end
         if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - camCF.RightVector end
