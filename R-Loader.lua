@@ -174,7 +174,7 @@ end)
 task.spawn(function()
     if SpecialUsers[LocalPlayer.UserId] then
         Notify("Dev Bypass", "Special User recognized. Bypassing Key System...")
-        KeyInput.Text = "Is this the key? 🤔"
+        KeyInput.Text = "Bypassed for " .. SpecialUsers[LocalPlayer.UserId].Title
         KeyInput.TextEditable = false
         task.wait(0.2)
         Authenticate()

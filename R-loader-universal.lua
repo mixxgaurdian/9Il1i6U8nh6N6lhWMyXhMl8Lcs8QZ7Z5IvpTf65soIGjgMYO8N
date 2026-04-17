@@ -39,6 +39,7 @@ local GameSpecificConfigs = {
 
 local GlobalBetaFeatures = {
     "FE Bring (object fix coming soon)",
+    "Car Fly (Underingoing Testing, may be buggy)",
 }
 
 getgenv().KeySystemEnabled = true  -- Enable/Disable Key System
@@ -165,6 +166,7 @@ local Config = {
         SavedCFrame = nil, 
         IntervalSpeed = 0.05,
         FlySpeed = 50,
+        CarFlySpeed = 150,
         WalkSpeed = 16,
         BoostSpeed = 50,
         JumpPower = 50,
@@ -887,7 +889,7 @@ CMD_Add("exit", "Restore Main UI", function() ToggleCMDMode(false); return "Rest
 
 -- // MAIN TAB //
 MainTab:Label("Description:")
-MainTab:Label("Not Found: To Mr.Simms I CANT Fu*cking Find The Color to change it back so cry")
+MainTab:Label("R-Loader is a universal Roblox script hub designed for ease of use and wide compatibility. With a sleek interface and modular features, it offers players a powerful toolset for enhancing their gaming experience across various Roblox titles.")
 
 -- // COMBAT TAB //
 local TgtBtn
@@ -1030,10 +1032,10 @@ end)
 MoveTab:Label("--- Vehicle ---")
 
 local CarFlyCon = nil
-local CarFlySpeed = 50 
 
-MoveTab:Slider("Car Fly Speed", 10, 300, CarFlySpeed, function(v)
-    CarFlySpeed = v
+-- Increased the maximum slider limit to 500
+MoveTab:Slider("Car Fly Speed", 10, 500, Config.Movement.CarFlySpeed, function(v)
+    Config.Movement.CarFlySpeed = v
 end)
 
 -- [[ GLOBAL CAR FLY FUNCTION ]] --
@@ -1067,20 +1069,26 @@ getgenv().ToggleCarFly = function(state)
                     if UserInputService:IsKeyDown(Enum.KeyCode.Space) then moveDir = moveDir + Vector3.new(0, 1, 0) end
                     if UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then moveDir = moveDir - Vector3.new(0, 1, 0) end
                     
-                    -- 3. APPLY VELOCITY (Replicates to Server)
+                    -- 3. APPLY ROTATION
+                    -- This forces the vehicle's CFrame to point exactly where your camera is looking (Up/Down/Left/Right)
+                    rootPart.CFrame = CFrame.lookAt(rootPart.Position, rootPart.Position + camCF.LookVector)
+
+                    -- 4. APPLY VELOCITY (Replicates to Server)
                     if moveDir.Magnitude > 0 then
                         rootPart.AssemblyLinearVelocity = moveDir.Unit * CarFlySpeed
                     else
-                        rootPart.AssemblyLinearVelocity = Vector3.new(0, 0, 0) 
+                        rootPart.AssemblyLinearVelocity = Vector3.zero 
                     end
-                    rootPart.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
+                    
+                    -- Keep this at zero so the physics engine doesn't try to aggressively spin the car
+                    rootPart.AssemblyAngularVelocity = Vector3.zero
                 end
             end
         end)
         Window:Notify("System", "Car Fly Enabled")
     else
         -- STOP CAR FLY
-        if CarFlyCon then CarFlyCon:Disconnect(); CarFlyCon = nil end
+        if CarFlyCon then CarFlyCon:Disconnect(); CarFlyCon = false end
         Window:Notify("System", "Car Fly Disabled")
         
         local char = LocalPlayer.Character
@@ -1102,8 +1110,7 @@ getgenv().ToggleCarFly = function(state)
         end
     end
 end
-
-MoveTab:Toggle("Car Fly (Velocity)", false, function(v) ToggleCarFly(v) end)
+MoveTab:Toggle("Car Fly (Underingoing Testing, may be buggy)", false, function(v) ToggleCarFly(v) end)
 
 MoveTab:Toggle("Enable Speed", Config.Toggles.Speed, function(v) 
     Config.Toggles.Speed = v 
@@ -1136,15 +1143,6 @@ end)
 
 MoveTab:Label("--- Teleportation ---")
 MoveTab:Slider("Phase Distance", 1, 50, Config.Movement.PhaseDist, function(v) Config.Movement.PhaseDist = v end)
-MoveTab:Button("Phase Forward (Bind: F)", function()
-    local char = LocalPlayer.Character
-    if char and char:FindFirstChild("HumanoidRootPart") then
-        local root = char.HumanoidRootPart
-        local targetCFrame = Camera.CFrame + (Camera.CFrame.LookVector * Config.Movement.PhaseDist)
-        root.CFrame = CFrame.new(targetCFrame.Position) * root.CFrame.Rotation
-        root.AssemblyLinearVelocity = Vector3.zero
-    end
-end)
 
 MoveTab:Toggle("Instant Teleport", Config.Movement.InstantTP, function(v) if DisabledFeatures["Instant Teleport"] then return end Config.Movement.InstantTP = v end)
 MoveTab:Button("Save Position (Bind: H)", function()
@@ -1984,8 +1982,28 @@ end)
 UserInputService.InputBegan:Connect(function(input, gpe)
     if gpe then return end
     
-    -- Helper to check bind
-    local function IsBind(bindName) return input.KeyCode ~= Enum.KeyCode.Unknown and input.KeyCode == Config.Binds[bindName] end
+    -- Helper to check bind AND system permissions
+    local function IsBind(bindName, uiFeatureName) 
+        if input.KeyCode ~= Enum.KeyCode.Unknown and input.KeyCode == Config.Binds[bindName] then
+            
+            -- [[ NEW: Permission Checks ]] --
+            if uiFeatureName then
+                -- Check if Hard Disabled
+                if getgenv().DisabledFeatures[uiFeatureName] and not IsUserWhitelisted() then
+                    if Window then Window:Notify("Restricted", uiFeatureName .. " is disabled.") end
+                    return false
+                end
+                -- Check if Locked behind Key System
+                if getgenv().BetaFeatures[uiFeatureName] and getgenv().KeySystemEnabled and not IsUserWhitelisted() then
+                    if Window then Window:Notify("Locked", uiFeatureName .. " requires access key.") end
+                    return false
+                end
+            end
+            
+            return true 
+        end
+        return false
+    end
 
     if IsBind("Phase") then
         local char = LocalPlayer.Character
@@ -1995,7 +2013,7 @@ UserInputService.InputBegan:Connect(function(input, gpe)
     elseif IsBind("SavePos") then
         if LocalPlayer.Character then Config.Movement.SavedCFrame = LocalPlayer.Character.HumanoidRootPart.CFrame; Window:Notify("System", "Position Saved") end
     
-    elseif IsBind("Teleport") then
+    elseif IsBind("Teleport", "Instant Teleport") then
         if not Config.Movement.SavedCFrame then return end
         if Config.Movement.InstantTP then
             if LocalPlayer.Character then LocalPlayer.Character.HumanoidRootPart.CFrame = Config.Movement.SavedCFrame; Window:Notify("System", "Teleported Instantly") end
@@ -2012,42 +2030,85 @@ UserInputService.InputBegan:Connect(function(input, gpe)
             if root and isTeleporting then root.CFrame = Config.Movement.SavedCFrame end; isTeleporting = false
         end)
     
-    -- Toggles
-    elseif IsBind("Fly") then Config.Toggles.Fly = not Config.Toggles.Fly; if not Config.Toggles.Fly then ResetMovement() end; Window:Notify("System", "Fly: "..tostring(Config.Toggles.Fly))
-    elseif IsBind("Noclip") then Config.Toggles.Noclip = not Config.Toggles.Noclip; Window:Notify("System", "Noclip: "..tostring(Config.Toggles.Noclip))
-    
-    -- [[ NEW: CarFly Bind ]] --
-    elseif IsBind("CarFly") then
+    elseif IsBind("Fly", "Fly") then Config.Toggles.Fly = not Config.Toggles.Fly; if not Config.Toggles.Fly then ResetMovement() end; Window:Notify("System", "Fly: "..tostring(Config.Toggles.Fly))
+    elseif IsBind("Noclip", "Noclip") then Config.Toggles.Noclip = not Config.Toggles.Noclip; Window:Notify("System", "Noclip: "..tostring(Config.Toggles.Noclip))
+
+    elseif IsBind("CarFly", "Car Fly (Velocity)") then
         local isEnabled = (CarFlyCon ~= nil)
         ToggleCarFly(not isEnabled)
         
-    elseif IsBind("SafeFly") then Config.Toggles.SafeFly = not Config.Toggles.SafeFly; if not Config.Toggles.SafeFly then ResetMovement() end; Window:Notify("System", "SafeFly: "..tostring(Config.Toggles.SafeFly))
-    elseif IsBind("Speed") then Config.Toggles.Speed = not Config.Toggles.Speed; Window:Notify("System", "Speed: "..tostring(Config.Toggles.Speed))
-    elseif IsBind("Jump") then Config.Toggles.Jump = not Config.Toggles.Jump; Window:Notify("System", "Jump: "..tostring(Config.Toggles.Jump))
-    elseif IsBind("NoGravity") then -- No Gravity is tricky as it's not in Toggles table directly usually, handled via UI callback logic. 
+    elseif IsBind("SafeFly", "Enable Safe Fly") then Config.Toggles.SafeFly = not Config.Toggles.SafeFly; if not Config.Toggles.SafeFly then ResetMovement() end; Window:Notify("System", "SafeFly: "..tostring(Config.Toggles.SafeFly))
+    elseif IsBind("Speed", "Enable Speed") then Config.Toggles.Speed = not Config.Toggles.Speed; Window:Notify("System", "Speed: "..tostring(Config.Toggles.Speed))
+    elseif IsBind("Jump", "Enable Jump") then Config.Toggles.Jump = not Config.Toggles.Jump; Window:Notify("System", "Jump: "..tostring(Config.Toggles.Jump))
+    elseif IsBind("NoGravity", "No Gravity") then 
         Window:Notify("System", "Please use UI for NoGrav Toggle") 
     
     -- Visuals
-    elseif IsBind("ESP") then Config.ESP.Enabled = not Config.ESP.Enabled; Window:Notify("System", "ESP: "..tostring(Config.ESP.Enabled))
-    elseif IsBind("WallClip") then Config.ESP.WallClip = not Config.ESP.WallClip; Window:Notify("System", "WallClip: "..tostring(Config.ESP.WallClip))
-    elseif IsBind("Fullbright") then Config.ESP.Fullbright = not Config.ESP.Fullbright; ToggleFullbright(Config.ESP.Fullbright); Window:Notify("System", "Fullbright: "..tostring(Config.ESP.Fullbright))
+    elseif IsBind("ESP", "ESP Enabled") then Config.ESP.Enabled = not Config.ESP.Enabled; Window:Notify("System", "ESP: "..tostring(Config.ESP.Enabled))
+    elseif IsBind("WallClip", "Enable Wall Clip") then Config.ESP.WallClip = not Config.ESP.WallClip; Window:Notify("System", "WallClip: "..tostring(Config.ESP.WallClip))
+    elseif IsBind("Fullbright", "Enable Fullbright") then Config.ESP.Fullbright = not Config.ESP.Fullbright; ToggleFullbright(Config.ESP.Fullbright); Window:Notify("System", "Fullbright: "..tostring(Config.ESP.Fullbright))
     
     -- Other
-    elseif IsBind("Aimbot") then Config.Aimbot.Enabled = not Config.Aimbot.Enabled; Window:Notify("System", "Aimbot: "..tostring(Config.Aimbot.Enabled))
-    elseif IsBind("Rain") then Config.Fun.Rain = not Config.Fun.Rain; Window:Notify("System", "Rain: "..tostring(Config.Fun.Rain)) -- Requires UI trigger ideally
-    elseif IsBind("Snow") then Config.Fun.Snow = not Config.Fun.Snow; Window:Notify("System", "Snow: "..tostring(Config.Fun.Snow))
+    elseif IsBind("Aimbot", "Aimbot Enabled") then Config.Aimbot.Enabled = not Config.Aimbot.Enabled; Window:Notify("System", "Aimbot: "..tostring(Config.Aimbot.Enabled))
+    elseif IsBind("Rain", "Enable Rain") then Config.Fun.Rain = not Config.Fun.Rain; Window:Notify("System", "Rain: "..tostring(Config.Fun.Rain)) 
+    elseif IsBind("Snow", "Enable Snow") then Config.Fun.Snow = not Config.Fun.Snow; Window:Notify("System", "Snow: "..tostring(Config.Fun.Snow))
     end
 end)
-
 -- Movement Loop
+local DefaultJoints = {}
+local function UpdateBodyRotation()
+    local char = LocalPlayer.Character
+    local hum = char and char:FindFirstChildOfClass("Humanoid")
+    
+    if char and hum and hum.Health > 0 then
+
+        local pitch = math.asin(Camera.CFrame.LookVector.Y)
+        
+        if hum.RigType == Enum.HumanoidRigType.R15 then
+            local waist = char:FindFirstChild("UpperTorso") and char.UpperTorso:FindFirstChild("Waist")
+            local neck = char:FindFirstChild("Head") and char.Head:FindFirstChild("Neck")
+            
+            if waist then
+  
+                if not DefaultJoints[waist] then DefaultJoints[waist] = waist.C0 end
+                waist.C0 = DefaultJoints[waist] * CFrame.Angles(pitch * 0.5, 0, 0)
+            end
+            
+            if neck then
+                if not DefaultJoints[neck] then DefaultJoints[neck] = neck.C0 end
+
+                neck.C0 = DefaultJoints[neck] * CFrame.Angles(pitch * 0.5, 0, 0)
+            end
+
+        elseif hum.RigType == Enum.HumanoidRigType.R6 then
+
+            local rootJoint = char:FindFirstChild("HumanoidRootPart") and char.HumanoidRootPart:FindFirstChild("RootJoint")
+            local neck = char:FindFirstChild("Torso") and char.Torso:FindFirstChild("Neck")
+            
+            if rootJoint then
+                if not DefaultJoints[rootJoint] then DefaultJoints[rootJoint] = rootJoint.C0 end
+                -- R6 RootJoint has a 90-degree offset built into its C0, so we apply negative pitch to the X axis
+                rootJoint.C0 = DefaultJoints[rootJoint] * CFrame.Angles(-pitch, 0, 0) 
+            end
+            
+            if neck then
+                if not DefaultJoints[neck] then DefaultJoints[neck] = neck.C0 end
+                neck.C0 = DefaultJoints[neck] * CFrame.Angles(-pitch, 0, 0)
+            end
+        end
+    end
+end
+
+RunService.RenderStepped:Connect(UpdateBodyRotation)
 RunService.RenderStepped:Connect(function(deltaTime)
     if not LocalPlayer.Character then return end
     local root = LocalPlayer.Character:FindFirstChild("HumanoidRootPart"); local hum = LocalPlayer.Character:FindFirstChild("Humanoid")
     if not root or not hum then return end
 
     if Config.Toggles.Fly then
-        root.Anchored = false; hum.PlatformStand = true
+        root.Anchored = Camera; hum.PlatformStand = true
         local moveDir = Vector3.zero; local camCF = Camera.CFrame
+        UpdateBodyRotation() -- Ensure body rotation is updated during flyspeed
         if UserInputService:IsKeyDown(Enum.KeyCode.W) then moveDir = moveDir + camCF.LookVector end
         if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - camCF.LookVector end
         if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - camCF.RightVector end
