@@ -995,6 +995,7 @@ end)()
 local CURRENT_GAME_ID = game.GameId
 local GameList = {
     ["Arsenal"] = 111958650,
+    ["Anime Last Stand"] = 4509896324,
     ["Rivals"] = 6035872082,
     ["Baseplate"] = 80461030,
     ["Emote RNG"] = 8313824597,
@@ -1017,7 +1018,7 @@ local GameList = {
 local CurrentGameName = "Universal"
 for name, id in pairs(GameList) do if CURRENT_GAME_ID == id then CurrentGameName = name break end end
 
-BG_christmas_1="https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/Image/Icons/R-loadert-transparent.png"
+Background_1="https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/Image/Icons/R-loadert-transparent.png"
 
 local FullCatalog = {
 
@@ -1030,19 +1031,19 @@ local FullCatalog = {
         },
         {
             Name = "Infinite Yield",
-            Icon = BG_christmas_1,
+            Icon = Background_1,
             Description = "The ultimate admin command script with hundreds of commands.",
             Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()"
         },
         {
             Name = "R-Loader/Universal",
-            Icon = BG_christmas_1,
+            Icon = Background_1,
             Description = "Universal version of R-Loader.",
             Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/R-loader-universal.lua'))()"
         },
         {
             Name = "R-Loader Old UI",
-            Icon = BG_christmas_1,
+            Icon = Background_1,
             isdown = true,
             Description = "This is the old ui of R-loader if you run into any issues happy exploiting",
             Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/scripts/R-Loader-deprecated.lua'))()"
@@ -1052,22 +1053,30 @@ local FullCatalog = {
     ["Arsenal"] = {
         {
             Name = "Z3US: partially Detected",
-            Icon = BG_christmas_1,
+            Icon = Background_1,
             Description = "Aimbot, silent aim, and Arsenal utilities. Partially detected.",
             Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/blackowl1231/Z3US/refs/heads/main/Games/Z3US%20Arsenal%20Beta.lua'))()"
         },
         {
             Name = "Vapa-v2",
-            Icon = BG_christmas_1,
+            Icon = Background_1,
             Description = "Advanced Arsenal script with combat utilities.",
             Load = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/Nickyangtpe/Vapa-v2/refs/heads/main/Vapav2-Arsenal.lua", true))()'
+        },
+    },
+    ["Anime Last Stand"] = {
+        {
+            Name = "R-Loader-ALS Demo",
+            Icon = "https://tr.rbxcdn.com/180DAY-e0f69f1a31c02a5838bb9bf2ddbddf7d/512/512/Image/Webp/noFilter",
+            Description = "Script for Anime Last Stand with limited features.",
+            Load = "loadstring(game:HttpGet('https://github.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/raw/refs/heads/main/scripts/R-Loader-ALS.lua'))()"
         },
     },
 
     ["Rivals"] = {
         {
             Name = "Z3US Rivals",
-            Icon = BG_christmas_1,
+            Icon = Background_1,
             Description = "Z3US version for Rivals with autoload support.",
             isdown = false,
             Load = [[
@@ -1077,7 +1086,7 @@ local FullCatalog = {
         },
         {
             Name = "R-Loader | Rivals Demo",
-            Icon = BG_christmas_1,
+            Icon = Background_1,
             Description = "R-Loader version for Rivals with aimbot and esp.",
             Load = [[
                 getgenv().autoload = autoloadEnabled
@@ -1090,7 +1099,7 @@ local FullCatalog = {
     ["Prison Life"] = {
         {
             Name = "DP-HUB",
-            Icon = BG_christmas_1,
+            Icon = Background_1,
             Description = "Prison Life admin, ESP, combat, and more.",
             Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/scripts/PrisonLife_DP-HUB.lua'))()"
         },
@@ -1099,7 +1108,7 @@ local FullCatalog = {
     ["BB Legends"] = {
         {
             Name = "absence-mini",
-            Icon = BG_christmas_1,
+            Icon = Background_1,
             Description = "Mini version of absence-hub for BB Legends.",
             Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/vnausea/absence-mini/refs/heads/main/absencemini.lua'))()"
         },
@@ -1107,13 +1116,13 @@ local FullCatalog = {
     ["Slayers Battleground"] = {
         {
             Name = "No Cooldown/R-Loader",
-            Icon = BG_christmas_1,
+            Icon = Background_1,
             Description = "No cooldowns for Slayers Battlegrounds.",
             Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/scripts/SlayerBattleGrounds.lua'))()"
         },
                 {
             Name = "Crasher/R-Loader",
-            Icon = BG_christmas_1,
+            Icon = Background_1,
             Description = "Crashes the game.",
             Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/scripts/SlayerBattleGroundsCrasher.lua'))()"
         },
@@ -1122,13 +1131,13 @@ local FullCatalog = {
     ["Build A Boat"] = {
         {
             Name = "Uniqu Hub",
-            Icon = BG_christmas_1,
+            Icon = Background_1,
             Description = "Multi-game hub including Build A Boat support.",
             Load = 'loadstring(game:HttpGet("https://rawscripts.net/raw/Unique-Hub-(14-Gmes)_521"))()'
         },
         {
             Name = "Lexus Hub: partially working/laggy",
-            Icon = BG_christmas_1,
+            Icon = Background_1,
             Description = "BABFT script with partial features but laggy.",
             Load = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/102KIRA/Best-Babft-script/refs/heads/main/Actually%20Best%20babft%20script"))()'
         },
@@ -1137,7 +1146,7 @@ local FullCatalog = {
     ["Lucky Blocks"] = {
         {
             Name = "Lucky Blocks",
-            Icon = BG_christmas_1,
+            Icon = Background_1,
             Description = "Universal Lucky Blocks Battlegrounds script.",
             Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/Veaquach/LBBattlegroundsscript/refs/heads/main/Universal%20Lucky%20Block%20Battle%20Grounds%20Script.txt'))()"
         },
@@ -1146,7 +1155,7 @@ local FullCatalog = {
     ["Legends Of Sd"] = {
         {
             Name = "Legends Of Speed",
-            Icon = BG_christmas_1,
+            Icon = Background_1,
             Description = "Legends of Speed script with auto-farm and utilities.",
             Load = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/jokerbiel13/FourHub/refs/heads/main/Speed%20legendsFh.lua",true))()'
         },
@@ -1155,7 +1164,7 @@ local FullCatalog = {
     ["FNAF Eternal Nights"] = {
         {
             Name = "FNAF Eternal Nights",
-            Icon = BG_christmas_1,
+            Icon = Background_1,
             Description = "FNAF Eternal Nights script pack.",
             Load = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/Snipez-Dev/Rbx-Scripts/refs/heads/main/Eternal%20Nights"))()'
         },
@@ -1164,7 +1173,7 @@ local FullCatalog = {
     ["Nights in the Forest"] = {
         {
             Name = "unknown",
-            Icon = BG_christmas_1,
+            Icon = Background_1,
             Description = "Luarmor-protected loader for Nights In The Forest.",
             Load = 'loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/c27892d6692ba09d991c09dc9d5ceae1.lua"))()'
         },
@@ -1173,13 +1182,13 @@ local FullCatalog = {
     ["Doors"] = {
         {
             Name = "Rloader Doors",
-            Icon = BG_christmas_1,
+            Icon = Background_1,
             Description = "R-Loader version for Doors.",
             Load = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/scripts/Doors_RLoader.lua"))()'
         },
         {
             Name = "zynlope-no-ui",
-            Icon = BG_christmas_1,
+            Icon = Background_1,
             Description = "UI-less Doors script.",
             Load = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/rolezeay/doors/refs/heads/main/hmmmmm"))()'
         },
@@ -1188,7 +1197,7 @@ local FullCatalog = {
     ["AOTR"] = {
         {
             Name = "Attack on Titan Revolution",
-            Icon = BG_christmas_1,
+            Icon = Background_1,
             Description = "AOTR Luarmor script loader.",
             Load = 'loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/705e7fe7aa288f0fe86900cedb1119b1.lua"))()'
         },
@@ -1197,19 +1206,19 @@ local FullCatalog = {
     ["The Forge"] = {
         {
             Name = "Rayfield",
-            Icon = BG_christmas_1,
+            Icon = Background_1,
             Description = "The Forge script using Rayfield UI.",
             Load = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/LioK251/RbScripts/refs/heads/main/lazyuhub_theforge.lua"))()'
         },
         {
             Name = "ForgeHub",
-            Icon = BG_christmas_1,
+            Icon = Background_1,
             Description = "Utility hub for The Forge.",
             Load = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/jokerbiel13/FourHub/refs/heads/main/TheForgeFH.lua",true))()'
         },
         {
             Name = "pepehook-loader",
-            Icon = BG_christmas_1,
+            Icon = Background_1,
             Description = "Pepehook loader for The Forge.",
             Load = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/GiftStein1/pepehook-loader/refs/heads/main/loader.lua"))()'
         },
@@ -1218,13 +1227,13 @@ local FullCatalog = {
     ["Blade Ball"] = {
         {
             Name = "Akashial",
-            Icon = BG_christmas_1,
+            Icon = Background_1,
             Description = "Akashial Blade Ball loader.",
             Load = "loadstring(game:HttpGet('https://raw.githubusercontent.com/Akash1al/Blade-Ball-Updated-Script/refs/heads/main/Blade-Ball-Script'))()"
         },
         {
             Name = "MixRawwr",
-            Icon = BG_christmas_1,
+            Icon = Background_1,
             Description = "MixRawwr Blade Ball loader.",
             Load = "loadstring(game:HttpGet('https://pastebin.com/raw/5v3yQUvH',true))()"
         },
