@@ -12,7 +12,10 @@ getgenv().RLoader_KeyVerified = false
 local SpecialUsers = {
     [1104273577] = { Title = "Welcome, Developer" },
     [2335971665] = { Title = "Welcome, 👑King" },
-    [10104221280] = { Title = "Welcome, Dev" }
+    [10104221280] = { Title = "Welcome, Dev" },
+
+    
+    [10827226101] = { Title = "Welcome, Special User" }
 }
 local CORRECT_KEY = "R-LOADER-DISCORD!"
 local FREE_KEY = "R-LOADER-DISCORD!"
