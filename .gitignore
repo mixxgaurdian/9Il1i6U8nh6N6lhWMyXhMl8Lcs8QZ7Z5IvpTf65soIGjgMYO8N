@@ -7,3 +7,4 @@ R-Loader-Main/
 # Common Roblox/Luau related ignores
 *.log
 *.tmp
+*.source.lua
