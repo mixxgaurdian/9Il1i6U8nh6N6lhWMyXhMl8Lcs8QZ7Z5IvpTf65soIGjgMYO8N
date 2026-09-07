@@ -1,8 +1,7 @@
 # Ignore the following specific loader files
 
 
-# Ignore the private folder (if you haven't moved it to a submodule yet)
-R-Loader-Main/
+
 
 # Common Roblox/Luau related ignores
 *.log
