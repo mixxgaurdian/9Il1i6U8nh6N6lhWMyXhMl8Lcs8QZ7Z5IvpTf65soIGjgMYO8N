@@ -8,3 +8,4 @@
 *.tmp
 *.source.lua
 */Backup/*
+*/Scripts/Hidden/*
