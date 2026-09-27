@@ -84,8 +84,6 @@ return function(env)
             Visible = false
         })
         roundify(Container, 12); addStroke(Container)
-
-        -- [[ FIX: APPLY SAVED WALLPAPER STATE ]]
         local Wall = create("ImageLabel", {
             Name = "Wallpaper",
             Size = UDim2.new(1, 0, 1, 0),
@@ -95,7 +93,7 @@ return function(env)
             ImageTransparency = 0,
             ZIndex = 0,
             Parent = Container,
-            Visible = SystemSettings.ShowWallpaper -- Directly use saved boolean
+            Visible = SystemSettings.ShowWallpaper
         })
         roundify(Wall, 12)
 
