@@ -93,10 +93,11 @@ return function(env)
             ImageTransparency = 0,
             ZIndex = 0,
             Parent = Container,
-            Visible = SystemSettings.ShowWallpaper
+            Visible = SystemSettings.ShowWallpaper -- Directly use saved boolean
         })
         roundify(Wall, 12)
 
+        -- Dragging
         local dragging, dragInput, dragStart, startPos
         Container.InputBegan:Connect(function(input)
             if input.UserInputType == Enum.UserInputType.MouseButton1 then
