@@ -18,7 +18,7 @@ ScreenGui.Parent = targetGui
 
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
-MainFrame.Size = UDim2.new(0, 200, 0, 100)
+MainFrame.Size = UDim2.new(0, 200, 0, 130)
 MainFrame.Position = UDim2.new(0.5, -100, 0.5, -50)
 MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
 MainFrame.BorderSizePixel = 0
@@ -86,6 +86,28 @@ GetGameIdBtn.Parent = MainFrame
 local BtnCorner = Instance.new("UICorner")
 BtnCorner.CornerRadius = UDim.new(0, 4)
 BtnCorner.Parent = GetGameIdBtn
+
+local UptimeLabel = Instance.new("TextLabel")
+UptimeLabel.Size = UDim2.new(1, -20, 0, 30)
+UptimeLabel.Position = UDim2.new(0, 10, 0, 85)
+UptimeLabel.BackgroundTransparency = 1
+UptimeLabel.Text = "Uptime: 00:00:00"
+UptimeLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+UptimeLabel.TextSize = 12
+UptimeLabel.Font = Enum.Font.Gotham
+UptimeLabel.Parent = MainFrame
+
+task.spawn(function()
+    while UptimeLabel and UptimeLabel.Parent do
+        local uptime = workspace.DistributedGameTime
+        local hours = math.floor(uptime / 3600)
+        local mins = math.floor((uptime % 3600) / 60)
+        local secs = math.floor(uptime % 60)
+        UptimeLabel.Text = string.format("Uptime: %02d:%02d:%02d", hours, mins, secs)
+        task.wait(1)
+    end
+end)
+
 
 -- // Functionality //
 
