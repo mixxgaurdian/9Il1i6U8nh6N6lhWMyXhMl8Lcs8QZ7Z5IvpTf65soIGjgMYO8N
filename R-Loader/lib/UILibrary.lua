@@ -97,7 +97,6 @@ return function(env)
         })
         roundify(Wall, 12)
 
-        -- Dragging
         local dragging, dragInput, dragStart, startPos
         Container.InputBegan:Connect(function(input)
             if input.UserInputType == Enum.UserInputType.MouseButton1 then
