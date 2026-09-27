@@ -67,7 +67,7 @@ return function(env)
             IgnoreGuiInset = true
         })
         --[[Loader version]]
-        local RL_VERSION = (getgenv().ServerIsUp and " online v:" or " offline v:") .. "rloader-b29"
+        local RL_VERSION = (getgenv().ServerIsUp and " online v:" or " offline v:") .. "rloader-b31a"
 
         -- [[ APPLY SAVED SCALE ]]
         local UIScale = create("UIScale", { Parent = ScreenGui, Scale = SystemSettings.UIScale or 1 })
