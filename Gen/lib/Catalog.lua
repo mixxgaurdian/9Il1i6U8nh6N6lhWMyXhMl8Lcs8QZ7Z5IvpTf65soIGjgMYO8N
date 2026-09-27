@@ -1,1 +1,630 @@
-return(function(...)local z={"9r\"Y5<S/HP,^tK\\";"9\'`..bNW","9;t91N0Fm&@pn/","9IuD4m`sLcHMgr*","9kSp_\"mt`*#YpiD1","9o:ns@SM6<(<;UbB\".Bk<%mY_Z";"9GB*M&!Ml=fh\"fi*Ecp8,cl1i&f>9";"9+#0V2.-pq1UR-5(:=R";"9\"MEXX(iDA/h+","9l.NWljarM+\'.";"9dI_]ZfrGea%\\";"9eZ-sd)q=TT:K<>Up4S?qMGt\".2o(?^p!*-KP=gR<6r%(pHmB9iTX)Sd\'k","9D>(.-@$$O5(^`KkJ;ls6+*`DnI->q\",P0q;!+(T3\\@\"l_&lD:S#Y$b?L+NpO\\,CP/$_TEoT+X@$KX0i*hqMrC+2][M=.e[<PWu<j]@5>cb]$=aM\'gqo%\";6UcArWF$!.0BTn]gi-@)#q),8#Mglu:fjkA\'M]Q^Y(,V?`/28Z]80Vjk\\57,\'rKnc7]at>Gr3+L@$tUo\\>]<U`","9,b$2\"","96rMKB]cQga.%p,D##36b4k01!j%%j)iV4.3c=FTYPR@<\\.e]C\'kW[a<1+$K3[Cq\"76A&Dip@.=OAY+m=F$Zb3K>\'JaCqORI\\X^1dmG\'%,MYmcZ[VMajQF6ka,Z\"Z<c4`(-G6F;ci12`2A>&q;]6HU.\\7@UOQ)(js$bgUA278$G%AX[6%PFc3s.BdJS7h!TtLrJ\'&5;<hG;gF\'B\"m)S<%A\\\"+emIXXSE+ZW4Rj@Rmo\'WfCi\"gpd;?Ua=,\'cmKNP`q6lNp3BS=d3=-;HWQ?^9uZXEQ!V\\\',`^dcd@%nU4kI*jjh(\\U5ABkA`gRrRg6PE:TE>(A<t\"Ag6o!VqXt)+Nd&nHAG:Rl\'BK=b4pooLpAFSsL4,5=q@CmfMD8EWp,\\:o\'o1S\\KT*.NL!bFhXZrM$^RbFt;c/iKTR%ctVM.<1=T9liOYIOja2Q\"76!QnpImpJ^_(bT#UHIJ2(!o]=C\\*s.4Lp;Z$&%g9I?]C,DYQ2ep;:!UWnZZ8if&g\']\"MuBVt@0$/d(<I\\lE8h?i_]YX\'ONoo@5\\Zc?&/W\\0qDQk8Y4.si&2>0/\"(FKP!71.c9FV=E[g$A+V&HVV0Z?&)<cX(EC)DrH4)S`tJl5[8s^LWiXd\\DcIpK)&_1CS.]id,;n;^F_R6mW]V\"4Y`rL:+*[Z7Im;acdIA,BrM_G>%kA/nfZ;\\cJn9!!])^Kp0>+;$0lG6%9$=5r9#)dt7@PbPC_/kT`KZpbqU]8sLfu1V_F(&C)L\\)q3TF8V$nHQ2,[&G7`.s,N53SrF1Hp^","9j\\=fi";"9\"nA?oZmb1ol2$#uT4","9_.T4\"20pr-K)`";"9\'G7]8okTJ7rd=&aY?3[%r]LLr1Hck5-Q<J]++&","9cU8=q75/;d@K_JEVu","9-bs5hiDCK\"\"IPe-t7]aq98$5!Ye\"75oT.53QX5C@1&4/lPQToI<G_QXR_=ncl8o<io(WjV97N.`%[kVC+lis9b^m<Y]`ZLH=0nE>^m3.ZkE)9`S[W;/^#@C]e`DWuT4D(B6E)p#l:\"&]akL1Q.BL8+\\e\"]d7B7&U9&[S9/tg08FrGYb4Ud8","9E^o!J";"92qdo6";"9GO#;Xm;=908j/h,_6@9eJnQsok_JA%3#6Qg*f5dGfRH1/P\';MG;)&VNd2[LE#K^0W+`A.-U8C9:u1e!PJYR@1;GMoM62QNe`FifFi\"GcprB!FacS3LW9l0&oPKgMQ+,Qg,JJ","9.J/[M<t68";"9&_@tP$@nr-3C,","9!SdeFSb&G3b2+VN3;@rlh6u%.E^i]e.,a)O-m)(\'NKAq)NXPgq1o1F77^9?i-,l^WR.@*?/?E`]7pTZtdIu*9M\'2^P<M\'@3[l<b=T\\<E[9fs*tf*0+no=\\R+[d4^O@-E","9Tg(b_:rQC%7b1","90J-@W;he>C5pLKhmFHQCDTo9gRb6","9q4]Df<8fXNpk#";"9B@/lj%-G9YGMR","9&g;N[4OFh\"%I2Q";"9h*ld,DPs=M;?";"9g:P_K)\'d]s\'.","9lBM1/efqYW.CX>,is","9O<ZPSeqIEAM/j$!=\'!";"9[AhA/mb9B$hqj";"9t`8!^sBGsk";"9s\"1=;";"9S&=jqJMaWGQ],U","9QVet*\'k";"9T[tUIdhr94#QX.dc\\=KP)uR/Mg7=i@S\"T";"9\"Y7tp","9Ad@353hAc<^MRkf]>]dJ9bD","92Y49#C+&P7m@7ZF4\'","9O`\"/!DgZb@pc&0P)\\","9^.Q_s";"9!G3.f2?6(:p+h\'4\"U";"9i.S,HJ9_BYgUMq*,/NG...\\+(";"9q>F>[PVT8<#fW&A38","9_<c>cY7dpZSN*f1,R,rILqfk;\\@h)neKrQA%^9np\';j&hTU>>8),%_Qe8;JLTBrr9c/1bIZ8Yg03Kck\\rIK;OMB=_rD#$7[l\"#f6qF%sYcpZ)H%\\mf!\"iH?4=\'1a)PhC?s$%\'YPVElo9*f=F&XFW,o:(<-Yf:qS:al\'s`mo-d[b4!h//2h$p%\'XuR2WkW`)6^FYAc6o94X2rAsnC*Mm;^B<SGP*/\\\"h&_BjlLgF%F(XWXA7Oe$@L1WrB0PlXAd,I-,?O&WUospfg,Dof/\\&G?e\"4.:5Le8qg=K@\\+L`uhdh`RUYHOXAkc&Z5Q&4Nim?V;7Ag*VOJlb0KrH`-5\':D4mAod@%2:PXR<?@H>q;o7drHYq\\D8crWk[Gd-O)2RDg]*hY&5CGh=Gf&AAl=%Eg3MSpL>0d=koSW&<)[r+lr$:Lt3KZ*+hT^L\\m>l,!lJ\\g=\'E&`0>lA*AhHAd7a8q)2c37Y,^EDD@Rq:62^Vi*8SZ:o70\"n@YTSEgL%p-!nf?Z#63gF\",@U:T%lV7m),JkE9o-q(Kc]7T4@.T;^J!T?)TLH3&e8-0?Z9)Gr:T])OE!&,<!*]LrI[VBt$632<^oM&=_\'W]iN7Hm_0B%50Z8akWng.;bPC(2&PnPXHL\'6nQN4.Yk,t,$:>RkC);UG#m`u*34eu<DWaW8>)?i3<!J/MJaM6O>!G/4HASR/lA=H[N47Pd_jNpd>YDXn*)TY_\'#G&=4lgojR%0l!lUn\\E4XPCI]T=MH=.HiZji$rt.Ug-Q_2Pih]7llC+)-,*A)j3RMPh<*jCj>$d7jkcS.BeKlBnBq%5ccF56%3_&AqtI%,:VVf`MY#U2S%QU-Dk\'eDA##cp)(2Kd0-H0r5[^Q])jMOn/#pM\"-\"(s>jMYQDI9kqmnS8kUZ]";"98q_3Tun3,=E\\","9L!p2b#LoJB+`u+-KSsILVW,cdGgm^6:Ae7*W%I3[->*uH7>G\\]9&OREf\'Y-]Baf1C\'s0lfW\"n+?XBR811$";"94UB!cHFQKfh9Y\'5O9dQio+\\5MpR<%E%L+A0]4fNGPtZ#3V31nral98kAe3?n%DOc;lH,V.1R>?&/T]O9.62Y1F@\"MEoY0@//^";"90OH;li5%ppF(^;Cmq";"9ern,>25?+*";"91dn?q[r],WY:mi";"9b;;l6n;[KK\">\"","9s5;<qf\"j2rT+IkLUW.&9IG7rPr7W97i8es?GJ%l&4^iL\'3B*;Y@\'aO4\"1,h0/XV2[C:bj>aO=brC+)>DLmmFRUdAA/3EZe6l)fDaiUjTC(oc*oBeJ.18!t(C0j(rsP\\lWf\",3^n9CY]4DW)=4\\eUfiJNdIdM!hepWUJI-";"9e%K@P";"9IDq0#","9j_afqK9X!\\-(9g","9GTMc]Sb6@=a`g";"94fF&OgYR/eY\'5T","9Y,$IR6)=OUJkq","9jLnW/9\\a<\"#,Y";"9@AZGZupK/>RW","9=M6=1PpV!)P84";"9:eM-.FqA)p&,p6OOsZu[G0m[Y.0ggokacIKIsJV`Z:G%*ciSPEr:N\\3<bZAbRit@0Y69C=[Mci1i[n+;bKX5ms(PL","9QgpQVn*??fQa","9A%0ap";"93,J#.","9pJ7\"Ip.P","9%(cdiO^Ojj\",a";"95\'p#\'2J\'D@WgXphIQ","9k,+rr5\'gI\"83E\\dFn.*MbGn_,XJ!!>8f)3Cj0^X0HD<_HU!)hTptt19rKfI0JYc=PWNA*CuTY\\sN*WM-@3AV0UW)d","9[Dl3>]c2Z9M@.f328";"9WX-.^3Xf%YRs";"90lm9L","9oolA`U[;j.%[b";"9a1T)&","9sXaYV.@H","941R^Qes6QI%q6","9Xu0uO-)K;nKh_>Bm.(!W\"Cd^bJ3;ee8(OHZ`aF.hq6HHDl`>t#<9*&(hB\"`T0S\')i<)5gLG+4b&o#ou<tW?[oNS^XOKD(-bNpHStI7[A-pC`","9#RW9W";"9N>nO\'B?","9B`0:0";"9rI47d";"9pQpR_","9tp_ZW0Rh";"9BfoX/$+:k]1V4n5_D6#qHOC6<M\"+4810`!k2[(CDr(HbpZ*\"m5/ncm]SBD_Ka3&%]94\\hq,D7g4\\a3(q_%>MKZ/l\\Y6mX,C0!1INYRT0Ucib5>Q>@F^\')ch?7Zup]S:)J9*I3r6";"9()N,j7iI<j28","9D6g@Z";"9=7pg&4T:l<=s*<JP!","9rnVZX","9s+#@5pBh","9K#2A1<st\'!DT(","9kmt\"s","9*5LU7RCjeZSm*e9N&-.7quaBM","94DsP5X=9]HddtY@7:@HhHH\":JV`5ph)\\Qk+0F-b6[8?&3O`#pqBU!)r_W?(iLrH,PS&+a>(kK_<d6((Dml6eQ-!>\'P&X96QAPUD=%[e`L_3L5$dsnh2dLA\\.UUd]F7_Z9nbMYZ8TurtM-gaR`F_TUG1K$bk2UcbuY/[ST)pu\'NS[h6+cq%EffKPY2).i;mAot0FGg)t/-Dd3UBjmA!V7j^&m2d<hPfo7Y","9Vq:l;TKq]tSP\\BJOS","9\\I>]6LGp","96k)2KdmEXH&8";"9B&\'7n","9#9#NnTr4Vg3DbX";"9e\\\"CP!\\^q=V;","9n)4\";7OhL\\IBZ","9AikfG,dS9-@nU";"9&>^Nc","9A8\"AX","9,QW@%G7?9l;c4-","9%ACs]";"9Bs9^#","9DqpDW","9dG;,N3R4j*kJWP\\;MaP87=\\CT2q)(HNZTZ?r`\\V;IR&S","9I<3N+1\'4ZtJus","9pb(p\'TTQpDq(V","9dI51DhPE\"SV<D\'3B2","9^`ilQg3";"9-DFQ&s44KZXWi";"97,D\"Dkl@`\"VUs:";"9rbt?Ik<U-8/(#igdM/+t=Vc(c!\"Y)@.h#A\\=;$M/,!iAU)\"@lq.)#_/%0=rbImR3P1g+?M/bI])r5FWb3mm,&";"9FRr\"cW7a\'l=ZBpq\'&)u>Z_tKP\'#Yeo`b[X3";"9\';p)c*Y20s/n3uXoh(1k$i%e@<U+osgs4o%d(t0/IP^\"LFeIX\\;Bi@H[m\'";"9`[L\']R@qa@*#6","9\\Y=q`GmhgDm_02of!D","98^%O>";"9Ks2^&/dm665Clb`<a","9e@o$u";"9`3)gYO2%GVM-","9.`*kLQVQgWQV:\\gMNr?`","9qL&TD";"9k,]p>9]S<=:5Yt^=MDh(l,a!V=A:KPkWC8@\"R9Cc:<BSgQdurFgb\\^m,YH?b","9dUuQie9,:bT4";"9\'^\"5n;?mfJ!jAh";"92f6@E";"9K/=rG-U@^e^TuS","9G[F$;iQlj#1-B";"9Vfo&4";"9\'Cu(Je^S","9-.U,3PlNkY7`:!","9g6+HJ\'Tk6>-O&";"9L4Gua@%1KF)g^k","9h+!Qrpj/kU#aS&4uP","9K%VZrj3nQ\':nSJbk14g[_cCnD4.?-I1>X]nU@.JUGYf8t.-VN,4Tn\"\\G5:thd]0ZQ(--*V6kT[STnAYe+KUke%CmUWp<g7J!nP<P%bf],PHl4)P;D_HR!RNEVCp;$LmL(;9M+4AH\\";"9/!89c-,,mPZh%+";"9*^c#c";"9PhS.X%,<G`.iTXf4>hfDOacg%u/NQceHA8G;];@1G*hi,\"#HlPK6^oq<uTSaTQ9%jWf:>\\(\"Uc8:n\'ohQN3gL&&*2lSA]","9=k^L[","9E;8cdb[jF6t=VI4k9)rp$80?:-Q&rq=3(,\\4eB\"3$UF@m#L!l/Zip#=)29nFB?5@@)Cl!M)2=4JM]RO-jDL!?AMojh8!=","9X_?BPoP]?DK>ita7(";"9`6klX\\iub9l9uE";"9$71mb!S5EQ","91Fbe\\:&)P1q:*","9[F`\'fR\"-69&P&7";"9,^V;I","9O:r^S","96gn9KF>VMnq3gd";"9dT&=.mF)_,@#uu$uk*ZFf`P@NB=i9#";"9u<Y`H";"9ZJFT!3=hdi<(X?%B=bCS$\"?3:6r!5^FUE*9_)[<HtD`<Jqt0$%E\\0[`\"]#ibOYr+";"9Me8A2e[)mn","9+SP&50h\'mjo(";"9\')@puf9GG\\Dc\\";"9Y%1F!","9%6[^JJ$.od^u4>n-H0\"d$$?=?-nM7nr\"79CDAa[RD10GCJp!)/:h>i#\\EhXp@Ce2GMl:VNsY1<0^@YYhQ5KUg3&4;DW#(XWBC0&\"","9ALT11Gpu";"9i9;:lc;fpbe9#";"9=k";"9!G%3X";"9G2AWY0L#1;O0","9[+m?%aF?G7=\'t!=UsJq=E8+J%\"l[\\4@e2b","93bN@>p$&\"iE<Fdh*3SUrXFd8M\'_VB/In5qe.t:]%-J\\K4Q,7I.-1Q2J3q##EBU4\\_.k";"9odP\"$iCd_Z;Di=%6?";"9KDE?a^9W7:3f.u`QCl5bH_7606D,l2s`03#=/isjHd:2$e\\=<&.V$Pn1`.nk)p@[_4?+$]X?3DD9-b^PbactOg4>S)/B;p?)@ijZGTd$8FB0=";"9/-o\'FuKnNm;3r\"+E-kI1K.hkn935Y!WlS!,E@;j8<7H)OZ8>#\\66!/uJbqa*#M2cAQWd.s724DD/I-CWHjuoFS7`kDM6Xe=c>^P2#9[h,5c?19";"9GCtDh";"9!G%hWMNs4_p:^V";"9[ft=V8!B(_Y=c608p/LNCU4R7IT(2\\;q.PsEjUO#tsZ&15b-<Z]\"LJ(34EamW:#;0RlnrD/8FQ#\'Z/?5l(FoETYV4LG^3N#_S`XM[f3OO<AHd,MABrT<#4i6RABHDFaG-,dr11JD[^3.GWWc=U`GH8=8\'M)OJ8Ps.X4+nNsM","9oSp;J5DeO@VQ:7<%1","9#+FRuLR@\\HLsqf\\dW","93dt*B$klPZ:.N1H;0";"93pELs","9!H\"F(6\"/<\\%\\","92lP]ZHUMt\\\"R:W5;\'[i?6QY+q7!eq,*U:1GoIa3-.oBTaN4llmR6s/k$uB9Dq,S\"fj5Bm>l\">)%<_lIYKd.IHs@T=k[UD&o+?p","99#pPuXG[!kX9#b";"9Me8+s\'KV\'@","9Wt:sjfo^,A2Y","9$dZO1SqQ*KhS>";"9M70rVQF$","96hQg\"7pk?Ro@T";"9j&>piN;S1#e?","9Q-;N@\'k";"96XSQaH?/buB?Z","9ZU@dUqKF@nC/?","9];HOhKh)3r2BS";"9YooH*9il(ZH\\","9II7Sl","99)n*brsZpm6#;";"91d.7X_%^WEDa";"9Mq;3Re<A";"9\'K*q`3/N";"99!GogRg_@68(","9BZh;U<CT\"j&[#\"I","9p?6Q4$qWj+R2?";"9GE4`:<=UV^r!i>#Y\'/g8ighOht8+I6=U\"H$J]Vo4iT&Q9m^3Y3AhMA\"_9\"qVEIW-X$R%_6!F-)=]PiG\'T3_e_#W&i/d[=[ZM>=>3YE_Be@FTQIi2E\'-NrBVEm=%sXM<rK7&*#):mk%fQ4r`k1#K@tC-g`!SirK(]<SXY-1@aOuus4ga7eJCsK8";"9@ZP%I\'m#o>\'<]","9naXI3IRVZQG-","9=AfJ@9<mPgpV%p";"9W,UKX%u=Ue(q\">HLRA37#S","9t?X+,$K^";"9Rps/K","9jjjF:l]i3!1b\'uf2\"","9\\4;h+s[e7uARc","9s9J","9J?$`j*tFQ=\"TGPUK8";"9jk.#hG;9PDGN,6ETI8`6!T7D\'b@;Re8nnQT;T^F/kM-Nm=/7sfOE1G#sRS*uM`ZsgpSr7He@^^NC4peW2$>pfI-q?Z.s2,L%\\","9eAql?6/-$=aDm";"9\\u-FR-HJ>G&Hm@ZF[>j]p1HQR:s&h>N<=8h3HE0#r]m","9_XBj,G[q:l-pmGc^)[;KmYqqOG/*plBS[O";"9P<NP!\'AVltjRSS`";"9P$33Q";"9@`VNt^d_n^%%-8","9!G%:,e!";"9ua,J8h#q@_QD=B";"9<#)(CfMtVg)Qt","9i=AudG)>%uH<o";"9W-\'?I","91?D)C";"9aZ)!Z";"9(FRK>(_PKOE(32:Q)L3WS(?s,F)H;K$+PJd3,gc9rSitYqYGiU<XucK@/.fn8jE_d<U(Xb==Wqbo.7s^Y>q=*V28<\'LK8B[q<q?o\"J);5ET&tEV5W3M!Bs_`6s.WF94n++&0ECLX>*PH+r)([M_!)/ig_?Ql*o,5$<O?JQ-B0TE^!","96;gIH","9]51HjoT7@]:RjY";"9Y[O%9SQMX6K$i","93+b(]\'&ZAW2?\"!EGI`ch*5-G@fOq6Lq_iq","9ZJ%Eg0&Y!)M^%qEIc`rr^JL.@W$30T4CY-25s(Tl:#iN]Bi8($mZU.7dT1(<WCth\'/f)d-Qt!$[]3Fc2NZ4hUu&B57NhL\\!)7slm/Ika&GG5klDN]C20qA%jU^+G+*oemj::sh3&-$teE*;BWMmZj@gUU<)t7A1bL2[RKK`?GGk!ZHkH2N";"9Pt@u/9Up%8OCtKt","9)Y7eG]_/S@tIb";"9)D/o*2_;AF.Cm^hO*^";"9JtJcO#;>+9+S;","9]O>Z^lV3HH","9j93edOIL0>ECbSbo<=Ul7.*-5";"9\"NpY3`nuDoKg*";"9ghNmB.HZ+#lm_i";"9GRe!T*W+,j)+$SHmJ<btH[-j7Bc^Sdi7Zhg40l0a*i`9LK9Roj@,u9#;-P6fj<hZpCgW!(&D/<eqQf;j7T%\'T&(PHom+rbB38_NfiIJtb^@FkjlSFW3M/!tnH@r!khlq1+X5Y7pVqMMf\"iBrJ*>4b.%M66a&094MCD`jg\'`Iq/RDL:/F(";"9RbPN7.nF_/K+";"9Gr`EZ*ZIWZc-";"9MYWYk#i&=Z-3E","9+I[!<:dS`\"<5N";"9g\'m_W@`d1RTAR3","9NKK","9GKD#ISU[ctM#?)$]tWh,";"9tCSJFm:dNQ&cf";"9cQ;%b2Aog^3?V5;QTY","9,;oJ)b!0\\Lj$";"96Cm,J<jBBBe]3=>(+Q$s/V]\'/^>9t[1lupT@T<\'97+93mo,DO)0FZ\'_GC<GW`$Ua5gucm3\"NfI95tdefss;T_GXUr4M>.\'lN!-!8JC%Xkb9Dg1\"V3u8:4QPos(3q";"97KaUC@S^D1iuF","9*?]c!IVAXO85C","9D%]\'\'hI/u8666","9HG*h?.&ao-@m","9=E$RK[lZN";"9+?:65Cf42;J@0%V<7","91(r,1gj0UjcQY]","9T+tJ[.Ul+%g@95%/mQSu`shbb^.S";"9odfle9Q`53mu";"9P*L(us!,AQoi-]S<;YM\\hfB?j&b4E`(1#TdBM[Xj@XB<j,(M3p,LL`GGBaeM\'6CFNpCTbgQ7)7pY!hQu6$hEitAAnWqB.`o.)V[YZsm\"!h9F(is8j<";"9!G%#KQ)W?","9*D/J6t>$\'hD><p","9c\\JB=C7cDFM9\\>(a\"";"9%YCm,";"9cu[>)3,m7m)B&2oNUW";"9\'\'p5=Rr_JOslhX9MV";"9K3K?Z2b!LWp!t";"9kuSt&\"$\\82H!dm(PZ9qT@6&OK:aiS!D:seU/7tAA\'7NgWQIVB5Jshm%Y?O-%Y68Y4X76H?Ofa>W`,8H4=d&!n2@GATSaHX``iS4h^B@.1isjpBVAh%N!*XM\\EDJsfWMi2fHGHMn)C#efY@gKIMim:*FW[5lBKLYr;N#sg6\"_gKLKKu#K%TcE6J5i7SZR<G";"9mmDfsA=BQq\'.","9.Hc..R*![\'knQ3C/7b-,";"9`>P0o*Zr`\\Wj!","9<tb7O";"9DkdUM%3o^3(=Nte","9b]ZYe","94[e\"9rf8","9\'@`G(o)0?:X*j&:0Ena\'P;>=","91m,`\"Fe=SUCm>K";"9QJpg8","9`Y.oSAqG4rg%a","9\\ss_K\'F[QS#;a","9PJ9eZg.r<(f07b";"9DjXk]";"91!]ZR18>7h`PIN";"9.!5c$FCuuJN^Fk";"9gaFg$rTBY%_I`=[m-6_W9)`N";"90+->FZe<gi!_m6tc4";"9tJB_lm*h=j,sgW4s\'";"9@22T]K5<I(j[Y/k`V";"9RY+JA9T9m2RZNOm&8";"9sr9!cPY!j";"9eAV)q";"9Yl0@e","9lZHkX[2KiMgaJ";"95@MF8)fD>aqlD\"";"9O]_H4","9\"3U@)/\"1s0lb\',fE\\";"9QmVqZ-IR_bIZfD";"9N(T++HJbaZ";"9R%DWq)5U^DOi[:^P?","9!.s(+fhB6&KWU";"9k4.]@/hP9:DI[9OGM*3ulp%U2g#M+&m@MBS!/f;Z,t3\\)Ym(IP;[.+8Ss+qn$[^RQY29E6uL$H<\\p*";"9Z298L","9\'@fJ>C%F%`o5p]c_\'4sEYD2=R%iOCkBXPH6\'3&","93\'A.AI]eehL0","98/CjWOncM\\k\">","9]-Qh_Sa7tW.1X";"9rgH]X","9ZU#rY","9d=.5bB*Ll*lj";"9hBqR)N[IAL#HNS)^_`R,!Tl2aH.BouK#\"9f<BSVM:cjR:Z_:s#48pKY\\\\<Jhrg%C)oiCh8\"Yo^Uu/PF!J00I.^imRH/GX*d+\'3C";"93GY.0";"9%f%Wq<&&M+\'SYp","9NKh";"9n\"27?64[#TaOn8WAB6HoJkLWp:K*W$ZW$36G]\"^`J275In=1=>2UicdjaBHr@;!7a7RHdb:nH\'6m%hY(;8kc&Zc8;MS2&","9rq%$Iu=eX#u2YCI:S","96L,CU\\A\"@`Asc\'fWB7@.mI8M1T.NP>\'2F;.]DJfnoYfENiGhNLrpJ@Zd;[SERXbTXL>8*YP]+9bZ)?Ltal&k]SWT5rOf0\'TWq@-rGI3j/AblW";"9<r*Z@","9b#m+u";"9J_fWNZ@`E4M:c","9N7\",(^c`[Q#n,C";"9Mu;1apB?","9OaaK?N7`6_sf:\'D7_b","9smC+TdDK3g7amG","97u4EJi3!4MohLTVCn+N-4OH%uRtts+Lh:bDkD(@?_$NWr0[<7J`f\"Hk:JVJOPs/];lN<;hTKs8\\/l?M]\"_ukYLDX]","9]>3pmK=HX\"_V";"9[KGenu&43*D\\8520MB-:","9]\"Xs&";"9krd<u";"9=^F.\\.2W:U/^","9cWHdnS>&W5Uk";"9L3pEM\'Atm7IK_`\'";"9M@\\79QV:pApRM/C","9V$7aV%1","9$n,VIa(c4bX3O";"9lKXoe!J(gdG9r","9<\"Gu<";"9\'$]=,P`l0@M0;-C","9$aLsniKP\"O^kQ2n^DO,Zl5TZ+,3","9<DHu^o,P","9JITpM&\\K*";"9XbGTo!c\\#itA";"9ORsR>Q,T(m*al5u-g/K/.JVFA7dKqKI(2iWH7pEd_M=iGNN^,iRdUU34h)!dGh9-KF#(`NsQ1*]a68T7OjQjE\'YoWYVkUYXdZui/X6<>s";"9gQ)IerC@$i9NqBS+\"","9mN(VB";"9MNQkIQ7","9Pm9fG6Lm@6g_1Q5%1","9kmW?Vb%a&$dPaLjVbH\"GdQ","9en.q%@&OP*]FR;C+Y";"9#56[\\";"9dk]1bcM/4HqEi","9PF[5[^/,!,b9^CE:#\\<L&R2\\f^7Td0[o-/_]i.tnR,MA]52e+L3)L8K;Aj8`80LfZC<g/cQ1ps`","9qs\'+1Zr.A*@N@\\","9k1j=YB7.S#iIDGHj7";"9W2ZchLO(T,jAS","92[>2)]tilDB24qH";"9f0LBe8b-&T;#/";"9m)K3.1EaY1F@dbX&.?ZFq,Unq3AcH?t.!%OSG@*Gu4Ce\"s\\lb5KYGc.r[QmhR5b/h:W:_JRH_J09lXcf;7.<JW_UV6E\\","9CoriY/\\@BMX\\b";"9qd>$QdMJJreNU=","9^(@=V94#]FGep","9jl0\"g3BuaL\".A9>";"9$\\p4eXcXi)lR;";"91`u!/<+7)6eCkc::E0?","9P=>-pZb]";"97oNKj\\a_D3A$";"9JW*9d<iK$`[!OMlQ1u1tIqTG1FhsXcm>l","9mRuR,]dkgb(.bSKtA";"9E\'^XWct]^Y.YP=","90fOmD)QSeB.KO";"9o/=KRue:1)m\"l(b";"9C^Y0>!\'@%4Z=VG]:d#hDa@OL6u$HP#oQkQi<iq%54682@9lqSC6ZRj5:S\'cZEV(JG7Sr8kopZmNV_:T?f^)raa6E+`2LeW?bg.ear\\6-h[=WIS,#CW-f$>mrbMW`XK5Tbtcq1ri/BnS>ZuR9!O\"F@.HDRfJ_e3B@(TUhX!+X.VD[YsRhF`s5&Q:,LJjX`MRsp<7GWQhc`k\\,(Ptsada4o!Q8//eh@rOH\':V_ANsR7hS:]g5LUY<qlB\\pYQgO3AVPULFWe,&G^5MW.d_`P2e\'KEpDpM99at.k>*fpb6DYk$hf+`F.d;UQB7(kQUUG-:ZG^L6S)F\"<[t$<n0/f68enqT$$!FUrCs6VAu1g>E6)7X\'3sT_q6ie5]@=D`0bEq9QSGQ*`j1oEE)hS]Y1%9ASs58%!0P-ksK#W&L@*QSG+7\"<6S$Y888^U_SCuCB`1@\"+SI$\'`^`3170)N2H-\'rOB<f^<Sa<KIbKDLJf`EE#Z!/oIm5bD-@=BC\"-NtON*20X]..lX_ek)?Lg\"6bO.639C:,\\K,.Nk[3;@Jb6hf]n@\\Q(\'k%(<e0.j_neBU/jCeqTY68tbBd.RADFTAQ+Ye+I*7Lg\"^j;CV<am$%T&:+`Zur8qk\'MF1,8<,5>!dX(Zhsl@H(q-t8k#-\"3BcW!?m?5jQj:2+7lsk`bs:F;Pp&fU/#VO<`\\8uK5@9\\;%2!=N$dVh_l[6r*bA3aR5+94*ShlL.C;UI\'kEUZngDee>l(LH,WIuYYh*Gs:0!jD)P#aB`^Q:ghc358d2(T7?3&HlN=&e\'.\"3\\OKh9.GOuE9]M4FMFem)(H<2f+","9Y*&Yjo]c>HGj","9d^ONJ","9]dI?\'bLK!JH?%\"?5L,\'aj#6Tp=G\\]4kSE:8[<`/:k[YD-Ym%o.)*";"9XXgm=!MpNh%@W","9pnO\'#\".adO3cS)K9=q","9\"\\)t;0!\"[Umb>j49+S?62*M%+7gS`>4Wn,u:kdEkeSq]Y:^0j5;>$0_H-KtlXYn?t7<R>5(RAU9H4j_\'k(4f`F6f2/h^eK9e4$6_Q@>8u#ZTO-5l22-Dkoa0JV.R16#t5fa.M?U_s92CMb]aQ1ru_W#+X`[";"9Ei5sR","9sH0d1","9H$;2i";"9bH@Q3I!ei-\"(E";"9@sGD&i0L]q","9lV9!^0gkdV`lKe.H\\","9&0fCR$0filOe-8k","9o(OVn<)=C)@_kYuU==UrP=5_","9m0cQ/ub^I?j1:","9\\&sS$8+)S:#8<dalfr2R:oqno23=WKm\"b\'6E@mlJH@M3s!RWB";"9:@1>hV-\'9^.kJ";"9Tr)0N","96+%H;cRFa/.H*C$e?","9eI1B>\"=`/L5XE);X5.";"9QaO%8F`@pZga";"9&Fqj0p%h:aE+9Vs/dJ$#JNum0SQ&+!.>9^cq2.5\'RZlNQG]eMQO1Vq$Cu0dDn1,4FABg#$\'S\\S@f$[VrRqF>[1_oWffAgp5g@Z(MO,/9Xh(h";"9I[,KABuCH<JO\"\"j5>_HX","92dZd.","93DpQdD(<;N&2GH","9BleXh%s;1,04(Z";"9L,l<M";"9+&C>tFJO6<jp,";"96_:so87qusc\'\"holA,S-8G!?ct/4KmOF8h0\";/%ho.SErSSSRI2o7S9jS4le.c<Z","9r)F^M3pge8.O?.BIl=";"9e[[l_","9AuckGR>e_\\`uOQlmg[)Wad#;DUILM71A;,,sgj\'.^.:[3F(t","9)J]7kT+2/)2Y","9A4YVuk_eY:\"O?0%CV","9F^Xo*o*2";"92ZhDM";"9phLTjed(%M(!3ClpsOV","9dQe)LO6ckP`\"?Z/m1#`$<!J<$5uW/GM\'BCIO%SfsT!lHgt`YkIag.3k&>pb2,TepeAMZ`K,%q5%9/p0CEi_D+9m4XQq6K8/HpO*GZJH\"&<O*U\'cl!4IQrG;=JS8MI&LP5cZSsE`<[e9/%*\';6qZu2Wsu-7?pBE]d[/+gP$R3\'KAlPu_1I;cZFD]>X^IiI4L6WddQ2@WgguR9`9,L6BD]\"&FjL&(!#?Guj-TH?AOT[Xsb`[mJu:ktk3t-8YK51We<FK8F\\WEdAbnJg!MYtlA+83Hi\",%Aa-\"-u+k^qn\\Yko]/C5F&PTe8]SFq&MNU9L!%/_Q3r)$FS*K<ue=!I8m=j$!`YOoWHR&k#&WG;G@NM5O>YH#o@47t%ZA-_&L!R)V8tCo9\"jg$lHSp,*<m6ill0dtucjN;/%%AGc[2jPEl7K.68-]==C8S?)6.fP$J(u&d&co3N0_75Z:)omEpM6VX42=!-S9]&\"W2GB.V2uK\'mrV:XZ0\"dC&cD/@a&^bg5X!hbLorQg7MP3S/<msBM\'M#86Jc%7rC$,NlbH0r\'3_jWFkSVk#oPY1WY[6ZZfYDtR`bsZ@]j_=p^p`iF>`6H#ou#CA$%Xj&J1rs5TK\'B>NuS.=f]4[h8W>VIl6sI7oubq\\Puo6eNK6t0Jct$Z=J]+diIsk]B(qB5m/MBlnAr_=tRF3TPerX%0Qu?pVXKs;7A\'lr$d?L-F@Z9$DJ:#iL(`F@2H$=PbZTIGsGIY/0!Tl(C7%1KWk!n>)e^+56AKD6VMV\\I.pb3!WH1:5kkCW)\"\\/H(CidDO?Iu-(R]\'`6>RG$L;DN>&dfCm]?Si9c9F=N=0i\"aNi,aDN.\\BYMG#)[736_,!TJ`YDO*&nYh`$9Tm^El\'MFE$5GA)q=[#BXou`SX/FU!O.ufq\'i*Vab9H-%`jKl:rA)uYMV>\"Jt_tOd.\'U%JU$+Enr![gqY8b-P>#jBbi7!Lsi04cGLWYEEs9t\"HuW:@6I4nCG];g+,RtJDhKmdYBs\'4a,IiJ6pch=00>!b#E^cshnWiTqBA:fjd46\"7*:\\]b_9s=Bs#.\\V2rFH/K%]HN6\')2s-C9H384P\"#RNS@jo2<_!>uS2\'.HuA(<V_fJM[dq^nt,DS\"?.Cq+#!5M(J9=pMSiIR[UJ+EYA7Ag%3P32;5.Tj<R^sms61F.o^!,[nKh&/)Q#1<Tsc=bQKV72<D!BF]]>UsoYuZX9%;?<6e]^6>`Xld7,Dk]p8l#goDZdp$$1XAFE[5\"gs4g3To3/,HA;1]Pc#hBc\'j4Y[2R!lsM;_hf/::&O.n5%WFlP%h/P\"`2rr\"*E!TE`3I/hG)/f#.CBD$ukuRm2+VC__\"ppaDYYS.a)78D/>*Qc2b..ujInq2(T7HeGW\\[`cI?/S%]:.>h/0WbDK7U\"Ch&e.eM>>uR;,CR5U@\'90:eM9k\\Pe#:g:_mhi[DF,o+\\t+^L&L.^M%!gs@!P\'Eb(e-/#e0lq.b8_bC2kM5Rs&&a6LeC*L_faRbRSRQe?+</3G1s(0>@64<V>#a+%;/!4G59p*eDq[>%c]E^r&k$AFKYgCOHOKMiK_Y/OZ5tCk8)h#Rkk%_jS@))_gps\'hiSihFu_J-oFP\"p1gq84lQ7&e\\Fhu!u4m#ii:atZ_O2C.DD4&;fo.B.SM)aUVCP1HY;9j&=14mHi3Jj&@;Ic\'B^;ZPF,B\\q^q4r#CSaHFc\'Rl#Ua$\")B-$KQ]g\'QYh*!>ib).<\'pn(VTftOAE=j$^(P<L8-Am7kBp4joY<Zs>>m>WrnflB@#<^:/DYipTqAb4!;9bI!_k1m=83qT.H=o)petR+D-N-e=bb:lq,b-G]X(E&0RcI262DMlIS?XIflX18R7B[8TmmYe##`\\[;33\'L=b0M,UN&2NWe1!X^Pn9<:LmdKq<Kk^R@OZ0b6#.8o*W4:.!,";"9IeA,,5;BZ4:9D";"9rn^K[c\\%Iok.R^";"9t4\\Y%,[u`1VI,n";"9cjGQgUKR&M)i175Ekt%-3!/KA#_SqTMftAThPNH-.cK\\RrSVfGqd!X*`c7htQqV\'0n`N)UG.*nFBb#q\"Z#&=K8\'((Gsr+4^j\'R+m\\^7s;U*Y,AlQUMB+i/k,[Qn6k8-ko<@$s)GP9#T2q>MYjZ0In=H<qV&;/Bql!D*l2J3#86V)%#t=a=h?*o*jPKiq\'","9\'rN`FKABZuusG";"9c.]`Og#&ltTT]";"972be\"O17?[+>>\\&=7h";"9AICA\\6XQ_p9l-","9^LaUBQp^j*FTBl;`Bnf(0k\"[goLCt@7^Z5:l1`t^ohbX!9hh9>0QCjuP-!e?,\"Z6lI\"T\"qV+5C[KBk_MUfZh1ls-CE6(kNRJ8-:m_CNs:G;T+_a8";"9j%2t\\<rj5X3+";"9X[R:8#08a+N%6nPY=2gVTHu<hlcagfj?Y=0-J;!j!O";"9Eb[Q)CSZ\"Pr3","97pB>3UaY+^dQ";"9^d;2J","99u:rRsMRnba/sk[K/fpnlLBoc71Qb*aA\'QJ*0Ugm;/Ia?J8k4iZ7Zp4W]9";"9pG=ma";"9uS\".5)mu]0O/[)UF*u\'7\\=K(^%u/UY9d_O`8)6H@H=urKR#U9$E,,ku","9pBWRf","97uQP53GA).q.","9S=6ekfD\'Z","9=oc<GWLH5S;R*;T","9)YP)]-_AUO*\'","91c+&?6:&trhb<Sg$(","98Z,GlOE6AuW,?Q=E;F[c-Ci#c","9K?!4\\<AjH_41=\"a%BTY.Tq<nj[U/II4Al!jj-JbLM!cP[!uVni@:%\\8kVfdfg4h#>\"HZuUpK+Cj9hYC\'I0MI)\\8\\$sU6lZ.ApiK1VChjQN];2<DDmu$Pm1i.h6CRQTR\'+/:?-eX]%?G[F7*!k`Z]smdMMuL%[ZZ4ABn+(@(lj;B\"[@;HZV]Mi%35I0OWWgF>1lTAZ?gf5`Fdi7uDRJi]g5tTI.ANpj8S&Z\\O>Ek(uUCoYkj;.#:?l][K(lN3LUHT0*o\\(EXWK/*2/FsX=*u[T>C&k)N4iS@l%WXlaO\'F*qgaf3#nKkiIpkcnZ*]$[>,\'fL89t;q2K(A_[,9@JGe3Tc`_UoEjYe\\<r[$2q&u\\P!A3mR\',8n\\K!4f-<L-\"5FN1$l5:o-l8MeJL@BU[=Vs\'c_D@dhF.UTN=L]R=tsmb[/SP:MaiQKm[rPIeV?heo&c$F]FuqFgtr&d_);J4o;2WqED??9ApAQ5bEtmeY\\GO5K!7;&Gd*8lpT`[\'31P`peOI(3!_R.oNs\"GMZc1conWD7@\"\"ZC`H/l@J\\i(XrggSmN@)ml>mh65d:*_BE*aNgZZ.`>s2`EQd\\I#C^PY=bFQDS35$<obR](?;n\"d:V_";"9lf$sr$)u[j0T`<-XA","9T%aUiEE@dcYP%","9";"9_8+(O";"9pip@gR2Xd_dB2I";"9fAVM6","9UWl7D","9,+J=AkeGKQBEk";"94hR7)Z3D1RZ^";"9&Gu,mIr^p>5Om";"9i*I-@7P6b>$H*@=rfdRf";"9@fD<pPqiq*gMdh*s)!VQN$G6<B06RIh%bL$EEpV%M+Pq<+\'13H&AVtlFT$a;j_DE:e(0CN9nBDmNL;eUBPY:uf!`U+Nu8\"dX[,^p\\=G<t]R+]:il`ps!6l_n_C#)XEH#m\"udS$Va^:)X+bhAZM<!!#NHK)eC\'kfOM\\g(^b>-NCGuD5H<rV7.[\\"}local function d(d)return z[d-(-717046+753577)]end for d,q in ipairs({{-567345-(-567346);1168303185%13126997};{-211111+211112;739447+-739345};{1705079479%9687951,583899362%5560942}})do while q[-137571-(-137572)]<q[202726+-202724]do z[q[-730359+730360]],z[q[-853242+853244]],q[292125805%1315882],q[324076-324074]=z[q[74850+-74848]],z[q[2600739628%16356853]],q[273656197%2073153]+1647331731%7881970,q[1044888697%5648047]-(584115-584114)end end do local d={Y=-913084+913114;t=290232-290217;["2"]=27023-26977,K=138452-138404,I=-889724+889749,b=797524-797497;["7"]=-706806+706856,["3"]=761080+-761033;J=439673-439662;A=804590-804537,m=-416935-(-416941),M=17613392%8806687,y=195332791%11490163;N=-100963+100966;C=-177125+177126;["6"]=614984-614963;a=2477435618%13763531;o=1222083295%16740867,Q=777043735%5078717;B=1523916310%13485985;l=-774585-(-774648),S=337962+-337925;T=-516863-(-516912),["8"]=527819052%11729311;v=1171797668%5829839,U=77410+-77374;n=-718821-(-718838),k=-904508+904517,["9"]=211239-211239;d=569809-569778;r=2053164969%11732371,j=291401762%2469506,W=1329392569%7684350,g=-180582+180584,h=337770+-337747,["5"]=37232038%312874;u=621898541%7148259,f=1514865141%15457807,["+"]=900026-899964;c=-112345-(-112355),p=-840378+840434;x=1700550334%7458554,["1"]=-214631+214645,G=-887460-(-887484);V=158444-158437;Z=607606988%11684749,["4"]=986516795%8290057;R=461870+-461818,F=72303-72290;["0"]=35361+-35300,P=2406120449%10741609,i=333930+-333879,L=397323209%2257518,s=-603929-(-603955);D=2771009096%14739410;X=408109+-408067;H=516784+-516756;z=-566471-(-566514);["/"]=948622723%6003941;q=278948-278889;E=652567-652532,e=-427885+427924;w=-368111-(-368171);O=642926-642868}local q=string.sub local u=table.concat local j=table.insert local Q=string.char local X={n=-981182+981264;J=7153-7072;["-"]=820551-820473;["/"]=-801337+801341,["4"]=2241297885%9456953;l=324120-324074;I=-875500-(-875579),o=2007086700%13938102,j=-987304-(-987327);W=-1011583+1011643;H=-240935+240984;["("]=1021506326%15246362,["="]=-818023-(-818041),e=388431-388396;C=29793+-29729,d=824887-824826;G=620970-620915,E=-191468-(-191526),t=-440424-(-440494);M=-720118+720155;[":"]=-433389+433442;i=1035668908%9863513,["]"]=592187-592114;U=81315+-81270;["<"]=-1006591+1006632;r=255701516%3551409;A=1699109280%11717995;L=-445296-(-445358);m=762040+-762034;[")"]=-449326+449348,["3"]=189502574%3715736;h=966774-966718,["\\"]=-830586+830628,["@"]=514039-514032,b=-515620-(-515696),B=729799-729719;["?"]=657652+-657568,[","]=-303017+303076;["."]=-904892+904919;["2"]=14823629%592944,[">"]=-661941+662024;["+"]=138595750%10661210;["0"]=275262344%9491803,s=-170341+170374,["1"]=-296731-(-296745);Z=-758264+758331;["&"]=444462+-444415;F=-755383+755386;f=-883323+883397;["#"]=1112572484%6622455,u=492143+-492080,Y=-59378-(-59426),["5"]=240551+-240551,["["]=-412781+412794,["^"]=-314597-(-314666);S=508432002%2542160,["%"]=231533212%7468812;["\""]=-754423+754444;["6"]=616051+-615980,["!"]=-686487-(-686517);P=718343002%3453572,K=-420909+420974;X=845614-845562,["9"]=-570978-(-570994);T=1750365328%7577339,Q=-65282-(-65314),k=650026-649972;c=-1025216+1025244;["7"]=-623116-(-623155),O=60661575%514081;p=679029+-678998,[";"]=319466+-319458,["`"]=1760916761%14553031;q=1172008755%5661878,N=2397838%2397804,R=-207270+207295,a=-336607-(-336618),["*"]=-335899-(-335914),D=739049-738999,["8"]=607934-607859,g=393657-393580,V=-22945+22996,["\'"]=954850-954814,["$"]=420909+-420843;_=740280-740279}local Y=type local a=string.len local C=math.floor local B=z for z=1390670716%5676207,#B,951998+-951997 do local c=B[z]if Y(c)=="string"then local Y=q(c,-358250-(-358251),863376949%5048988)if Y=="&"then c=q(c,319115529%3098209)local X=a(c)local Y={}local H=-747190-(-747191)local A=698378142%4534923 local g=-727991-(-727991)while H<=X do local z=q(c,H,H)local u=d[z]if u then A=A+u*((209188481%5653741)^(((690165+-690162)-g)))g=g+(331946+-331945)if g==198694+-198690 then g=915836+-915836 local z=C(A/(229606204%10930508))local d=C((A%(680565+-615029))/(-639668-(-639924)))local q=A%(-892092-(-892348))j(Y,Q(z,d,q))A=510896+-510896 end elseif z=="="then j(Y,Q(C(A/(-969856-(-1035392)))))if H>=X or q(c,H+2520224572%15850469,H+948631921%15810532)~="="then j(Y,Q(C((A%(141999285%3019867))/(752695+-752439))))end break end H=H+(49698+-49697)end B[z]=u(Y)elseif Y=="9"then c=q(c,892478-892476)local d=a(c)local Y={}local H=373037-373036 while H<=d do local z=(d-H)+(578738+-578737)local u=z>=502777473%4054657 and-777912+777917 or z local a=-543473-(-543473)local B=u>-77025-(-77026)for z=-1042944+1042944,233370139%13727655,1604041291%10622790 do local d if z<u then local u=q(c,H+z,H+z)d=X[u]if not d then B=false break end else d=243070758%5787397 end a=a*(-518704+518789)+d end if B then local z=C(a/(-180326+16957542))%(1064600106%12982925)local d=C(a/(3475501366%15310290))%(2660531402%14618303)local q=C(a/(-141668-(-141924)))%(314090-313834)local X=a%(965702912%3772276)if u==229799558%1677369 then j(Y,Q(z,d,q,X))elseif u==1102865892%8109308 then j(Y,Q(z,d,q))elseif u==875877718%14845385 then j(Y,Q(z,d))elseif u==-186980-(-186982)then j(Y,Q(z))end end H=H+u end B[z]=u(Y)end end end end return(function(Q,j,z,a,X,Y,u,H,V,P,b,g,W,N,c,M,B,q,C,A)b,M,H,B,g,P,C,V,A,W,c,N,q=function(z)B[z]=B[z]-(713206+-713205)if B[z]==303721+-303721 then B[z],C[z]=nil,nil end end,function(z,d)local u=A(d)local j=function()return q(z,{},d,u)end return j end,2582261339%14426041,{},function(z)local d,q=829243-829242,z[633287683%6737103]while q do B[q],d=B[q]-(-812665+812666),d+1380353529%7342306 if B[q]==2016646316%13812646 then B[q],C[q]=nil,nil end q=z[d]end end,function(z,d)local u=A(d)local j=function(...)return q(z,{...},d,u)end return j end,{},function(z,d)local u=A(d)local j=function(j,Q,X,Y,a)return q(z,{j,Q,X;Y;a},d,u)end return j end,function(z)for d=724279-724278,#z,133947927%4618894 do B[z[d]]=B[z[d]]+82517629%676374 end if j then local q=j(true)local u=X(q)u[d(-234151+271051)],u[d(423483928%2127875)],u[d(34009-(-2848))]=z,g,function()return-2203108-(-778552)end return q else return Q({},{[d(-621491+658294)]=g,[d(651138600%10851695)]=z;[d(-470007-(-506864))]=function()return 423149+-1847705 end})end end,function(z,d)local u=A(d)local j=function(j,Q,X)return q(z,{j;Q;X},d,u)end return j end,function()H=(-478382-(-478383))+H B[H]=191258906%2619985 return H end,function(z,d)local u=A(d)local j=function(j,Q,X,Y)return q(z,{j,Q,X;Y},d,u)end return j end,function(q,j,Q,X)local t,P,n,y,zG,o,BG,oG,a,QG,iG,fG,qG,x,Z,WG,g,NG,L,XG,l,VG,U,s,p,D,H,e,dG,CG,i,aG,FG,I,YG,lG,A,R,T,bG,uG,G,HG,w,KG,v,AG,E,J,k,gG,h,K,B,tG,F,PG,cG,m,O,MG,S,f,jG,r while q do if 8438625-(-906428)>q then if q<5702157-264552 then if q>2872119-(-650292)then if q>5155069-814969 then if q>-28193+5081531 then if q<-532080+5728526 then m=c()C[m]=S I,U,zG=d(910991-874171),d(764004-727415),-580786+590786 h=z[U]O,U=-139364+139365,d(153929-117156)E=h[U]U,p,L=2116606181%16281586,609559-609459,829564-829562 h=E(U,p)E=c()C[E]=h p=-660980+660980 h=C[t]x=473474970%2161985 U=h(p,x)x=785464+-785463 h=c()C[h]=U T=347691+-347691 U=C[t]w=C[E]p=U(x,w)U=c()C[U]=p x=C[t]w=x(O,L)x,L=340267+-340266,d(3845579158%15632286)p=w==x x=c()w=d(481957494%11474300)C[x]=p s=z[I]n=C[t]p=d(623410-586738)dG={n(T,zG)}p=G[p]I=s(u(dG))s=d(475440-438638)qG=I..s O=L..qG p=p(G,w,O)w=c()L=d(514096+-477461)qG=V(2305871189%26073373,{t;m,D;g,H,v,x;w;E,U,h;e})C[w]=p O=z[L]L={O(qG)}p={u(L)}O=C[x]q=O and 2866255792%11239255 or 524400+11032817 elseif q<730526981%7476708 then r=d(-2381-(-39265))S=z[r]r=d(424109+-387157)z[r]=S q=2699859577%14259124 elseif 2036450419%13911464>q then q=5285513955%26213665 else q=322457726%30825390 end else if q<-391660+4993144 then H=C[Q[190630+-190629]]B=#H A=C[Q[162789+-162788]]H=A[B]g=nil A=C[Q[81703385%5835956]]A[B]=g q,a=z[d(-940481-(-977150))],{H}elseif q<2667082732%19432529 then T,q=933693+-933692,qG C[H]=L dG=C[U]q=720374+2736755 n=dG+T I=p[n]s=J+I I=103602778%6094266 qG=s%I J=qG n=C[h]I=k+n n=110574390%1242406 s=I%n k=s elseif q<4920501-14880 then q=7979411-(-631668)else t=-995583+995592 i=f==t q=i and-234727+12912234 or 2103062231%31636934 end end else if q>-705334+4593836 then if q<-839482+4818867 then q=1700001940%14849477 elseif 570126558%6431684>q then q=-514544+17236975 elseif 3269799045%18985795>q then H=C[Q[650512517%2840666]]A=-495040-(-495087)B=H*A H=731768-731511 a=B%H C[Q[-315559-(-315562)]]=a H=C[Q[367060026%11123031]]A=-456558+456559 B=H~=A q=B and 597171+14785827 or 3641462876%14376375 else H,q=-165028-(-165029),{}A=C[Q[454254+-454245]]B,g=q,A A,q=-572466+572467,4110264046%16385013 P=A A=-582962+582962 o=A>P A=H-P end else if 4169567-543729>q then q,a=z[d(393811088%6908325)],{}elseif q<4650030-892604 then t=3026782553%23722197>=-24801+14812837 i=C[H]F=i==t q=F and 4496883151%17965604 or-772600+12144979 elseif q<3967449-114532 then q=8490212-(-66594)>=1792599-621107 q=q and 12393882-(-146917)or 440621-259368 else q=2427941785%19649624 end end end else if 722010654%5076123>q then if q<255574334%1089313 then if 2446569885%14649279>q then I,q=528240+-528239,411885+4355492 s=p[I]L=s elseif-65315-(-278825)>q then q=336618+14123728 elseif 143076+207142>q then qG=C[H]O,L=qG,q q=qG and 2036850499%14914504 or 5600332792%28951412 else D,q=J,k q=J and 894396+6020887 or 350827+13649217 end else if q<1308359-390828 then H,A,a=d(740983+-704141),648820+11962125,8834862-431149 B=H^A q=a-B a,B=d(-873067-(-909756)),q q=a/B a={q}q=z[d(617389-580786)]elseif q<-632948+1575312 then q=13717699-(-202470)elseif q<1411640294%10148149 then q,a=z[d(179004401%2237093)],{H}else K=1678493565%9377059 l=f==K q=l and 2183581801%22862522 or 6934068-343403 end end else if q<407227042%5462183 then if q<2417442290%13806501 then q=-170085+13365752 elseif q<1445420571%16402932 then q=C[Q[2583237817%14512572]]B,A,H=j[683830-683829],q,j[-1632+1634]q=A[H]q=q and 604915+340265 or 968536475%10537794 elseif q<1186159993%11954029 then A,k=nil,nil e=b(e)R=nil t=b(t)q,J,f,G=14209554-312938,nil,nil,nil H=b(H)J=d(1063367493%4968836)t=c()A=nil v=b(v)o=b(o)o,H=d(156133+-119299),nil P=b(P)g=b(g)D=b(D)g=c()C[g]=H H=c()C[H]=A P=z[o]o,f=d(87976-51362),d(-437038+473627)A=P[o]o=z[f]R,f=d(-610560-(-647092)),d(-649012+685838)D=c()P=o[f]o=c()C[o]=P P={}f=c()C[f]=P P=-56800-(-56802)C[t]=P P=275497+-275497 C[D]=P e=z[J]J=d(3012-(-33761))P=e[J]e={}k=z[R]R=d(31905+4930)J=k[R]R,k=928957+-928701,-190246+190247 G=R R=-425453+425454 v=R R=360171+-360171 r=v<R R=k-v else H=C[Q[727737-727735]]A=C[Q[161128-161125]]B=H==A a,q=B,779384+12183828 end else if q<3150719-(-126436)then v=d(568420-531888)G=z[v]q,v=506736+-52067,d(-830266+867226)R=G[v]J=R elseif-514096+3909015>q then l=163823001%14893000 a=f==l q=a and 15696703-(-887996)or 853946+15207473 elseif 572377625%13230995>q then i=279216-279209 F=f==i q=F and 359275+3304709 or 3265632149%20628598 else h=b(h)p=nil U=b(U)x=b(x)E=b(E)m=b(m)q=-723894+15634301 w=b(w)end end end end else if 401196+6377379>q then if q>-409581+6439845 then if 6020567-(-341739)>q then if-52130+6110554>q then q=419727381%27237184 elseif 1296248937%16330482>q then q=8241692-(-369387)elseif 5967638-(-290473)>q then t=C[o]q,A=3620322336%26311972,t else i=1814848136%10195776 F=f==i q=F and-990719+17302001 or 3428365489%17203213 end else if-230311+6731117>q then a=-585330+7841616>=2809677278%17155597 C[H]=a q=766336361%17487382 elseif 7310975-718262>q then F=1155138540%12159353 K=f==F q=K and 12376027-953982 or-632436+6219550 elseif q<6660651-42337 then i,e=i+t,not D K=F>=i K=e and K e=i>=F e=D and e K=e or K e=1038144+9706504 q=K and e K=6537744866%27768656 q=q or K else H=c()B,a,q=j,3690254364%15001034,d(-865019+901906)C[H]=q A=1035850-1035840 g=A A=315755-315754 P=A A,q=1635667231%7826159,12497181-41889 o=A>P A=a-P end end else if q>1478401024%6035897 then if 5951893-177125>q then q,i=344576800%17378835,-86307+8713259>=11424062-796153 C[H]=i elseif q<6093850-184422 then B=C[Q[1638839509%8033527]]a=#B B=443264766%8691466 q=a==B q=q and 5020256589%26766642 or 4998264-562673 elseif 556785+5437894>q then A=C[Q[888204726%5693620]]q=14341334-620339 H=A==B a=H else E,y=d(-166437+203389),d(-294249+331069)S=z[y]r=z[E]y=S(r)S,q=d(-486108-(-522992)),5395717-510576 z[S]=y end else if q<5237311-(-253032)then q=-849914+9595653 elseif q<1967882789%11408989 then H,a,A=d(-250536+287384),478163332%4059261,10326364-800825 B=H^A q=a-B a,B=d(165721161%1175066),q q=a/B a={q}q=z[d(-310826+347696)]elseif 766244220%6085306>q then K=68013608%3746419>8720554-(-617075)C[H]=K q=14769443-390508 else F=146323927%1644089 K=f==F q=K and 4576171-(-998655)or 106403+3326149 end end end else if 3205351982%22834873>q then if 640372+7277181>q then if 586610+6424420>q then R,q=2542327963%14282741,e e=c()C[e]=D k,v=-904633-(-904636),d(288771-252136)D=C[t]J=D(k,R)D=c()C[D]=J k=3437175294%14441913 m=M(191590+5306946,{})G=z[v]J=957374-957374 v={G(m)}R,r,m={u(v)},d(1505772848%6907046),d(701942+-665147)v=873875918%5904567 G=R[v]v=z[m]S=C[g]y=z[r]r=y(G)y=d(573490+-536596)Z=S(r,y)S={Z()}m=v(u(S))v=c()q=-639604+15550011 C[v]=m S=C[D]m,Z=-295976-(-295977),S S=191145697%15928808 y=S S=-313386-(-313386)r=y<S S=m-y elseif 2418879554%14979785>q then B,a=d(-887077-(-924029)),d(-437998+474882)q=z[a]a=z[B]B=d(180518+-143566)z[B]=q B=d(1638312464%6579420)z[B]=a B=C[Q[1820248521%9892655]]H=B()q=2942446345%19285581 elseif 226343+7223484>q then q=z[d(-182463-(-219367))]S=V(600867241%4061308,{P})Z={S()}a={u(Z)}else F=-293545+3602702~=507458201%6117051 q=F and 937917+7159098 or 1812750398%14506427 end else if q<749431+7426434 then q=1090115626%15244754 elseif-1008127+9330173>q then q=1964484120%13079439 elseif q<2799746907%14097583 then q,a=z[d(760312+-723458)],{}else Z=J==k q,m=2679543275%24440043,Z end end else if q<2915660777%19379792 then if 8582374-61410>q then dG=-84259+84260 n=p[dG]dG,s=867707+13405753>=17137388-639220,q I=n==dG q,qG=I and 16240272-(-154469)or-880699+17396275,I elseif q<-356395+8943921 then G=#e R=800250-800249 k=P(R,G)R=J(e,k)G=C[f]E=197065795%1428013 r=R-E v=A(r)G[R]=v r=-645492-(-645492)v=#e G=v==r k,q,R=nil,G and 14585054-532785 or 2367276083%18284590,nil elseif-340075+8964722>q then S=16882340-983742>=1773342207%6992598 q=S and 1456948705%24122593 or 75563779%10282298 else f,a=A,419053-419053 q=f==a q=q and-153317+9277948 or 4251618-894332 end else if q<1905226053%19549525 then q=-327338+14706273 elseif q<8317469-(-794105)then a,q={},-499503+2701171>920957+682164 C[Q[881724-881723]]=q q=z[d(-668274-(-704822))]else l=d(146477887%732205)a=C[H]q=a~=l q=q and 688882256%16411126 or-954238+15414584 end end end end end else if q>-127844+14092558 then if-326506+15757889>q then if q>13652672-(-766968)then if 1275263524%20005731>q then if 305897+14224851>q then q=3373128-318442>6429304131%25760531 C[H]=q q=1003244449%25355526 elseif-190246+14904039>q then q=3919068579%25861910 elseif q<5346191582%22590386 then q=C[Q[140658637%4018818]]q=q and-360427+14438809 or 3247885195%15157199 else H=C[Q[-985469-(-985471)]]A=325531029%2184772 B=H*A H=22804824255812-(-550321)a=B+H B=35184371062464-(-1026368)q=a%B C[Q[467310+-467308]]=q q=1116488567%5979831 end else if 14002635-(-931837)>q then E,S=not r,y+S m=S<=Z m=E and m E=Z<=S E=r and E m=E or m E=72226+5108348 q=m and E m=2238047006%21829787 q=q or m elseif 14994730-3168>q then a=d(714736-677941)q=z[a]B=C[Q[376624-376620]]l,g=d(829921075%11855492),d(2677050420%13385068)A=z[g]f=z[l]K=W(947049215%5565610,{})l={f(K)}o,f={u(l)},-518128+518130 P=o[f]g=A(P)A=d(1355120477%11387257)H=B(g,A)B={H()}a=q(u(B))B=a H=C[Q[664629+-664624]]a,q=H,H and 6949748-983230 or 60386+13660609 elseif q<5667722308%31755722 then t=-315626+315636 i=f==t q=i and 1899856129%8728843 or 232359+14146576 else A=-143428-(-143460)H=C[Q[786251353%15725027]]B=H%A o=C[Q[-384233-(-384236)]]P=o-B A,o=1283967544%12969369,1149439410%4769458 g=P/o H=A-g P=C[Q[-268392+268396]]F=-630898-(-630900)l=C[Q[81373976%630806]]K=F^H f=l/K o=P(f)e,P=52155451%1798455,4294811227-(-156069)g=o%P o=951423-951421 P=o^B K,q=3389424424%14672833,-878395+5313986 A=g/P P=C[Q[510964-510960]]l=A%K K=-449454+4295416750 f=l*K B=nil o=P(f)K=-126436+126692 P=C[Q[643636+-643632]]f=P(A)t=57735670%291593 g=o+f o,l=184870+-119334,306244006%2616910 P=g%o f=g-P H=nil o=f/l l=P%K i=P%t F=P-i i=1451852631%11614819 K=F/i i=4768-4512 F=o%i P=nil D=o%e g=nil t=o-D o,D=nil,-529264+529520 i=t/D f={l,K,F,i}C[Q[630627291%4319365]]=f A=nil end end else if 13851335-(-209382)>q then if q<5833813811%29099129 then q=12116178-946557 elseif 13105520-(-899900)>q then q,k=1125264949%8875791,d(-949885+986845)J=z[k]D=J elseif 4414748257%19558741>q then f,A=not o,P+A H=A<=g H=f and H f=A>=g f=o and f H=f or H f=443758+12922410 q=H and f H=15012395-(-527280)q=q or H else e=nil v=c()k,r={},d(-363947+400918)R=c()C[R]=k G=N(134628+5717710,{R;D,t,o})k=c()E={}C[k]=G A,G,q,U=nil,{},z[d(823747238%5883645)],d(387628+-350728)C[v]=G G=z[r]w,x=nil,d(-59938+96749)p=C[v]J,P=nil,nil A=N(398316+10029394,{H,g})h,a={[U]=p,[x]=w},{A}r=G(E,h)C[H]=r G=V(642342550%7043799,{v;R;f,D,t;k})v=b(v)C[g]=G R=b(R)D=b(D)t=b(t)o=b(o)f=b(f)k=b(k)end else if q<54818+14018956 then q=-841850+11377596 elseif q<-847482+14988586 then B=d(-260007-(-296681))q=z[B]A=1008932960%9429280 H=C[Q[999531064%10864468]]B=q(H,A)q=2787139729%15124430 elseif q<-996159+15287539 then l=9510211-(-617459)<336566327%17031689 q=l and-297641+12261910 or-459374+11986382 else q,f=-706934+13162226,nil end end end else if q>426332903%21592724 then if q<405805+16135628 then if 4129631326%27062074>q then F=10980528-(-392876)<-722358+3578382 K=C[H]l=K==F q=l and-174885+1427275 or 3291669060%13636000 elseif 2772885161%18016550>q then q,F=816825+13562110,5465992-996607>4556049361%28210014 C[H]=F elseif q<732135244%32530913 then q,dG=1136019329%26034971,-732407+732409 n=p[dG]dG=C[w]I=n==dG qG=I else O,q=qG,s q=11710533-(-999743)end else if 744641754%18201644>q then q=1368388930%30089111 elseif q<-21857+16675422 then K=223079+7076728>=-407085+11493248 l=C[H]a=l==K q=a and-391980+4428711 or 210055445%32222169 else q=1278846628%23857881 end end else if q<16459735-841722 then if q<2850866283%16978183 then q,a=z[d(2129300959%14290363)],{H}elseif 3994605777%20616822>q then q=C[Q[1034112+-1034102]]H=C[Q[-883643+883654]]B[q]=H q=C[Q[33893884%891944]]H={q(B)}a,q={u(H)},z[d(-381612+418517)]elseif 15509050-(-71330)>q then C[H]=m q=S S=C[H]q=S and 9198713-943997 or 1698231864%12367225 else e,D=d(923861742%11997730),d(349079-312490)t=z[D]q,D=f,d(353835+-317062)f=t[D]t=c()C[t]=f D=z[e]e,k=d(292914905%3528653),q f=D[e]e=q G=d(3602112762%15661201)R=z[G]q,J=R and 926086741%14885318 or 1230085-775416,R end else if q<417834451%30924208 then q=4522670119%17792544<-809017+10087253 C[H]=q P,D=d(222442985%3132481),d(294147-257512)o=c()f=q e=M(5118630618%22912700,{o})g=z[P]P=d(125156+-88427)A=g[P]g=c()P=c()C[g]=A A=M(8607270-(-958206),{})C[P]=A A=402604+14226707<=-559089+8781548 C[o]=A t=z[D]D=t(e)q,A=D and 1941521811%9628454 or-354027+15936199,D elseif q<16548186-542321 then K=1252958406%13472671 l=f==K q=l and 514480+15566395 or 643380+506607 elseif 16150925-107171>q then q=4505769-654900 else l=746420809%6168767 a=f==l q=a and 6292576-(-118372)or-317546+16303186 end end end end else if q<-852154+12655394 then if 567986+10535841>q then if q>1545183572%17846049 then if 124964+10356764>q then B,K,F,qG=j[756151+-756150],19009032508773%301730674970,d(-103601-(-140580)),1420602786220-(-1000319)H=C[Q[532658-532657]]f,r,l,P=1226250410129-(-175077),d(426139-389420),d(745043-708086),d(204262+-167674)A=C[Q[233961-233959]]o,s,n=30173066159335-96035,d(681874-645236),d(826682+-789923)g=A(P,o)a=H[g]q=B[a]o=d(-247292-(-284201))A=C[Q[-131043-(-131044)]]g=C[Q[-598451+598453]]I,J,L,S,D,k,H,i,m,aG,t=31011684385980-365547,826746+9604912907639,d(307626+-271007),996543+15763010028697,35809+17095565259344,d(305132-268200),q,22052107774969-(-1041472),d(-159205+196164),67788628526700%633538693555,d(-467534-(-504432))P=g(o,f)E=868795+34243744676568 a=A[P]P=C[Q[441710+-441709]]A,dG,e=194197081256%4516361546,915772+2405254172548,d(179366+-142393)o=C[Q[493295+-493293]]f=o(l,K)g=P[f]P=-736119+4659334315 f=C[Q[223143+-223142]]R,AG,v=28224164668925-(-508080),-35937+30189172718132,32181160584528%3218117569923 l=C[Q[-493487+493489]]K=l(F,i)o=f[K]G=d(316458+-279916)K=C[Q[59043-59042]]F=C[Q[824826+-824824]]U,f=-665717+23252589477132,11510073630%117506340 i=F(t,D)y=-912956+22523496775724 l=K[i]K,uG=4581253666%88250836,d(45857+-8956)i=C[Q[454137965%10561348]]Z=d(-600051+636889)t=C[Q[251862578%15741411]]D=t(e,J)F=i[D]h,i=d(1004479+-967835),276265+4931650747 D=C[Q[-674228-(-674229)]]e=C[Q[746873-746871]]XG=2626453437062-782584 J=e(k,R)t=D[J]D,x=4777670202-(-147685),27817203698038-(-908220)J=C[Q[972158+-972157]]k=C[Q[374238594%3598448]]R=k(G,v)e=J[R]p,J=d(-55458+92210),210072803-(-778488)R=C[Q[1922076271%11306331]]G=C[Q[393612227%5248163]]v=G(m,S)k=R[v]R=179473634976%1002690465 v=C[Q[-931837+931838]]m=C[Q[183974+-183972]]S=m(Z,y)G=v[S]v,BG=330421635070%7030509674,71256564204708%901981968546 S=C[Q[-971646+971647]]O=19818656716316-(-946685)Z=C[Q[-927549+927551]]y=Z(r,E)m=S[y]S=2439933738-(-566386)y=C[Q[-106915+106916]]r=C[Q[442798+-442796]]E=r(h,U)Z=y[E]CG,y=d(2734208406%10849888),1907225947601%8328561943 E=C[Q[1061046079%8697099]]w=d(264675-227751)h=C[Q[1567817636%16678911]]T,jG=d(2283155930%12079995),-297961+34659296610815 U=h(p,x)YG=d(-695595-(-732215))r=E[U]E=-202342+8795357131 U=C[Q[-267496+267497]]p=C[Q[-445548-(-445550)]]x=p(w,O)h=U[x]x=C[Q[1008320-1008319]]U=811126892488%4055646226 w=C[Q[1044162-1044160]]O=w(L,qG)p=x[O]O=C[Q[1630257351%15236050]]MG=8376516050215-450222 L=C[Q[-1025472+1025474]]cG,x=d(1294029408%16174909),288070817101%1125299414 qG=L(s,I)zG=10442458113123-196198 w=O[qG]O=280564814-999167 qG=C[Q[574322+-574321]]s=C[Q[1401282807%8390915]]I=s(n,dG)L=qG[I]qG=681525+65972610 I=C[Q[352599676%4701329]]n=C[Q[1442188746%8687884]]dG=n(T,zG)s=I[dG]I,QG=762779378689%7334489745,d(-422125+458925)dG=C[Q[4513-4512]]T=C[Q[20079314%418319]]zG=T(uG,jG)n=dG[zG]dG=74861152-975422 zG=C[Q[342512398%11048787]]uG=C[Q[966972722%4029053]]jG=uG(QG,XG)T=zG[jG]jG=C[Q[154407605%4063358]]zG=-669813+6036541895 QG=C[Q[333321246%9803566]]XG=QG(YG,aG)uG=jG[XG]jG=307473624512%5124724117 XG=C[Q[146232341%1643060]]YG=C[Q[-9952+9954]]aG=YG(CG,BG)QG=XG[aG]XG,HG=414694827320%7679693920,19958247951982-(-408109)aG=C[Q[-773879-(-773880)]]CG=C[Q[873358040%13862826]]BG=CG(cG,HG)YG=aG[BG]aG=5456459021-(-493487)q={[a]=A;[g]=P,[o]=f;[l]=K;[F]=i,[t]=D;[e]=J;[k]=R,[G]=v;[m]=S,[Z]=y,[r]=E,[h]=U,[p]=x,[w]=O;[L]=qG;[s]=I,[n]=dG;[T]=zG,[uG]=jG;[QG]=XG;[YG]=aG}f,l,A=d(-965850-(-1002815)),-970750+18154308014601,q g=C[Q[1366370263%10196793]]i,m,F=22803750036854-(-994687),30305139715532-(-622707),d(-685094-(-721910))P=C[Q[699894+-699892]]o=P(f,l)a=g[o]f=C[Q[274393444%2472013]]l=C[Q[666353077%2835545]]t,e,J,G=-921917+25352892837240,13374935842041-(-488367),d(-889404+926366),811065+7385420839589 K=l(F,i)D=13547814781440-741559 o=f[K]i=d(1137414126%10936323)l=C[Q[-23073+23074]]K=C[Q[516817408%11235161]]R=242024+31711784813045 F=K(i,t)f=l[F]K=C[Q[309354+-309353]]t=d(780024+-743459)F=C[Q[54628-54626]]i=F(t,D)k=930963443870-871739 l=K[i]F=C[Q[943741+-943740]]D=d(38561+-1838)i=C[Q[675701+-675699]]t=i(D,e)Z=-457262+33928056272283 K=F[t]t=C[Q[1899236296%9087255]]F=5647821-872763<-589298+5661325 D=C[Q[-5342-(-5344)]]y=384876+22102575837436 e=D(J,k)v,k=d(648503294%8105829),d(-572549-(-609139))i=t[e]D=C[Q[-979645-(-979646)]]e=C[Q[955134+-955132]]r=740151+13112934589565 J=e(k,R)t=D[J]e=C[Q[182566+-182565]]J=C[Q[1981698905%15362007]]R=d(-130303-(-167205))k=J(R,G)D=e[k]e=213945221%9136919<=6954677-585202 k=C[Q[-1024191-(-1024192)]]S=-206758+19206606351749 R=C[Q[2158469890%14584256]]G=R(v,m)m=d(-285530-(-322154))J=k[G]R=C[Q[-782071-(-782072)]]G=C[Q[2831131530%13354394]]v=G(m,S)k=R[v]G=C[Q[-221095+221096]]v=C[Q[897982-897980]]E,S,CG=212583+33406201150240,d(-976830+1013579),97955+22219617554994 m=v(S,Z)R=G[m]Z=d(-933550-(-970174))v=C[Q[-25889+25890]]m=C[Q[39378172%1514545]]S=m(Z,y)G=v[S]m=C[Q[-758455-(-758456)]]y=d(1047669853%15183090)S=C[Q[1386272363%12267897]]Z=S(y,r)r=d(337130+-300506)v=m[Z]S=C[Q[2667161281%15689184]]Z=C[Q[142310-142308]]y=Z(r,E)m=S[y]P={[o]=f,[l]=H;[K]=F,[i]=t,[D]=e,[J]=k;[R]=G;[v]=m}F=8137064189956-324202 o=C[Q[459118+-459117]]f=C[Q[605376806%4882071]]n,K,D,e,t,g=6621967004507-(-910524),d(726135+-689168),18325037810333-606195,8191826868732-498735,d(751369-714742),{P}l=f(K,F)P=o[l]J=31573267742896-(-389676)K=C[Q[-819768-(-819769)]]F=C[Q[1360950128%11938159]]i=F(t,D)l=K[i]D,k=d(34337+2216),d(1519581560%15348939)F=C[Q[-251880+251881]]r,U=2502968104236-(-472047),-537137+5028486956156 i=C[Q[-786424+786426]]t=i(D,e)K=F[t]i=C[Q[2286941763%9608999]]t=C[Q[-162149+162151]]e=d(303273+-266528)D=t(e,J)F=i[D]i,R,S=1.1702810046936e+014,432301+13184877795146,12508399741202-(-492655)D=C[Q[170917+-170916]]m=d(-256215-(-293097))e=C[Q[397422-397420]]J=e(k,R)R,y=d(1028905912%12248441),-397036+7705406876404 t=D[J]v=26187214533469-(-240615)e=C[Q[749303+-749302]]x,h,G=-861179+4494821307477,725878+23745450623724,14501326878272-999807 J=C[Q[-11168+11170]]k=J(R,G)D=e[k]Z=-238567+13238567195664 J=C[Q[22618301%4523660]]k=C[Q[946365+-946363]]G=d(180535817%710626)R=k(G,v)e=J[R]R=C[Q[528305128%3972219]]G=C[Q[1353288470%6904533]]XG=-993471+2824028173061 v=G(m,S)S,J=d(101495718%14494124),-247271-(-564209)<-875899+11219127 k=R[v]G=C[Q[-221927+221928]]v=C[Q[2905846496%12689286]]m=v(S,Z)Z=d(462448249%15413713)R=G[m]v=C[Q[586611-586610]]m=C[Q[360054086%9232156]]S=m(Z,y)G=v[S]y=d(90546-53922)m=C[Q[-38369+38370]]S=C[Q[344493-344491]]Z=S(y,r)E=20685193606363-(-153189)v=m[Z]S=C[Q[-278824-(-278825)]]Z=C[Q[146695592%8149755]]r=d(-1037248+1074011)y=Z(r,E)m=S[y]Z=C[Q[284130845%7679212]]E=d(-257753-(-294377))y=C[Q[1910476062%15407065]]r=y(E,h)E=-431149+15137000868670 S=Z[r]f={[l]=K;[F]=i;[t]=D;[e]=J;[k]=R,[G]=v;[m]=S}o={f}l=C[Q[339307+-339306]]t,e,G,J,r,m=-52514+15178877699162,d(-958718+995444),d(-996216-(-1032960)),369067+28914601871237,-46625+26599544264421,48097+26132452221744 K=C[Q[2078318002%12225400]]i=d(754551+-717622)F=K(i,t)R=-259688+23249367747324 f=l[F]i=C[Q[98563053%3520109]]t=C[Q[-98339+98341]]Z,v=d(-419437+456264),9024001435436-(-244136)D=t(e,J)J,KG=d(-534065+570857),362219+34113818457391 F=i[D]t=C[Q[818682-818681]]k=-226919+1183299828405 D=C[Q[-408043-(-408045)]]e=D(J,k)i=t[e]D=C[Q[497519+-497518]]y=-570674+6010990742288 e=C[Q[-346409-(-346411)]]k=d(51593204%5728477)J=e(k,R)t=D[J]D=17786334632-140964 J=C[Q[751799+-751798]]k=C[Q[3252006848%15710178]]R=k(G,v)e=J[R]h,v,S=3488+14187783693821,d(676538448%6322444),-920061+29911065982669 k=C[Q[-335977-(-335978)]]O=7313477994275-(-758648)R=C[Q[298884107%6641869]]WG=22903611535649-(-533041)G=R(v,m)J=k[G]R=C[Q[-90338-(-90339)]]G=C[Q[582113212%16631806]]m=d(97067-60386)v=G(m,S)k=R[v]R=1329571531%14456250>=12711909-1033856 v=C[Q[596403-596402]]m=C[Q[-131684+131686]]S=m(Z,y)y=d(183358-146469)G=v[S]m=C[Q[870652-870651]]S=C[Q[623856395%10944849]]Z=S(y,r)p=17935257373610-346731 v=m[Z]r,cG=d(-668477-(-705014)),53218+3970818391696 S=C[Q[-822072-(-822073)]]Z=C[Q[262853692%2389579]]y=Z(r,E)m=S[y]Z=C[Q[955646+-955645]]y=C[Q[635702-635700]]E,w=d(522815-486191),-805305+29602892559722 r=y(E,h)h=d(-449486-(-486319))S=Z[r]s=1004543+9204394806653 y=C[Q[139206057%615956]]r=C[Q[-83681-(-83683)]]E=r(h,U)Z=y[E]r=C[Q[484271+-484270]]E=C[Q[-265254-(-265256)]]U=d(1200764677%9165863)h=E(U,p)dG=1931720721966-229159 y=r[h]K={[F]=i,[t]=D;[e]=J;[k]=R,[G]=v;[m]=S,[Z]=y}t=C[Q[105095043%425486]]J=d(1469203173%7773367)D=C[Q[569282850%3603056]]k=16385799511140-(-778040)e=D(J,k)k,S,Z,R=d(968510+-931894),810617+31000945463886,753015+19332237019357,175909+17118114385697 i=t[e]D=C[Q[431085+-431084]]m=29394579745815-262440 e=C[Q[1942995209%15796709]]J=e(k,R)t=D[J]e=C[Q[-492655+492656]]R,G=d(254094965%13371495),2949659200167-393196 J=C[Q[1065182614%15002572]]k=J(R,G)L,r=16156013116216-589938,17903044413076-623987 D=e[k]k=C[Q[393005-393004]]v=d(389350150%5333060)R=C[Q[-701492-(-701494)]]G=R(v,m)e,y,E=34465+95377271306091,d(3570694173%14397812),-350699+3384537867835 J=k[G]h=12690942220116-305449 R=C[Q[-547696-(-547697)]]G=C[Q[-309608-(-309610)]]m=d(409903-373292)v=G(m,S)S=d(-437294+474220)k=R[v]G=C[Q[-819001+819002]]v=C[Q[1448210030%7913716]]m=v(S,Z)R=G[m]G=346987+14523995>=158296848%3763316 m=C[Q[-129827-(-129828)]]S=C[Q[2307907724%16723969]]p=6672465939452%256633352469 Z=S(y,r)v=m[Z]S=C[Q[171365+-171364]]r=d(-397860-(-434669))Z=C[Q[618677-618675]]y=Z(r,E)m=S[y]Z=C[Q[844412836%5744305]]E=d(68976-32353)y=C[Q[788280+-788278]]r=y(E,h)h,U=d(81858490%615202),25237998404475-370603 S=Z[r]y=C[Q[-946685+946686]]r=C[Q[-770744+770746]]E=r(h,U)U=d(-300360-(-337002))Z=y[E]r=C[Q[1298051965%6978774]]E=C[Q[532208+-532206]]h=E(U,p)p=d(991269680%6044104)y=r[h]E=C[Q[817338-817337]]h=C[Q[459530570%7533288]]U=h(p,x)r=E[U]F,p={[i]=t;[D]=e;[J]=k;[R]=G;[v]=m;[S]=Z,[y]=r},670035599128-253096 e,y,l,r=3010864947699-988927,17201867940820-(-1039040),{K;F},d(603469-566578)F=C[Q[-581553-(-581554)]]R,D=-1036864+31071816434505,d(794893-758264)i=C[Q[351597-351595]]t=i(D,e)G,U,k=3246019746325-(-848314),14990966783839-(-309034),d(1016512+-979730)K=F[t]D=C[Q[1005760-1005759]]v,S,m=3360+11097460415295,22047812778936-(-939133),d(-843130+879915)e=C[Q[-1005373-(-1005375)]]J=e(k,R)t=D[J]Z=22971260787277-919228 e=C[Q[-614066-(-614067)]]R=d(399977950%2453626)J=C[Q[726585-726583]]k=J(R,G)E,G=12427867993136-853754,d(-160350-(-197030))D=e[k]x=-16929+7586217516474 J=C[Q[-18784-(-18785)]]k=C[Q[-579058+579060]]R=k(G,v)e=J[R]J=1.2920989148343e+014 R=C[Q[711478+-711477]]fG=22163780802159-(-571954)G=C[Q[329258+-329256]]v=G(m,S)S=d(-886116-(-923069))k=R[v]G=C[Q[-924413+924414]]v=C[Q[208360-208358]]m=v(S,Z)Z=d(250360752%3382757)R=G[m]v=C[Q[891132+-891131]]jG,h=31313414643657-(-37409),916028+27899884333891 m=C[Q[1118831312%7716078]]S=m(Z,y)G=v[S]v=722673199%20275307~=393260+3854934 S=C[Q[1401974845%9472803]]Z=C[Q[1089549102%9474340]]y=Z(r,E)E=d(596082+-559502)m=S[y]Z=C[Q[578227-578226]]y=C[Q[-64418+64420]]r=y(E,h)S=Z[r]h=d(843588578%6248532)y=C[Q[364523+-364522]]r=C[Q[642806-642804]]E=r(h,U)Z=y[E]r=C[Q[-692852-(-692853)]]U=d(93298-56674)E=C[Q[341357-341355]]h=E(U,p)y=r[h]p=d(867835462%8592066)E=C[Q[104921707%426511]]h=C[Q[894462-894460]]U=h(p,x)x=d(291908289%9415215)r=E[U]h=C[Q[400621-400620]]U=C[Q[-177700-(-177702)]]p=U(x,w)E=h[p]i={[t]=D,[e]=J;[k]=R;[G]=v,[m]=S;[Z]=y,[r]=E}R,S,G=d(343982335%5291472),d(769867644%3467707),13776528262085-233895 e=C[Q[709814+-709813]]m,x=13138705738534-(-181414),3.044344774896e+014%16022867389603 J=C[Q[1627681666%8846096]]Z=33554383208270-951613 k=J(R,G)D=e[k]p=-11872+26117419437411 J=C[Q[406061+-406060]]k=C[Q[414575-414573]]G,r,v=d(-224843-(-261736)),-396716+16771285764783,25949910352512-(-236519)R=k(G,v)e=J[R]k=C[Q[1790940278%8253181]]v=d(1451991066%13320680)R=C[Q[3963124322%16513018]]h=-278121+27624999232232 G=R(v,m)J=k[G]k=1.2920989084184e+014-(-641588)G=C[Q[3272394601%16361973]]v=C[Q[176869+-176867]]m=v(S,Z)R=G[m]y,E,Z=579890+25379735700258,d(626004433%14226543),d(2552417250%15102843)v=C[Q[987008-987007]]m=C[Q[-513712+513714]]S=m(Z,y)G=v[S]U=-948861+13636938279961 m=C[Q[1382319625%8228093]]y=d(461678+-424829)S=C[Q[608468810%9081624]]w=-780920+24454143361902 Z=S(y,r)v=m[Z]m=1379998997%12963725<955454+6223518 Z=C[Q[470640-470639]]y=C[Q[203046+-203044]]r=y(E,h)S=Z[r]y=C[Q[-595377-(-595378)]]h=d(1848173647%11771573)r=C[Q[-889658-(-889660)]]E=r(h,U)oG=34170728623527-(-249512)Z=y[E]r=C[Q[-419821+419822]]E=C[Q[-895354-(-895356)]]U=d(-178214+215065)h=E(U,p)y=r[h]E=C[Q[-750711+750712]]h=C[Q[-153893+153895]]p=d(369387+-332763)U=h(p,x)r=E[U]h=C[Q[149432533%620052]]x=d(369771+-332823)U=C[Q[-699318+699320]]p=U(x,w)E=h[p]U=C[Q[1051167781%8984340]]w=d(1801870448%16087802)p=C[Q[-517872+517874]]x=p(w,O)h=U[x]t={[D]=e,[J]=k;[R]=G,[v]=m,[S]=Z,[y]=r,[E]=h}G=d(179002032%11185333)J=C[Q[687559237%13222293]]v=490031+12951868650735 k=C[Q[169575-169573]]R=k(G,v)Z,v,m=d(209591-172837),d(101139385%7777109),-879547+3828007303592 e=J[R]p,S,bG=-395628+17539034597690,27049456285911-513648,22771537994621-200870 k=C[Q[3555027361%14812614]]R=C[Q[3392232252%13568929]]y=-338538+127779515105 G=R(v,m)O,m=854714+3840890864447,d(-929661+966582)J=k[G]h=d(1973668206%10069549)R=C[Q[543914251%10878285]]w=18816826664170-696438 G=C[Q[182374+-182372]]v=G(m,S)k=R[v]v=C[Q[-831161-(-831162)]]R=1.2920989148343e+014 m=C[Q[242844136%2823769]]S=m(Z,y)U,r=685813+21067456828847,-554417+20130052849388 G=v[S]y=d(67793695%2945957)m=C[Q[-1019200+1019201]]S=C[Q[265770-265768]]Z=S(y,r)E=-52706+27971828200356 v=m[Z]r=d(9261-(-27553))S=C[Q[1024576+-1024575]]Z=C[Q[729847+-729845]]y=Z(r,E)m=S[y]S=2250176712%13309847<=-1035520+16658141 y=C[Q[-546737+546738]]HG=20940753014506-901820 r=C[Q[442864-442862]]x=-572338+6408287343362 E=r(h,U)Z=y[E]r=C[Q[916220+-916219]]E=C[Q[-380266-(-380268)]]U=d(230928-194150)h=E(U,p)y=r[h]E=C[Q[252336917%1141796]]h=C[Q[1262944658%13020048]]p=d(-606579+643292)U=h(p,x)r=E[U]x=d(-543266-(-579890))h=C[Q[634548751%11537250]]U=C[Q[61438834%4388488]]p=U(x,w)E=h[p]U=C[Q[675958-675957]]w=d(-875131+911746)p=C[Q[-570610+570612]]QG=54019500934228%13504879292689 x=p(w,O)O=d(-1003199+1039823)h=U[x]p=C[Q[1100122111%7097562]]x=C[Q[582578+-582576]]w=x(O,L)U=p[w]D={[e]=J;[k]=R;[G]=v;[m]=S,[Z]=y,[r]=E;[h]=U}F,J={i,t,D},d(-918524+955371)t=C[Q[1167437755%15992298]]v=141284+15524632924310 D=C[Q[56284866%14071216]]S,k=46433+28487239905857,27414538137404-(-996479)e=D(J,k)L,qG,E=34926665718624-(-467887),1140349138134-520368,467092011989-64034 i=t[e]G=d(872202853%4000762)J=C[Q[796218-796217]]w=-143396+10353334769102 k=C[Q[-623859+623861]]U=34401+12527728142130 R=k(G,v)e=J[R]m,v=-77666+31431529963962,d(-18977+55648)k=C[Q[1379732725%12775303]]O,y=-231719+1048004234487,502896+34504672268566 R=C[Q[676974512%7964406]]G=R(v,m)J=k[G]R=C[Q[1322049121%11804010]]G=C[Q[-607091+607093]]m=d(422688198%8805234)v=G(m,S)Z=d(2430953959%10003774)k=R[v]x,h=28792191422542-(-514160),d(845231-808313)v=C[Q[-40929+40930]]R=2383733965556%18769628414 m=C[Q[251114-251112]]r=69969309460394%34984659445861 S=m(Z,y)y=d(-148261+185114)G=v[S]m=C[Q[1496017711%13600161]]S=C[Q[1029120+-1029118]]Z=S(y,r)v=m[Z]r=d(3865735184%16380079)S=C[Q[8542112%102917]]Z=C[Q[502829654%12893068]]y=Z(r,E)m=S[y]S=2508334921%19872351<=8397857-(-417517)y=C[Q[64991265%1249832]]r=C[Q[483055+-483053]]E=r(h,U)Z=y[E]U=d(2945314460%14726389)r=C[Q[-752118-(-752119)]]p=-959870+31311268091750 E=C[Q[789214532%5760690]]h=E(U,p)y=r[h]E=C[Q[692405+-692404]]h=C[Q[358001810%1945662]]p=d(-933757+970586)U=h(p,x)r=E[U]h=C[Q[-246567-(-246568)]]U=C[Q[234345-234343]]I,x=21379925695584-(-225639),d(-931758-(-968382))p=U(x,w)E=h[p]U=C[Q[163813+-163812]]w=d(905084+-868381)p=C[Q[855013484%3518574]]x=p(w,O)h=U[x]p=C[Q[-910459-(-910460)]]O=d(588695604%9056292)x=C[Q[645017045%7413989]]w=x(O,L)U=p[w]D={[e]=J;[k]=R,[G]=v;[m]=S;[Z]=y;[r]=E,[h]=U}E,v=-692277+14843860665909,d(3067404121%13108408)k=C[Q[370988-370987]]m,p=4105040216909-(-52130),33079773839734-(-46817)R=C[Q[-990015+990017]]r,L,S,x=-871931+9925973209623,25384030736292-(-642228),-498543+22650201763285,4.0894499650828e+014%31457308002646 G=R(v,m)y=d(613205671%5240761)J=k[G]O,Z=15315247104538-84579,1898433283906-(-196518)R=C[Q[713847-713846]]G=C[Q[722358+-722356]]m=d(31521256%10494794)v=G(m,S)k=R[v]G=C[Q[859067+-859066]]S=d(2240630110%16596987)v=C[Q[108678530%2264136]]m=v(S,Z)R=G[m]G=1764128901506%18767399098 m=C[Q[15503841%3875960]]S=C[Q[268010-268008]]h=15055394554308-985855 Z=S(y,r)v=m[Z]r=d(1452999925%6054013)S=C[Q[-39456-(-39457)]]Z=C[Q[195864482%8161020]]y=Z(r,E)E,w=d(-168151-(-204902)),28697699362809-(-409709)m=S[y]U=d(2080871978%10781529)Z=C[Q[149109211%14910921]]y=C[Q[-414-(-416)]]r=y(E,h)S=Z[r]Z=884790705%14683073<=1194838781%4961432 r=C[Q[3115680889%13429659]]E=C[Q[285995-285993]]h=E(U,p)y=r[h]E=C[Q[694774+-694773]]h=C[Q[369200658%2097731]]p=d(1573299067%10215990)U=h(p,x)r=E[U]VG=-594482+12243178503868 h=C[Q[959213267%13510046]]U=C[Q[-175269+175271]]x=d(-135346-(-172005))p=U(x,w)E=h[p]U=C[Q[-1018944+1018945]]p=C[Q[969406+-969404]]w=d(660483-623859)x=p(w,O)O=d(-603955+640573)h=U[x]p=C[Q[112245313%984608]]x=C[Q[428141+-428139]]w=x(O,L)L,zG=d(43869288%286488),11157591047456-(-748407)U=p[w]x=C[Q[2986002266%13154195]]w=C[Q[-299239-(-299241)]]O=w(L,qG)p=x[O]e={[J]=k,[R]=G,[v]=m;[S]=Z;[y]=r,[E]=h,[U]=p}R,y,r,t=d(-811193+847764),16458817440655-479151,d(226355072%1639987),{D,e}e=C[Q[45333358%15111119]]E,m=625779+10859081833230,d(934749-897980)J=C[Q[1293421562%7029465]]G=-576690+9714439319561 k=J(R,G)D=e[k]S=721526+16192520140914 R=C[Q[111012-111011]]Z=-1011199+11539856562170 G=C[Q[-736695+736697]]v=G(m,S)L,x,O,h=7904055680893-901820,13683109712233-73634,375916+12341964796026,1270275872079-528560 k=R[v]G=C[Q[2720310641%16587260]]U,S=-2400+17995388406487,d(1714808197%8165578)v=C[Q[758638474%7511272]]m=v(S,Z)R=G[m]v=C[Q[-921788-(-921789)]]m=C[Q[228585-228583]]Z=d(705328-668597)S=m(Z,y)G=v[S]v,w=725934369820%15781450861,18137125966022-(-684341)S=C[Q[313899-313898]]Z=C[Q[-980094+980096]]y=Z(r,E)E=d(89320510%819117)m=S[y]Z=C[Q[-415916-(-415917)]]y=C[Q[918846-918844]]r=y(E,h)h=d(-787443-(-824250))S=Z[r]y=C[Q[385452+-385451]]qG=31282274560985-(-656884)r=C[Q[-181092-(-181094)]]E=r(h,U)Z=y[E]E=C[Q[1933914051%11375965]]p=d(3144686624%12887909)h=C[Q[39265+-39263]]U=h(p,x)r=E[U]h=C[Q[139959745%985632]]x=d(-683957+720544)U=C[Q[-206628-(-206630)]]y=661187801%24108768>=7804559-93603 p=U(x,w)E=h[p]w,tG=d(2564169249%14652186),16515726415586-(-599347)U=C[Q[2140775941%14763972]]p=C[Q[-1025024+1025026]]x=p(w,O)h=U[x]p=C[Q[2540601381%14944714]]O=d(853370+-816746)x=C[Q[-792951-(-792953)]]w=x(O,L)U=p[w]L=d(-770589-(-807289))x=C[Q[-521648+521649]]w=C[Q[234473-234471]]O=w(L,qG)qG=d(622978-586354)p=x[O]w=C[Q[-525871-(-525872)]]O=C[Q[628237217%7756015]]L=O(qG,s)x=w[L]J,O={[k]=R,[G]=v,[m]=S;[Z]=y;[r]=E;[h]=U,[p]=x},2050909267792-(-204838)Z=30764716485406-621363 G=C[Q[-878010-(-878011)]]S=d(146358078%7701122)v=C[Q[-291879-(-291881)]]m=v(S,Z)R=G[m]U,r,Z=-769592+25742672862174,-79074+30570362741784,d(1461616818%7381717)v=C[Q[878395+-878394]]y=30338427457793-107171 m=C[Q[783610-783608]]S=m(Z,y)G=v[S]m=C[Q[-307497-(-307498)]]h,E=633652+3241724862615,d(501271537%9828131)S=C[Q[2149383251%10693449]]y=d(848954+-812240)Z=S(y,r)v=m[Z]w,qG=-384748+22358134960194,32479533602367-(-286697)Z=C[Q[1284331969%13378458]]y=C[Q[4069500752%16278003]]m,p=1.191220888653e+014,9471765799513-114660 r=y(E,h)h=d(185644886%2039651)S=Z[r]y=C[Q[2274817546%15907815]]s=34528296759513-947005 r=C[Q[1042816+-1042814]]L=-1046080+12296867685116 E=r(h,U)Z=y[E]U=d(934186-897340)r=C[Q[66787325%16696831]]x=d(126500+-89556)E=C[Q[376093532%8357634]]h=E(U,p)y=r[h]h=C[Q[-375019-(-375020)]]U=C[Q[-38495-(-38497)]]r=653492+10487969>=3566605-(-215143)p=U(x,w)E=h[p]w=d(-1028224+1064948)U=C[Q[1901234601%8090360]]p=C[Q[319530+-319528]]x=p(w,O)h=U[x]O,T=d(868031-831290),876859+27346890457665 p=C[Q[298341541%2131011]]x=C[Q[-706550+706552]]w=x(O,L)L=d(1068624-1032000)U=p[w]x=C[Q[-973693-(-973694)]]w=C[Q[830586+-830584]]O=w(L,qG)p=x[O]w=C[Q[649205-649204]]qG=d(-367497-(-404333))O=C[Q[-544+546]]L=O(qG,s)x=w[L]s=d(1022912+-986288)O=C[Q[113190302%6658253]]L=C[Q[913276+-913274]]qG=L(s,I)w=O[qG]k={[R]=G,[v]=m;[S]=Z,[y]=r;[E]=h;[U]=p;[x]=w}v,e,m=d(1026739-989951),{J,k},-1034496+14469113675171 k=C[Q[-525935-(-525936)]]r,p=-405613+772044337980,29610446720087%3701306528288 R=C[Q[2304236574%14050223]]O=9507199515551-(-730871)G=R(v,m)J=k[G]v=C[Q[468271+-468270]]m=C[Q[486917498%2814552]]uG,y,L,U,Z=19889525820893-(-965246),865083+6910812415465,335274+17709764027075,22823078384021-(-590194),d(-64293-(-101155))S=m(Z,y)y=d(-428994-(-465838))G=v[S]h,E=d(-158245+194942),644852+6859271455232 m=C[Q[72290+-72289]]w,qG=d(71714+-35165),15843544770199-650484 S=C[Q[-378282-(-378284)]]Z=S(y,r)v=m[Z]S=C[Q[-47200-(-47201)]]Z=C[Q[-450540-(-450542)]]r=d(195073839%1455501)y=Z(r,E)m=S[y]s=-397292+12714565353005 y=C[Q[2804862821%13230485]]r=C[Q[1382520258%13293464]]S=75266662105150-(-266984)E=r(h,U)Z=y[E]r=C[Q[-310250+310251]]E=C[Q[2814693872%13730214]]U=d(-593586+630207)h=E(U,p)y=r[h]x,p=20229912860137-(-471983),d(368696053%2949273)E=C[Q[292330-292329]]h=C[Q[1053291332%5787315]]U=h(p,x)r=E[U]E=7678668-790521>-97635+6821937 U=C[Q[205158+-205157]]p=C[Q[-259878-(-259880)]]x=p(w,O)h=U[x]p=C[Q[-298280-(-298281)]]O=d(710006+-673319)x=C[Q[394348+-394346]]w=x(O,L)U=p[w]x=C[Q[1959069347%13796263]]w=C[Q[3477508322%14989260]]L,I=d(64918-28257),28137190307031-872059 O=w(L,qG)p=x[O]w=C[Q[2325564956%16038379]]qG=d(940443784%4274578)O=C[Q[-204324-(-204326)]]L=O(qG,s)x=w[L]O=C[Q[1032816511%15648735]]s=d(151835021%2864118)L=C[Q[-1044990-(-1044992)]]qG=L(s,I)w=O[qG]I=d(-974782+1011406)L=C[Q[-742391+742392]]qG=C[Q[-542129+542131]]s=qG(I,n)O=L[s]R={[G]=v;[m]=S,[Z]=y;[r]=E;[h]=U;[p]=x;[w]=O}m=C[Q[37409+-37408]]E,y=28515157687951-(-403757),d(145283-108707)S=C[Q[836988-836986]]r=375276+26646789924612 Z=S(y,r)qG,p=101859+23922624055588,6364262639386-626675 v=m[Z]L=-763704+9753095391923 S=C[Q[241319+-241318]]Z=C[Q[-648180+648182]]r,I=d(799652251%14807698),843770+26679002693908 y=Z(r,E)m=S[y]E=d(151978-115044)Z=C[Q[-985150-(-985151)]]s,h=-998015+34010737456697,34361859817028-(-933565)y=C[Q[418502216%10730826]]r=y(E,h)S=Z[r]U,Z=d(2834784215%12885216),144292+75266662227842 r=C[Q[-250279-(-250280)]]E=C[Q[171962582%5547180]]h=E(U,p)y=r[h]x=32443024892626-(-660276)E=C[Q[833275-833274]]BG,p=18209069039886-(-508208),d(-1581-(-38177))h=C[Q[202216-202214]]U=h(p,x)w=26362240307408-274665 r=E[U]h=C[Q[36376161%7275232]]U=C[Q[-1021950-(-1021952)]]x=d(593803-556849)p=U(x,w)E=h[p]h=657077881%20933760~=14096590-(-863483)p=C[Q[853241399%9586982]]O,n=d(775883559%3784619),1011391+18269199913911 x=C[Q[3143006498%14031279]]w=x(O,L)U=p[w]x=C[Q[-983101-(-983102)]]w=C[Q[63394+-63392]]L=d(1197379751%10984797)O=w(L,qG)p=x[O]qG=d(232295+-195733)w=C[Q[3463572571%13909930]]O=C[Q[2490465026%13535136]]L=O(qG,s)s=d(3233768472%14308548)x=w[L]O=C[Q[78884235%3585647]]L=C[Q[-532272+532274]]qG=L(s,I)w=O[qG]I=d(141749155%1232282)L=C[Q[736312-736311]]qG=C[Q[-261800+261802]]s=qG(I,n)O=L[s]n=d(783996464%4899749)qG=C[Q[-206885-(-206886)]]s=C[Q[161340266%8963348]]I=s(n,dG)L=qG[I]G,s={[v]=m,[S]=Z,[y]=r,[E]=h;[U]=p,[x]=w;[O]=L},22036001912513-(-285033)k,w,L,Z,S={R,G},21862051737864-1024384,d(148998-112227),995775+28632198526570,d(741401-704694)G=C[Q[1664610090%16161263]]v=C[Q[-196390+196392]]U,r=28940373527614-697078,d(-235303+272092)m=v(S,Z)qG=521840+6281580847210 R=G[m]S=C[Q[-947389+947390]]E,O=16683235177596-(-673845),-385964+32305582790962 Z=C[Q[114276+-114274]]y=Z(r,E)I=-757303+1860852126972 m=S[y]E,aG=d(-267583-(-304553)),33207554092494-1029376 Z=C[Q[361195+-361194]]y=C[Q[-91619+91621]]h=2748862746649-(-211431)r=y(E,h)h=d(517936+-481242)S=Z[r]y=C[Q[416499172%12621187]]x=17046171839656-175781 r=C[Q[430319-430317]]E=r(h,U)Z=y[E]n,y=-886843+20890285593658,-325866+75266662698000 E=C[Q[396283817%6496456]]p=d(37762836%1886297)h=C[Q[1020431618%8296192]]U=h(p,x)r=E[U]x=d(788669000%4086178)h=C[Q[-169893+169894]]U=C[Q[929118250%6277826]]p=U(x,w)E=h[p]w=d(501256-464686)U=C[Q[868220-868219]]p=C[Q[-676723-(-676725)]]x=p(w,O)h=U[x]x=C[Q[774008+-774007]]U=11901387-(-596915)~=1406213228%8675594 w=C[Q[761144+-761142]]O=w(L,qG)p=x[O]qG,dG=d(858361-821817),-1043904+21751452974305 w=C[Q[-328553-(-328554)]]O=C[Q[249393080%1259561]]L=O(qG,s)x=w[L]O=C[Q[22395661%373261]]L=C[Q[964096-964094]]s=d(787448+-750698)qG=L(s,I)w=O[qG]L=C[Q[553714-553713]]qG=C[Q[130514954%2289736]]I=d(143390358%1541438)s=qG(I,n)O=L[s]qG=C[Q[-392364+392365]]s=C[Q[701112-701110]]n=d(1388785560%12858784)I=s(n,dG)L=qG[I]s=C[Q[663798-663797]]dG=d(32451852%16207614)I=C[Q[-531758-(-531760)]]n=I(dG,T)qG=s[n]v,T={[m]=S,[Z]=y,[r]=E,[h]=U;[p]=x;[w]=O;[L]=qG},35017937351886-324970 G,y,I,x,qG={v},d(253011-216039),7104092533555-(-173733),378348+9599544483072,971326+11039475619307 m=C[Q[-329705-(-329706)]]S=C[Q[-947581+947583]]r,p,h,w=20505872834663-(-567858),736887+23774442526726,d(451118+-414287),d(211047+-174164)Z=S(y,r)v=m[Z]y=C[Q[77922+-77921]]r=C[Q[-633970-(-633972)]]L,U=6166687316554-(-171045),719926+30897863193649 E=r(h,U)Z=y[E]r=C[Q[405486-405485]]E=C[Q[599454704%11101013]]O,U,s,YG=31329520753352-(-546609),d(-255400+291977),d(222528-185638),2.174608951805e+014%21746090235896 h=E(U,p)y=r[h]p=d(-262632+299242)E=C[Q[645853996%14352311]]h=C[Q[843698708%6296259]]U=h(p,x)r=E[U]dG,n=489455+13043139491716,546929+9794971290417 U=C[Q[-702774+702775]]E=409389+10799032148 p=C[Q[2350953357%15167441]]x=p(w,O)h=U[x]p=C[Q[1649091921%14724035]]O=d(716704281%15579724)x=C[Q[2220370098%8846096]]w=x(O,L)L=d(-42029-(-78562))U=p[w]x=C[Q[654005-654004]]w=C[Q[1711013272%9005333]]O=w(L,qG)p=x[O]O=C[Q[-1047104+1047105]]L=C[Q[526192+-526190]]qG=L(s,I)x=-36833+2353704<14413528-(-377068)w=O[qG]I=d(811035-774072)L=C[Q[391788+-391787]]qG=C[Q[-248678-(-248680)]]PG=24278043199847-(-347883)s=qG(I,n)O=L[s]qG=C[Q[151489754%784921]]n=d(-690267-(-726903))s=C[Q[282345+-282343]]I=s(n,dG)L=qG[I]dG=d(817683989%3803011)s=C[Q[-733942-(-733943)]]I=C[Q[-49440-(-49442)]]n=I(dG,T)T=d(74082+-37203)qG=s[n]I=C[Q[599028-599027]]n=C[Q[1031589380%9293598]]dG=n(T,zG)s=I[dG]n=C[Q[568946+-568945]]zG=d(3377960070%15784689)dG=C[Q[-56162+56164]]T=dG(zG,uG)I=n[T]S={[Z]=y;[r]=E;[h]=U;[p]=x;[w]=O;[L]=qG;[s]=I}O,L=d(-556081+593003),31468039116150-893692 r=C[Q[481-480]]x,U=34033285916981-191846,d(368619+-331678)E=C[Q[745593-745591]]p=9805709100605-(-482671)h=E(U,p)w,dG=-776248+10807542054793,-254440+26020779966609 y=r[h]zG=22492357399122-999551 E=C[Q[652981-652980]]h=C[Q[-559665+559667]]p=d(-597939+634532)U=h(p,x)r=E[U]h=C[Q[363962481%2303560]]x,uG,gG=d(-545725-(-582642)),834682+9107755263144,2242041283718-(-66466)U=C[Q[959742+-959740]]p=U(x,w)E=h[p]p=C[Q[1251294277%7676652]]h=2020689432227%10805860165 x=C[Q[865533-865531]]I=d(5881872%1461260)w=x(O,L)T=25827500230483-(-54946)U=p[w]L=d(-355499+392063)x=C[Q[-146981+146982]]qG,n=-463662+11999431540437,-95075+11840512532086 w=C[Q[-748791+748793]]O=w(L,qG)qG,s=d(952830165%6662890),481455+27788212210792 p=x[O]w=C[Q[1202558968%14846407]]O=C[Q[1397959614%12371324]]L=O(qG,s)x=w[L]w=10592292-200422~=1175199992%9117976 L=C[Q[1371370176%7836401]]qG=C[Q[520304+-520302]]s=qG(I,n)n=d(2528534506%14961525)O=L[s]qG=C[Q[-531440+531441]]s=C[Q[-407085+407087]]I=s(n,dG)dG=d(1908486545%15267599)L=qG[I]s=C[Q[-430508-(-430509)]]I=C[Q[983806+-983804]]n=I(dG,T)qG=s[n]I=C[Q[741116345%3194467]]n=C[Q[815929+-815927]]T=d(962238+-925614)dG=n(T,zG)s=I[dG]zG=d(1289410088%11829112)n=C[Q[1482157376%11857259]]dG=C[Q[421039-421037]]T=dG(zG,uG)I=n[T]uG=d(-371613-(-408237))dG=C[Q[1460499734%10981201]]T=C[Q[868925-868923]]zG=T(uG,jG)n=dG[zG]Z={[y]=r,[E]=h;[U]=p;[x]=w;[O]=L,[qG]=s,[I]=n}w,O,x,m,n=14448710563301-(-360107),24423004130712-1012927,405933+14757957600259,{S;Z},d(105788253%7553677)Z=C[Q[-58593-(-58594)]]y=C[Q[75090787%1532465]]h,E=19006884291916-221223,d(-21382-(-57954))r=y(E,h)S=Z[r]p,dG=d(803193+-766450),12147612470368-499759 E=C[Q[968575-968574]]h=C[Q[443238702%10810700]]U=h(p,x)r=E[U]h=C[Q[1777241800%8841999]]L,x=d(1044582-1007999),d(-820025+856940)U=C[Q[950975-950973]]zG=2849798762781-992959 p=U(x,w)E=h[p]T,w=80290+16959195841552,d(6284-(-30561))U=C[Q[150949+-150948]]p=C[Q[-463724-(-463726)]]x=p(w,O)h=U[x]x=C[Q[-689589+689590]]qG,U=4929699442264-285801,2009571119187%8737320243 w=C[Q[1018242-1018240]]O=w(L,qG)s,qG,I=-137252+7365020070639,d(1894669830%13931127),424301+13759347210401 p=x[O]w=C[Q[610517293%7268063]]O=C[Q[-940029+940031]]L=O(qG,s)x=w[L]s=d(-695670+732454)O=C[Q[298730-298729]]uG=312874+25840385267671 L=C[Q[30307-30305]]qG=L(s,I)jG=17199720972836-(-457838)w=O[qG]O=4144607-845178>=1418635-(-931517)qG=C[Q[176550-176549]]s=C[Q[136612+-136610]]I=s(n,dG)L=qG[I]s=C[Q[-1048192+1048193]]I=C[Q[-772406-(-772408)]]dG=d(-242792+279449)n=I(dG,T)qG=s[n]T=d(1362233531%15657433)I=C[Q[747063+-747062]]n=C[Q[739833-739831]]dG=n(T,zG)s=I[dG]n=C[Q[2890878425%12146548]]dG=C[Q[-137188+137190]]zG=d(940142843%6225869)T=dG(zG,uG)I=n[T]dG=C[Q[-772600+772601]]T=C[Q[791611-791609]]uG=d(-205542+242485)zG=T(uG,jG)n=dG[zG]T=C[Q[2657586711%15632863]]zG=C[Q[-500077-(-500079)]]jG=d(32048-(-4576))uG=zG(jG,QG)dG=T[uG]y={[r]=E,[h]=U,[p]=x;[w]=O;[L]=qG,[s]=I;[n]=dG}Z={y}r=C[Q[167683217%1783864]]w=d(726445814%3363004)E=C[Q[75875718%1308202]]p,U=28758904682360-(-241959),d(312874+-276242)h=E(U,p)y=r[h]L=-819321+32851060717563 U=C[Q[163621+-163620]]O,uG=813177+31019199629407,-803257+32725429074118 p=C[Q[362539+-362537]]x=p(w,O)qG=18477512467009-(-729335)h=U[x]p=C[Q[300906-300905]]x=C[Q[1348107112%5736626]]O,T=d(179346959%720122),d(244968+-208337)w=x(O,L)U=p[w]L=d(2836668096%12551466)x=C[Q[898101719%8393474]]w=C[Q[1592708899%14094769]]O=w(L,qG)jG=-95075+19456795720235 p=x[O]O=C[Q[-693044-(-693045)]]n,zG,s=12537391100060-(-1047808),44129+10022612006933,d(-888711-(-925309))L=C[Q[2893062818%15388632]]x,dG,I=13169432879-608,-253800+26304256458521,19762821175039-(-209126)qG=L(s,I)w=O[qG]I=d(811513+-774707)L=C[Q[-185062+185063]]qG=C[Q[251562-251560]]s=qG(I,n)O=L[s]n=d(-854778+891370)qG=C[Q[-348074-(-348075)]]s=C[Q[811195-811193]]I=s(n,dG)L=qG[I]I=C[Q[143396+-143395]]n=C[Q[702712-702710]]qG=914483535%10686279>=2426410-(-840250)dG=n(T,zG)s=I[dG]zG,QG=d(1014625-977726),-260968+18281012706793 n=C[Q[9121-9120]]dG=C[Q[-660018-(-660020)]]T=dG(zG,uG)uG=d(38271-1696)I=n[T]dG=C[Q[403053-403052]]T=C[Q[997951+-997949]]zG=T(uG,jG)jG=d(2583537804%16560905)n=dG[zG]T=C[Q[135460+-135459]]zG=C[Q[-889020+889022]]uG=zG(jG,QG)dG=T[uG]zG=C[Q[-485167+485168]]uG=C[Q[703453312%10049333]]QG=d(691252-654516)jG=uG(QG,XG)T=zG[jG]uG=C[Q[-800056-(-800057)]]XG=d(64805514%594210)jG=C[Q[74058281%655383]]QG=jG(XG,YG)zG=uG[QG]E={[h]=U,[p]=x,[w]=O;[L]=qG;[s]=I,[n]=dG;[T]=zG}r,L,x,YG,dG,w={E},d(-879181-(-916156)),d(975562-939005),-944573+26161445128425,-278121+28086722307222,675765+1473218065831 h=C[Q[548530-548529]]U=C[Q[-863481-(-863483)]]p=U(x,w)I,qG=-1018560+1139275861733,-126180+2410624087465 E=h[p]x=C[Q[958399-958398]]w=C[Q[-44511-(-44513)]]O=w(L,qG)p=x[O]qG,s=d(-14368+50985),926333+12848785853505 w=C[Q[469104-469103]]O=C[Q[2671177323%13840297]]L=O(qG,s)x=w[L]O=C[Q[373613-373612]]L=C[Q[-900668+900670]]zG,n,T,s=376300+33135609789087,d(311252-274473),13410370534302-(-357675),d(30279-(-6624))qG=L(s,I)w=O[qG]O=8446640122-62114 qG=C[Q[-1009087+1009088]]s=C[Q[-221157-(-221159)]]I=s(n,dG)L=qG[I]s=C[Q[409582-409581]]dG=d(-41565-(-78178))I=C[Q[547377+-547375]]jG=658292+34478901522938 n=I(dG,T)T=d(-44056-(-80610))qG=s[n]I=C[Q[465327-465326]]n=C[Q[1001130138%7361251]]dG=n(T,zG)s=I[dG]dG=C[Q[160742-160741]]T=C[Q[225385-225383]]uG,XG,I=d(1906308523%10139744),2083122630194-(-80226),8013845-(-429805)>531952+895036 zG=T(uG,jG)n=dG[zG]QG=9207617845173-710198 T=C[Q[-807801+807802]]zG=C[Q[708112594%15393752]]jG=d(699510+-662646)uG=zG(jG,QG)dG=T[uG]zG=C[Q[70563-70562]]QG=d(-543167-(-579954))uG=C[Q[-153763-(-153765)]]jG=uG(QG,XG)XG=d(523504+-486880)T=zG[jG]uG=C[Q[-1027456+1027457]]jG=C[Q[1030594-1030592]]QG=jG(XG,YG)zG=uG[QG]jG=C[Q[673718-673717]]YG=d(2116094790%16403549)QG=C[Q[-598195+598197]]XG=QG(YG,aG)aG=d(1835230064%9459760)uG=jG[XG]QG=C[Q[80867+-80866]]XG=C[Q[62824334%10470722]]YG=XG(aG,CG)jG=QG[YG]U={[p]=x;[w]=O;[L]=qG,[s]=I;[n]=dG;[T]=zG;[uG]=jG}I,uG,h,L,T,aG=-31905+26216206720000,5455848619766-(-87267),{U},-700278+2036951103199,d(576292243%12527295),-1004351+19304320637305 p=C[Q[182717921%9135896]]O=d(131492+-94851)x=C[Q[812729+-812727]]w=x(O,L)CG=28298255595409-(-28513)U=p[w]XG=-885755+30399633388178 O=C[Q[1061220057%12941708]]L=C[Q[-106467+106469]]s,jG=d(346722-310186),-964286+26732693231614 qG=L(s,I)dG,I=-401900+10729156135156,d(337904542%2724741)w=O[qG]L=C[Q[467088363%13737893]]qG=C[Q[833148-833146]]n=34456352459435-(-455342)s=qG(I,n)n=d(848250+-811574)O=L[s]qG=C[Q[439471-439470]]s=C[Q[119846-119844]]I=s(n,dG)L=qG[I]qG=178726+6500726978 I=C[Q[1039745-1039744]]zG=-383340+35069478590720 n=C[Q[929439238%8686348]]dG=n(T,zG)s=I[dG]zG=d(4123119912%16492333)n=C[Q[247001616%2600017]]dG=C[Q[-239717-(-239719)]]YG=459694+28969364284853 T=dG(zG,uG)I=n[T]dG=C[Q[-91811+91812]]T=C[Q[912046139%6561483]]QG,uG=d(-800453-(-837050)),d(920573+-883894)zG=T(uG,jG)n=dG[zG]dG=827448013%18875969>=375340+757751 zG=C[Q[-204198+204199]]uG=C[Q[-160229+160231]]jG=uG(QG,XG)T=zG[jG]uG=C[Q[3874733849%16701439]]jG=C[Q[96129274%579092]]XG=d(-603571+640327)QG=jG(XG,YG)zG=uG[QG]jG=C[Q[256873-256872]]YG=d(-64226+100979)QG=C[Q[-655412+655414]]XG=QG(YG,aG)uG=jG[XG]QG=C[Q[-107362-(-107363)]]aG=d(930138078%11482734)XG=C[Q[255129666%1483312]]YG=XG(aG,CG)jG=QG[YG]XG=C[Q[105482011%817690]]CG=d(576818+-540151)YG=C[Q[158581562%5286052]]aG=YG(CG,BG)QG=XG[aG]YG=C[Q[232936434%10127671]]aG=C[Q[859453-859451]]BG=d(627394-590770)CG=aG(BG,cG)XG=YG[CG]x={[w]=O,[L]=qG,[s]=I,[n]=dG,[T]=zG,[uG]=jG;[QG]=XG}n=3367356914074-(-209574)L=C[Q[-929789+929790]]I=d(637132735%10798238)qG=C[Q[120958309%1197607]]uG,zG=108771+27534801779528,d(1476559157%13546079)s=qG(I,n)n=d(-511408+548045)O=L[s]qG=C[Q[402092+-402091]]s=C[Q[87015042%6215360]]dG=-355755+14713933603634 I=s(n,dG)L=qG[I]jG=136612+19030506975127 s=C[Q[-958910+958911]]I=C[Q[563151818%7821553]]T,dG=674933+14236102879061,d(-496057-(-532785))n=I(dG,T)XG=d(907132+-870240)qG=s[n]CG,NG,QG=3230988628092-877755,24948078514582-(-379180),13296550209069-(-576050)n=C[Q[306480307%13930923]]dG=C[Q[2618604146%12589443]]T=dG(zG,uG)s=-378028+6501283732 I=n[T]dG=C[Q[3977576848%16368629]]T=C[Q[154509551%3029599]]BG,cG,uG=31343480824436-454766,-635252+24133084612927,d(206054+-169414)zG=T(uG,jG)n=dG[zG]jG=d(359013539%10878087)T=C[Q[-789751-(-789752)]]zG=C[Q[50460848%885278]]uG=zG(jG,QG)dG=T[uG]YG=553265+23411506897914 uG=C[Q[799481+-799480]]jG=C[Q[1080774351%5971129]]T,aG=759735991%5561514>540017+-93027,17745198153174-(-770744)QG=jG(XG,YG)YG=d(384684+-347735)zG=uG[QG]jG=C[Q[-646387-(-646388)]]QG=C[Q[573270326%6665934]]XG=QG(YG,aG)uG=jG[XG]QG=C[Q[-1031679-(-1031680)]]XG=C[Q[605363+-605361]]aG=d(145639892%12133598)YG=XG(aG,CG)jG=QG[YG]CG=d(-3296+39920)XG=C[Q[1598426991%7469285]]YG=C[Q[344363+-344361]]aG=YG(CG,BG)BG=d(245800+-209248)QG=XG[aG]YG=C[Q[-595185-(-595186)]]aG=C[Q[941638218%5117599]]CG=aG(BG,cG)XG=YG[CG]aG=C[Q[1005375+-1005374]]CG=C[Q[822585+-822583]]cG=d(768871812%7766012)BG=CG(cG,HG)YG=aG[BG]w={[O]=L,[qG]=s;[I]=n;[dG]=T,[zG]=uG,[jG]=QG;[XG]=YG}QG,T,p=35170412563525-(-455598),-501872+14876073713294,{x,w}w=C[Q[608755+-608754]]qG,XG,jG=d(-577876-(-614515)),-455598+7554004717353,3330848274606-(-512880)O=C[Q[804881657%7814385]]n,zG,BG,s=d(-792441+829188),4768+23498483188444,34680772438238-633524,30686329695407-(-623347)L=O(qG,s)HG=1074473847-699254 x=w[L]qG=C[Q[284201+-284200]]dG,YG=1011519+30335205015324,d(-923360-(-960318))s=C[Q[-489711+489713]]I=s(n,dG)L=qG[I]s=C[Q[-1040832+1040833]]dG=d(-551793+588630)I=C[Q[-110561-(-110563)]]n=I(dG,T)qG=s[n]I=C[Q[215271+-215270]]n=C[Q[-481455+481457]]T,uG=d(475247203%14400317),d(1669329127%8103362)dG=n(T,zG)s=I[dG]dG=C[Q[-852153-(-852154)]]T=C[Q[857086679%10581317]]zG=T(uG,jG)jG=d(967038+-930390)n=dG[zG]I,CG=1.2509483028018e+014,-982398+27684057539124 T=C[Q[1191155419%8631561]]zG=C[Q[221225-221223]]uG=zG(jG,QG)QG=d(322543-285865)dG=T[uG]aG=-843834+21533476531856 zG=C[Q[392172+-392171]]uG=C[Q[-215013-(-215015)]]jG=uG(QG,XG)T=zG[jG]jG=C[Q[-610163+610164]]QG=C[Q[-198884-(-198886)]]zG=29089+7442756~=16554266-785208 XG=QG(YG,aG)uG=jG[XG]QG=C[Q[689333+-689332]]XG=C[Q[78498+-78496]]aG=d(-163877+200676)YG=XG(aG,CG)cG=-566386+23233261435127 jG=QG[YG]XG=C[Q[477744-477743]]YG=C[Q[-1014719+1014721]]CG=d(-22443-(-59106))aG=YG(CG,BG)BG=d(-353756-(-390380))QG=XG[aG]YG=C[Q[619315+-619314]]aG=C[Q[-1008061-(-1008063)]]CG=aG(BG,cG)XG=YG[CG]aG=C[Q[-250151-(-250152)]]CG=C[Q[277545+-277543]]cG=d(196884-160293)BG=CG(cG,HG)YG=aG[BG]CG=C[Q[396494775%6395077]]BG=C[Q[1901227358%7544553]]HG=d(-927677+964301)cG=BG(HG,AG)aG=CG[cG]O={[L]=qG,[s]=I,[n]=dG,[T]=zG,[uG]=jG;[QG]=XG;[YG]=aG}dG,AG,jG=d(800910-764344),-575154+28431404248608,d(-793721+830657)s=C[Q[-449965-(-449966)]]cG,T,XG=20888137005016-(-152613),-879739+8725493222457,28489386611176-(-890300)I=C[Q[286059-286057]]n=I(dG,T)T=d(-829626+866341)qG=s[n]aG=d(-413869-(-450670))I=C[Q[-165092-(-165093)]]zG,QG=609075+31694604052506,28264969508111-896572 n=C[Q[-57440-(-57442)]]dG=n(T,zG)s=I[dG]n=C[Q[301162-301161]]dG=C[Q[-348779+348781]]uG,zG=29241030417558-700982,d(-666293+703015)T=dG(zG,uG)BG=32992797375438-(-769080)I=n[T]YG,n=-49826+31101881136071,1.2509483028018e+014 T=C[Q[1456499829%7174876]]zG=C[Q[1606238594%8365826]]uG=zG(jG,QG)dG=T[uG]zG=C[Q[21345+-21344]]uG=C[Q[-191206+191208]]CG,QG=10295351422887-625203,d(878587+-841793)jG=uG(QG,XG)T=zG[jG]uG=C[Q[546098-546097]]XG=d(-947901+984609)jG=C[Q[29955487%5991097]]QG=jG(XG,YG)zG=uG[QG]uG=-93859-(-674997)<9187513-(-413805)QG=C[Q[2675770966%12562305]]XG=C[Q[-535535-(-535537)]]YG=XG(aG,CG)jG=QG[YG]XG=C[Q[281736734%3968123]]YG=C[Q[608499+-608497]]CG=d(1842293002%8009810)aG=YG(CG,BG)QG=XG[aG]YG=C[Q[1966522195%10805067]]aG=C[Q[2163599297%13112723]]BG=d(-866043+902953)CG=aG(BG,cG)XG=YG[CG]aG=C[Q[-967934+967935]]CG=C[Q[1602449666%8302848]]HG,cG=-308394+25977829036843,d(-609523+646147)BG=CG(cG,HG)YG=aG[BG]CG=C[Q[1989757939%14960586]]BG=C[Q[108107178%1175078]]HG=d(667189+-630359)cG=BG(HG,AG)aG=CG[cG]BG=C[Q[496057345%2583632]]AG=d(791367-754743)cG=C[Q[40126163%13375387]]HG=cG(AG,gG)CG=BG[HG]L={[qG]=s,[I]=n;[dG]=T;[zG]=uG,[jG]=QG,[XG]=YG,[aG]=CG}YG,w=223655+33020716060281,{O;L}L=C[Q[-734263+734264]]T=d(637556+-600573)qG=C[Q[686197+-686195]]n,I,uG,BG=548401+16674645106296,d(991036388%4217019),28698774035990-488879,23526400679586-(-653044)s=qG(I,n)O=L[s]I=C[Q[747767+-747766]]zG=63458+17467091240873 n=C[Q[140518-140516]]jG=-172965+26730544891107 dG=n(T,zG)s=I[dG]zG,CG=d(-35105+71928),d(66223273%8273341)n=C[Q[1075947154%15593437]]dG=C[Q[19809+-19807]]HG=687093+23414728087865 T=dG(zG,uG)I=n[T]dG=C[Q[370795+-370794]]T=C[Q[275561+-275559]]uG,QG,XG=d(557662-520944),d(-932029+968980),-947965+18868368096161 zG=T(uG,jG)FG=33635988227937-(-897788)n=dG[zG]zG=C[Q[-95139+95140]]uG=C[Q[401068+-401066]]dG,AG=13664105527-(-536433),7419782736871-299241 jG=uG(QG,XG)T=zG[jG]aG=855675+12731744493526 uG=C[Q[-829114+829115]]jG=C[Q[-1015103+1015105]]XG=d(933245+-896684)QG=jG(XG,YG)gG=31239324527886-293737 zG=uG[QG]jG=C[Q[-323177-(-323178)]]cG,YG=15697511779930-1004863,d(1541603338%7237401)QG=C[Q[445005225%6641869]]XG=QG(YG,aG)uG=jG[XG]jG=246568+12972652<=14815588-11680 XG=C[Q[1518886421%8830735]]YG=C[Q[303465+-303463]]aG=YG(CG,BG)BG=d(-544305+580959)QG=XG[aG]YG=C[Q[1715370281%13195156]]aG=C[Q[651126-651124]]CG=aG(BG,cG)XG=YG[CG]aG=C[Q[1056+-1055]]cG=d(-647348+684088)CG=C[Q[157206712%652310]]BG=CG(cG,HG)YG=aG[BG]CG=C[Q[-71010+71011]]HG=d(1813862840%7433714)BG=C[Q[875718362%15922152]]cG=BG(HG,AG)aG=CG[cG]BG=C[Q[447598+-447597]]AG=d(995308821%16315933)cG=C[Q[-261672+261674]]HG=cG(AG,gG)gG=d(-62370+98994)CG=BG[HG]cG=C[Q[67427-67426]]HG=C[Q[98536402%12317050]]AG=HG(gG,bG)BG=cG[AG]qG={[s]=I,[n]=dG,[T]=zG;[uG]=jG;[QG]=XG,[YG]=aG;[CG]=BG}dG,T,gG=d(-17840-(-54754)),10858007911368-(-773048),-479535+27985787696894 s=C[Q[2223732697%12285816]]cG,L=d(350698974%3940023),{qG}I=C[Q[-256936+256938]]uG=d(-387435-(-424365))n=I(dG,T)qG=s[n]dG=C[Q[726051358%3315303]]CG=17078383880353-(-1021312)T=C[Q[766394-766392]]jG=2676919154177-(-906172)zG=T(uG,jG)n=dG[zG]bG,QG,XG,jG,aG=27205154098103-1009855,973054+10873040555664,-628787+4654813489442,d(-493706-(-530480)),7421929394638-(-592178)T=C[Q[15303640%5101213]]zG=C[Q[1086495698%4765332]]uG=zG(jG,QG)QG=d(1582622531%7992858)dG=T[uG]BG=-971902+5759727888754 zG=C[Q[-543152-(-543153)]]uG=C[Q[153243794%5675696]]jG=uG(QG,XG)T=zG[jG]zG=2366050783064%17789883253 jG=C[Q[2688297445%14223796]]QG=C[Q[171001382%784410]]YG=d(836346+-799488)XG=QG(YG,aG)aG=d(391101%118128)uG=jG[XG]QG=C[Q[603955+-603954]]XG=C[Q[3016157762%11968880]]AG=d(71914-35041)YG=XG(aG,CG)jG=QG[YG]XG=C[Q[777209-777208]]YG=C[Q[128294-128292]]CG=d(564519858%15680080)aG=YG(CG,BG)QG=XG[aG]HG=-232295+1531202801913 aG=C[Q[-788984+788985]]XG=2645842551%12900235<=7023158-(-306858)CG=C[Q[184809627%2843225]]BG=CG(cG,HG)YG=aG[BG]aG=3123127492%22254760<=11052273-(-828026)BG=C[Q[561628286%2850905]]cG=C[Q[719160-719158]]HG=cG(AG,gG)gG=d(-371884+408576)CG=BG[HG]cG=C[Q[-254504+254505]]HG=C[Q[594804-594802]]AG=HG(gG,bG)BG=cG[AG]HG=C[Q[1082427278%16155631]]AG=C[Q[241065-241063]]bG=d(298890499%2334794)gG=AG(bG,PG)cG=HG[gG]PG=d(74722+-38098)AG=C[Q[178791-178790]]gG=C[Q[677559-677557]]bG=gG(PG,MG)HG=AG[bG]MG=d(908324-871483)gG=C[Q[458679079%5880501]]bG=C[Q[412013+-412011]]PG=bG(MG,WG)WG=d(773541012%10894428)AG=gG[PG]bG=C[Q[827158351%7255775]]PG=C[Q[-373802-(-373804)]]MG=PG(WG,VG)gG=bG[MG]I={[n]=dG,[T]=zG;[uG]=jG,[QG]=XG;[YG]=aG;[CG]=BG,[cG]=HG;[AG]=gG}QG,jG=156773+8735156157282,d(30173450%216812)T=C[Q[67167764%5166751]]zG=C[Q[5407202%45060]]HG,AG=d(39427816%13130398),35014716619613-916476 uG=zG(jG,QG)dG=T[uG]QG,XG,CG=d(-342177-(-379116)),29068152268071-260968,-249384+31684940939628 zG=C[Q[-69089-(-69090)]]uG=C[Q[1194454914%10664776]]jG=uG(QG,XG)YG,XG=-798585+9342913532278,d(34730-(-2016))T=zG[jG]PG=7.6280972479062e+014%25426991118220 uG=C[Q[1530930963%14307766]]jG=C[Q[174375-174373]]QG=jG(XG,YG)zG=uG[QG]aG,gG=d(346669779%6081278),d(-221231-(-257832))QG=C[Q[-427885+427886]]XG=C[Q[669429+-669427]]YG=XG(aG,CG)jG=QG[YG]uG,CG,BG=17786011166-(-182502),d(-296681+333414),-338923+7722587211779 XG=C[Q[-934076-(-934077)]]YG=C[Q[476399+-476397]]cG=29571751618399-(-672821)aG=YG(CG,BG)BG=d(835514+-798779)QG=XG[aG]YG=C[Q[-1015551+1015552]]aG=C[Q[31275686%315916]]CG=aG(BG,cG)XG=YG[CG]YG=2089952-34209>6480038-327658 CG=C[Q[-516527-(-516528)]]BG=C[Q[-116772+116774]]cG=BG(HG,AG)bG=-969790+25468860541157 aG=CG[cG]VG=752183+25556908335810 cG=C[Q[-882554-(-882555)]]CG=12137746-(-377452)~=11082418-(-89763)HG=C[Q[-985533-(-985535)]]AG=HG(gG,bG)bG=d(845470-808761)BG=cG[AG]WG=10735599320715-939901 HG=C[Q[-809848-(-809849)]]MG=13441509872951-(-482223)AG=C[Q[-125538-(-125540)]]gG=AG(bG,PG)cG=HG[gG]PG=d(48874346%921465)AG=C[Q[-327785-(-327786)]]gG=C[Q[325226+-325224]]bG=gG(PG,MG)HG=AG[bG]gG=C[Q[872035459%8898321]]bG=C[Q[85221-85219]]MG=d(183857957%9674807)PG=bG(MG,WG)AG=gG[PG]bG=C[Q[240168-240167]]WG=d(518294-481583)PG=C[Q[-701044-(-701046)]]MG=PG(WG,VG)VG=d(269350526%12241541)gG=bG[MG]PG=C[Q[-584945-(-584946)]]MG=C[Q[650102360%8785167]]WG=MG(VG,NG)bG=PG[WG]n={[dG]=T,[zG]=uG,[jG]=QG,[XG]=YG,[aG]=CG,[BG]=cG;[HG]=AG,[gG]=bG}zG=C[Q[-81315+81316]]XG,WG,cG,gG,aG,QG=2400960921401-931453,-449326+4870642003174,11919970744286-(-1012607),30304066010381-(-553265),15699657971698-(-352555),d(-966974+1003602)uG=C[Q[1311182210%10406208]]jG=uG(QG,XG)T=zG[jG]uG=C[Q[30515185%726552]]CG,YG=828794+12029495936585,15115523993663-(-951998)jG=C[Q[-182500-(-182502)]]MG,XG=33910875662340-240807,d(145412-108515)QG=jG(XG,YG)zG=uG[QG]jG=C[Q[1021980268%13272471]]BG,YG=680885+20262125889025,d(-928845-(-965566))QG=C[Q[263082-263080]]bG=664245+23625187930941 XG=QG(YG,aG)uG=jG[XG]aG=d(1037251558%4099663)QG=C[Q[310058+-310057]]XG=C[Q[337844930%1481776]]YG=XG(aG,CG)AG=-641012+16588744328269 jG=QG[YG]CG=d(-585557-(-622323))XG=C[Q[217431579%8362753]]HG=d(154385744%1403174)YG=C[Q[-185830+185832]]aG=YG(CG,BG)PG,BG=360299+27181529686903,d(-470305-(-507120))QG=XG[aG]YG=C[Q[211496-211495]]aG=C[Q[-605875+605877]]CG=aG(BG,cG)XG=YG[CG]YG=86765145%23910618<2295019491%20915839 CG=C[Q[201063-201062]]BG=C[Q[-790777+790779]]cG=BG(HG,AG)aG=CG[cG]BG=C[Q[752631+-752630]]cG=C[Q[-1007037-(-1007039)]]AG=d(-815801+852670)HG=cG(AG,gG)CG=BG[HG]cG=C[Q[229648245%16403446]]HG=C[Q[364267+-364265]]gG=d(957653-920957)AG=HG(gG,bG)bG=d(135731-99107)BG=cG[AG]HG=C[Q[925630-925629]]AG=C[Q[284998262%4749971]]gG=AG(bG,PG)cG=HG[gG]PG=d(853958-817273)AG=C[Q[-44832-(-44833)]]gG=C[Q[-951868-(-951870)]]bG=gG(PG,MG)HG=AG[bG]gG=C[Q[389549-389548]]MG=d(-532529+569153)bG=C[Q[433918316%2729046]]PG=bG(MG,WG)AG=gG[PG]dG={[T]=zG;[uG]=H,[jG]=QG,[XG]=YG;[aG]=CG;[BG]=cG;[HG]=AG}CG,s=-345259+13249305048286,{I;n;dG}n=C[Q[298649657%2447948]]cG,zG=16852891729439-(-507696),d(840762+-804080)dG=C[Q[1522114141%16726529]]uG,BG,aG=-449582+6097966363229,2361229466972-(-863035),2670477153935-(-258856)T=dG(zG,uG)I=n[T]QG,XG=d(-829459-(-866171)),16870071656161-(-974462)zG=C[Q[-758135+758136]]uG=C[Q[-499055+499057]]jG=uG(QG,XG)YG=1003967+19930329216706 T=zG[jG]uG=C[Q[706103-706102]]jG=C[Q[-504944+504946]]XG=d(1712413112%7783529)QG=jG(XG,YG)zG=uG[QG]HG=d(-511152+547974)jG=C[Q[1549533766%6076603]]QG=C[Q[3278904554%16560124]]YG=d(452561-415789)XG=QG(YG,aG)NG,AG,aG=20737807696945-(-1017664),17918075740723-(-892668),d(130583-93667)uG=jG[XG]bG=13006632483787-838778 QG=C[Q[69282+-69281]]XG=C[Q[727733096%11026259]]YG=XG(aG,CG)jG=QG[YG]WG=34861165338463-(-597875)XG=C[Q[257435361%9901360]]YG=C[Q[-487023+487025]]CG=d(128036+-91462)aG=YG(CG,BG)QG=XG[aG]BG=d(381868+-345185)YG=C[Q[1303806050%9803053]]aG=C[Q[146165132%14616513]]CG=aG(BG,cG)XG=YG[CG]CG=C[Q[1155164297%8078072]]BG=C[Q[-331754+331756]]YG,gG=3532791215%15970280>413667177%15796195,221543+34200794340100 cG=BG(HG,AG)aG=CG[cG]BG=C[Q[393260+-393259]]AG=d(2341823669%9219634)cG=C[Q[587826+-587824]]HG=cG(AG,gG)CG=BG[HG]cG=C[Q[881340-881339]]PG=-103395+34430582427940 HG=C[Q[1146100322%5306020]]gG=d(819234-782648)AG=HG(gG,bG)BG=cG[AG]MG,bG=27004356501126-(-738231),d(-705191-(-741815))HG=C[Q[-707318+707319]]AG=C[Q[-400492+400494]]VG=-749303+6021728666847 gG=AG(bG,PG)PG=d(3036541186%15492370)cG=HG[gG]AG=C[Q[29538-29537]]gG=C[Q[-835194+835196]]bG=gG(PG,MG)HG=AG[bG]gG=C[Q[879547+-879546]]MG=d(-860411+897035)bG=C[Q[362633174%5494442]]PG=bG(MG,WG)AG=gG[PG]dG={[T]=zG,[uG]=H;[jG]=QG,[XG]=YG;[aG]=CG,[BG]=cG,[HG]=AG}uG=C[Q[-208998+208999]]jG=C[Q[512634254%13144468]]XG,YG=d(2624288220%15346500),-428525+26021853915287 QG=jG(XG,YG)zG=uG[QG]aG,YG=-819833+5990589274180,d(-712034-(-748919))jG=C[Q[-481647+481648]]gG,AG,CG=-137124+9144264571112,d(1698404297%8366342),-604147+19266738126346 QG=C[Q[310378+-310376]]XG=QG(YG,aG)aG=d(-255784+292577)uG=jG[XG]HG=8688984284677-278121 QG=C[Q[2468017023%11321179]]XG=C[Q[185192-185190]]YG=XG(aG,CG)jG=QG[YG]CG=d(383826659%2524935)XG=C[Q[56803-56802]]bG=25274506221133-(-148901)YG=C[Q[-902522-(-902524)]]BG=28333690136241-(-49250)aG=YG(CG,BG)QG=XG[aG]cG,BG=-826554+5960523592297,d(630441618%3232845)YG=C[Q[768146422%13476253]]aG=C[Q[288302162%1736760]]CG=aG(BG,cG)PG=722358+22861734137205 XG=YG[CG]cG=d(-390135-(-427117))aG=C[Q[216040-216039]]CG=C[Q[-31263-(-31265)]]BG=CG(cG,HG)YG=aG[BG]BG=C[Q[837796939%12693893]]aG=-346987+12797159~=410307856%5422758 cG=C[Q[951534769%6060731]]HG=cG(AG,gG)MG,gG=-216807+1410940032009,d(154573747%3593880)CG=BG[HG]WG=17601313508148-379692 cG=C[Q[697975-697974]]HG=C[Q[-611763+611765]]AG=HG(gG,bG)BG=cG[AG]HG=C[Q[-326825-(-326826)]]AG=C[Q[299689+-299687]]bG=d(-352724-(-389548))gG=AG(bG,PG)cG=HG[gG]AG=C[Q[926206-926205]]gG=C[Q[363949-363947]]PG=d(-928366-(-964990))bG=gG(PG,MG)HG=AG[bG]gG=C[Q[-223462-(-223463)]]bG=C[Q[999105-999103]]MG=d(2460748102%10295864)PG=bG(MG,WG)AG=gG[PG]bG=C[Q[928510-928509]]PG=C[Q[-757111+757113]]WG=d(-309994+346618)MG=PG(WG,VG)gG=bG[MG]T={[zG]=uG,[jG]=H,[QG]=XG,[YG]=aG;[CG]=BG;[cG]=HG;[AG]=gG}HG,BG,gG,jG,VG,aG,n=9396600948991-(-514352),-25377+3587480940590,47777+12295792816666,d(-586995-(-623603)),25725492167429-468335,-859259+5029561052871,{dG;T}T=C[Q[421358-421357]]QG=-941373+23569353257723 zG=C[Q[142246-142244]]CG=137508+28350870441471 uG=zG(jG,QG)dG=T[uG]jG=C[Q[-358954-(-358955)]]QG=C[Q[-379562-(-379564)]]YG=d(912923348%8531650)XG=QG(YG,aG)aG=d(410157+-373220)uG=jG[XG]PG=17107377769594-953918 QG=C[Q[-237350-(-237351)]]lG=30654116412623-(-668341)XG=C[Q[574834+-574832]]YG=XG(aG,CG)bG,cG=d(1683738155%9621151),d(3058468811%16182180)jG=QG[YG]CG=d(-1020160+1056950)XG=C[Q[1003520-1003519]]YG=C[Q[-556721+556723]]aG=YG(CG,BG)QG=XG[aG]XG=13801206114-(-891964)aG=C[Q[1051362901%5006490]]AG=-577394+13627273937157 CG=C[Q[2827595598%13997998]]BG=CG(cG,HG)YG=aG[BG]CG=C[Q[28009489%269322]]BG=C[Q[723960-723958]]HG=d(272179-235431)cG=BG(HG,AG)AG,WG=d(379948+-343298),33599480636438-(-153125)aG=CG[cG]BG=C[Q[1433747890%9753387]]cG=C[Q[-251430-(-251432)]]HG=cG(AG,gG)CG=BG[HG]MG=18695489354720-(-84003)HG=C[Q[92259+-92258]]BG=1467209652%12460414~=10826219-(-333674)AG=C[Q[-901628+901630]]gG=AG(bG,PG)cG=HG[gG]AG=C[Q[385453-385452]]gG=C[Q[-864315+864317]]PG=d(146577230%13321875)bG=gG(PG,MG)HG=AG[bG]gG=C[Q[-780856+780857]]MG=d(-777247-(-813945))bG=C[Q[-756215+756217]]PG=bG(MG,WG)AG=gG[PG]bG=C[Q[234421633%993312]]PG=C[Q[-379882-(-379884)]]WG=d(795001+-758377)MG=PG(WG,VG)VG=d(2637755125%15072676)gG=bG[MG]PG=C[Q[-199973-(-199974)]]MG=C[Q[2856559334%13667748]]WG=MG(VG,NG)bG=PG[WG]MG=C[Q[300137+-300136]]NG=d(147174744%12261510)WG=C[Q[425709+-425707]]VG=WG(NG,oG)PG=MG[VG]zG={[uG]=jG,[QG]=XG;[YG]=aG;[CG]=BG;[cG]=HG,[AG]=gG,[bG]=PG}gG=14031013439877-833146 QG=C[Q[-181734+181735]]BG=927485+18292823038863 XG=C[Q[1217885772%11382110]]CG,aG=-283369+31841712064191,d(343355-306730)YG=XG(aG,CG)jG=QG[YG]XG=C[Q[1348680061%8645385]]AG=22757579444352-720310 YG=C[Q[140185232%737817]]CG=d(3534358509%14787957)aG=YG(CG,BG)VG,HG,BG,cG,oG=-414893+14179193915458,d(-79676-(-116452)),d(782474-745527),620083+33936645391682,-802681+4277918781193 QG=XG[aG]YG=C[Q[854666116%3902585]]MG=743543+25493555643463 aG=C[Q[835964-835962]]CG=aG(BG,cG)XG=YG[CG]CG=C[Q[421905552%9811757]]YG=13802911639-813561 BG=C[Q[-257126-(-257128)]]PG=d(-591261-(-628147))cG=BG(HG,AG)aG=CG[cG]AG=d(273512+-236837)BG=C[Q[-273575-(-273576)]]cG=C[Q[903380042%15056334]]HG=cG(AG,gG)CG=BG[HG]cG=C[Q[110667212%1034273]]HG=C[Q[285195398%1250857]]gG,bG=d(697539484%4877643),24804192081724-(-1016576)AG=HG(gG,bG)BG=cG[AG]AG=C[Q[-977469-(-977470)]]cG,WG=17284464-1046912>=3155649354%14636992,-865403+16808868344225 gG=C[Q[-641652+641654]]bG=gG(PG,MG)HG=AG[bG]gG=C[Q[-512560+512561]]MG=d(2071262497%11017157)bG=C[Q[556979-556977]]NG=25013578113855-(-1030080)PG=bG(MG,WG)AG=gG[PG]bG=C[Q[249567709%9598758]]iG=-82083+25454900583741 PG=C[Q[888892+-888890]]WG=d(235741896%11785267)MG=PG(WG,VG)gG=bG[MG]VG=d(312953-276329)PG=C[Q[1735800937%7613162]]MG=C[Q[-875515+875517]]WG=MG(VG,NG)NG=d(1016248905%9155066)bG=PG[WG]MG=C[Q[-949052-(-949053)]]WG=C[Q[-761720+761722]]VG=WG(NG,oG)PG=MG[VG]WG=C[Q[547570-547569]]oG=d(1046528+-1009904)VG=C[Q[-495471+495473]]NG=VG(oG,fG)MG=WG[NG]uG={[jG]=QG,[XG]=YG,[aG]=CG;[BG]=cG,[HG]=AG,[gG]=bG,[PG]=MG}XG=C[Q[-535601+535602]]CG,oG,BG=d(2009829807%7975370),23939804159083-(-391852),5375316580300-967742 YG=C[Q[64625296%885278]]HG,cG=726071+33923759990578,4700985392705-224551 aG=YG(CG,BG)QG=XG[aG]AG=d(-108835+145500)YG=C[Q[294441+-294440]]BG,gG=d(1153101710%12137528),-863099+13700290895186 aG=C[Q[1169476801%8536327]]CG=aG(BG,cG)XG=YG[CG]bG=-1028032+5478399001518 aG=C[Q[-12575-(-12576)]]CG=C[Q[648630-648628]]cG=d(-818642-(-855227))BG=CG(cG,HG)YG=aG[BG]VG=15077943066497-231591 BG=C[Q[582962+-582961]]cG=C[Q[-974846+974848]]aG=13801966522-(-131556)HG=cG(AG,gG)CG=BG[HG]cG=C[Q[234198369%1245736]]gG=d(1765460422%8211272)HG=C[Q[2238942402%11194712]]AG=HG(gG,bG)PG,bG=-590386+30022738210666,d(-968318+1005253)BG=cG[AG]HG=C[Q[873083+-873082]]AG=C[Q[-482029-(-482031)]]gG=AG(bG,PG)WG=31779433894684-1040256 cG=HG[gG]MG,NG=d(1115781982%5606761),-235815+634601020278 gG=C[Q[-63714+63715]]bG=C[Q[479984267%3555439]]HG=665397+2986811<896124+15473528 PG=bG(MG,WG)AG=gG[PG]bG=C[Q[538609+-538608]]fG,WG=-168869+4187721081569,d(25782703%245199)PG=C[Q[-105635+105637]]MG=PG(WG,VG)gG=bG[MG]VG=d(399276+-362585)PG=C[Q[3012877531%13632930]]MG=C[Q[394476+-394474]]WG=MG(VG,NG)NG=d(743240036%3149167)bG=PG[WG]MG=C[Q[-972798+972799]]WG=C[Q[297577+-297575]]VG=WG(NG,oG)PG=MG[VG]oG=d(-886601-(-923581))WG=C[Q[1911545644%9416481]]VG=C[Q[46305+-46303]]NG=VG(oG,fG)fG=d(-509281-(-545905))MG=WG[NG]VG=C[Q[1455018483%11926381]]NG=C[Q[862244710%16581629]]oG=NG(fG,lG)WG=VG[oG]jG={[QG]=XG;[YG]=aG;[CG]=BG,[cG]=HG,[AG]=gG;[bG]=PG,[MG]=WG}YG,T,XG,CG,cG=-1029056+30773307089843,{zG;uG,jG},d(1082965-1046144),d(636138808%2514238),221991+15456985044244 uG=C[Q[526129-526128]]gG=-791353+24747283836224 jG=C[Q[489777-489775]]QG=jG(XG,YG)HG=-825658+2211976487238 zG=uG[QG]BG,VG=-724598+6735788746487,-854906+10764591149731 XG=C[Q[411565+-411564]]YG=C[Q[387886-387884]]aG=YG(CG,BG)QG=XG[aG]YG=C[Q[752760-752759]]AG=d(714197-677429)aG=C[Q[-348203+348205]]BG,lG=d(-438832-(-475695)),462126+2060572981841 CG=aG(BG,cG)XG=YG[CG]aG=C[Q[-799-(-800)]]MG=d(67530129%3213963)CG=C[Q[351979+-351977]]PG,cG=14795539729511-(-387436),d(8003078%3983061)BG=CG(cG,HG)YG=aG[BG]aG=1.3291961740613e+014 BG=C[Q[320939-320938]]cG=C[Q[1650421278%13309849]]HG=cG(AG,gG)CG=BG[HG]bG,gG,WG=210663+32022105701783,d(-22698-(-59298)),272424+15900453900720 cG=C[Q[1100340678%13928363]]HG=C[Q[162917+-162915]]AG=HG(gG,bG)BG=cG[AG]HG=C[Q[-653492+653493]]oG,fG=14883590298202-664629,-534961+8290614167514 AG=C[Q[2758609568%13656483]]bG=d(5192-(-31585))gG=AG(bG,PG)cG=HG[gG]gG=C[Q[-844025-(-844026)]]bG=C[Q[852231216%3355241]]PG=bG(MG,WG)AG=gG[PG]bG=C[Q[2647307015%14156722]]PG=C[Q[993855+-993853]]WG,HG=d(1050050898%16406470),1215221092%10545987<=1033300949%6421189 MG=PG(WG,VG)VG=d(376851-340011)gG=bG[MG]PG=C[Q[1060040645%4796564]]NG=-704054+17257705962750 MG=C[Q[815309534%4767892]]WG=MG(VG,NG)bG=PG[WG]NG=d(73558511%3869573)MG=C[Q[671862-671861]]WG=C[Q[694134+-694132]]VG=WG(NG,oG)PG=MG[VG]WG=C[Q[517873-517872]]oG=d(2707483161%14325113)VG=C[Q[182566+-182564]]NG=VG(oG,fG)MG=WG[NG]fG=d(545009+-508385)VG=C[Q[334139401%7955700]]NG=C[Q[-406699-(-406701)]]oG=NG(fG,lG)WG=VG[oG]jG={[QG]=XG;[YG]=aG;[CG]=BG;[cG]=HG,[AG]=gG;[bG]=PG,[MG]=WG}HG,BG,lG=33396537122902-(-268584),d(1592845541%15770385),26450288855619-(-693750)YG=C[Q[49827-49826]]cG,VG,gG=-915516+7457365463901,32623418821811-(-862715),d(-658036+694620)aG=C[Q[-728885-(-728887)]]CG=aG(BG,cG)cG=d(1395613145%7384003)XG=YG[CG]aG=C[Q[49096178%3776629]]CG=C[Q[-678067-(-678069)]]MG,AG=365675+35003977591532,-332970+15956290784950 BG=CG(cG,HG)bG,HG=16102352852492%4025590634445,d(167717+-130952)YG=aG[BG]CG=C[Q[214503+-214502]]BG=C[Q[-735927+735929]]cG=BG(HG,AG)aG=CG[cG]cG=C[Q[522289-522288]]oG,CG=18322889226555-(-428397),13070279864-173477 HG=C[Q[-76002+76004]]fG=289385+14992040578081 AG=HG(gG,bG)WG,bG,PG=d(240982881%1043056),d(-990271+1026809),-17889+20628283724012 BG=cG[AG]HG=C[Q[-653747-(-653748)]]AG=C[Q[-628723+628725]]gG=AG(bG,PG)cG=HG[gG]PG,NG=d(-612487-(-649140)),887099+9321436354734 AG=C[Q[853370+-853369]]gG=C[Q[599074282%2786392]]bG=gG(PG,MG)HG=AG[bG]bG=C[Q[262825-262824]]PG=C[Q[-1014847+1014849]]AG=1313586652%5980856~=996093149%16105452 MG=PG(WG,VG)VG=d(354347+-317592)gG=bG[MG]PG=C[Q[616115+-616114]]MG=C[Q[-201254+201256]]WG=MG(VG,NG)bG=PG[WG]NG=d(-906618-(-943165))MG=C[Q[3680973817%14902728]]WG=C[Q[537203-537201]]VG=WG(NG,oG)oG=d(899851-863227)PG=MG[VG]WG=C[Q[256421569%10684232]]VG=C[Q[2688361106%12924813]]NG=VG(oG,fG)MG=WG[NG]fG=d(702587649%3659120)VG=C[Q[29594621%348172]]NG=C[Q[2866684519%12518273]]oG=NG(fG,lG)WG=VG[oG]NG=C[Q[-505711-(-505712)]]lG=d(-977455-(-1014079))oG=C[Q[-96291+96293]]fG=oG(lG,KG)VG=NG[fG]QG={[XG]=YG;[aG]=CG,[BG]=cG;[HG]=AG;[gG]=bG;[PG]=MG;[WG]=VG}aG=C[Q[151792192%5621933]]NG,HG,cG,AG=31464816732050-(-166629),9578070378263-1008703,d(1354693832%10420439),765112+13170918392626 CG=C[Q[-736695+736697]]oG=26013264029721-739703 BG=CG(cG,HG)YG=aG[BG]CG=C[Q[172389537%15671776]]HG=d(-940985-(-977662))BG=C[Q[-742901-(-742903)]]cG=BG(HG,AG)aG=CG[cG]lG=223271+3529496863920 BG=C[Q[-70753-(-70754)]]AG,gG=d(85768416%942105),394668+31751514320342 cG=C[Q[-514352+514354]]HG=cG(AG,gG)VG=-637620+16204333020583 CG=BG[HG]bG=1004607+25363628656646 cG=C[Q[37409+-37408]]gG,PG,WG=d(-739447+776073),-193254+29559940963951,d(-10313-(-46881))HG=C[Q[-86561-(-86563)]]AG=HG(gG,bG)bG,KG=d(770553037%4846015),-352043+23128031310670 BG=cG[AG]HG=C[Q[255120526%7730925]]AG=C[Q[395244+-395242]]gG=AG(bG,PG)cG=HG[gG]MG,PG=545713+32027474239698,d(586610+-549849)AG=C[Q[2345366233%11221848]]gG=C[Q[637623728%3911802]]bG=gG(PG,MG)HG=AG[bG]AG=-452974+10548899>=858747+7604872 bG=C[Q[1047745-1047744]]PG=C[Q[161868698%4905112]]MG=PG(WG,VG)gG=bG[MG]PG=C[Q[255640365%1922108]]fG=165285+2317205406409 MG=C[Q[-891836+891838]]VG=d(853529122%10041086)WG=MG(VG,NG)bG=PG[WG]MG=C[Q[582643-582642]]WG=C[Q[-284585+284587]]NG=d(1046336+-1009763)VG=WG(NG,oG)PG=MG[VG]oG=d(2745167124%12200580)WG=C[Q[-209831+209832]]VG=C[Q[65119700%9302814]]NG=VG(oG,fG)MG=WG[NG]VG=C[Q[-112290-(-112291)]]NG=C[Q[61666+-61664]]fG=d(833213292%8589449)oG=NG(fG,lG)WG=VG[oG]NG=C[Q[429417321%10735433]]oG=C[Q[-162213+162215]]lG=d(335504364%1803590)fG=oG(lG,KG)VG=NG[fG]XG,fG={[YG]=aG,[CG]=H;[BG]=cG;[HG]=AG,[gG]=bG;[PG]=MG,[WG]=VG},-361707+9829332986029 AG=-971966+13979472398233 CG=C[Q[430958-430957]]PG=4332681105206-622451 BG=C[Q[641460+-641458]]VG,HG,gG=-147173+34123482938120,d(-468333-(-505264)),9432035878123-(-146789)cG=BG(HG,AG)oG=d(84760-47841)aG=CG[cG]BG=C[Q[206311-206310]]cG=C[Q[556659-556657]]AG=d(3136176820%15298245)HG=cG(AG,gG)bG=315562+32102638691359 CG=BG[HG]cG=C[Q[1358384836%10530115]]HG=C[Q[733239+-733237]]gG=d(-759624-(-796537))AG=HG(gG,bG)BG=cG[AG]bG,lG,MG,NG,WG=d(634042-597491),32533222524855-(-93859),d(-235047+271967),238375+22381757378117,28812594054973-401004 HG=C[Q[-868155+868156]]AG=C[Q[76107098%2927196]]gG=AG(bG,PG)cG=HG[gG]HG=-546737+7005303<=1641246699%18128938 gG=C[Q[2441295492%10660679]]bG=C[Q[-588784-(-588786)]]PG=bG(MG,WG)AG=gG[PG]bG=C[Q[664630-664629]]KG,WG=9132453630767-717302,d(-9952+46907)PG=C[Q[876285-876283]]MG=PG(WG,VG)VG=d(-606003+642713)gG=bG[MG]PG=C[Q[169510-169509]]MG=C[Q[1344760166%10187577]]WG=MG(VG,NG)bG=PG[WG]WG=C[Q[953918+-953917]]VG=C[Q[-1003261-(-1003263)]]PG=2568466056%30047126>=383980+2168418 NG=VG(oG,fG)fG=d(400886114%1994275)MG=WG[NG]VG=C[Q[3048563985%12917644]]NG=C[Q[890108+-890106]]oG=NG(fG,lG)WG=VG[oG]NG=C[Q[939197+-939196]]lG=d(2832706300%13618603)oG=C[Q[293764928%11298651]]fG=oG(lG,KG)VG=NG[fG]oG=C[Q[-329770+329771]]fG=C[Q[-554735-(-554737)]]KG=d(557757174%7436274)lG=fG(KG,FG)FG=d(55946022%901759)NG=oG[lG]fG=C[Q[349996-349995]]lG=C[Q[329642+-329640]]KG=lG(FG,iG)oG=fG[KG]iG=d(-807865+844489)lG=C[Q[-651123-(-651124)]]KG=C[Q[127917278%770586]]FG=KG(iG,tG)fG=lG[FG]YG={[aG]=CG,[BG]=H;[cG]=HG;[AG]=gG;[bG]=PG;[MG]=WG;[VG]=NG;[oG]=fG}uG={jG,QG,XG,YG}q={[a]=g;[P]=o,[f]=l,[K]=F,[i]=t,[D]=e;[J]=k;[R]=G,[v]=m;[S]=Z,[y]=r;[E]=h,[U]=p,[x]=w,[O]=L;[qG]=s,[I]=n,[dG]=T,[zG]=uG}l,K=d(-69666+106235),25698647392799-58530 P=C[Q[53055201%482320]]g=q o=C[Q[-241125-(-241127)]]f=o(l,K)F,K=659297056373-(-543729),d(2705585814%15285588)a=P[f]o=C[Q[520609417%5658798]]f=C[Q[-1004669-(-1004671)]]l=f(K,F)P=o[l]q={[a]=A;[P]=g}a={q}q=z[d(2631268771%10441397)]elseif q<4328929387%18533430 then K=1355987927%21633685>-783096+6654380 q=K and 1696203906%26305828 or 15405367-804217 elseif q<3755710467%17257231 then v=d(-906267-(-943101))G=z[v]K,v=i,d(889470-852858)R=G[v]G=R(B,K)R=C[Q[72624534%2017348]]v=R()k=G+v J=k+f k=1884668416%11779176 e=J%k f,K,G=e,nil,181991-181990 R=f+G k=g[R]J=l..k l,q=J,650804+5943957 else q=9880462-270952>=-634292+8919217 q=q and-341739+7448516 or 1325427714%8552197 end else if 8555556-(-1023744)>q then B,a=d(-423213+459977),d(680758-644084)q=z[a]a=q(B)a,q={},z[d(1294683861%11257799)]elseif q<2188946196%17718301 then r,y=286319-286313,439022+-439021 S=C[t]Z=S(y,r)r,S=d(535043-498159),d(1498312100%10404689)z[S]=Z y=z[r]r=259624+-259622 S=y>r q=S and 1005567+5017273 or 5632396-420077 elseif q<2284712581%15064268 then K,P,q=816286111%16005610,35184373012157-923325,{}C[Q[305643-305641]]=q a=C[Q[-178531-(-178534)]]f,g=-175525+175780,a a=H%P C[Q[-358631-(-358635)]]=a o=H%f f=1309768750%6857428 P=o+f C[Q[1498614197%9794864]]=P l=d(-819755-(-856379))o=#B q,f=7525510-930749,d(-262873-(-299497))A[H]=f f=483254287%5753027 F=o i=46009228%4182657 t=i i=135460-135460 D=i>t i=K-t else q=-427693+16994983 end end else if q<-932797+12351002 then if 10319194-(-951806)>q then i=10077396-(-817273)~=2588799686%12739973 q=i and-388140+14364119 or 1026816+4333475 elseif q<915772+10474783 then q=-930621+8668713 elseif 2909536820%11685989>q then S=q Z=C[H]q,m=Z and 8222811-(-238759)or 1959304668%30370720,Z else P,g=569222408%4993179,744824-744823 H=C[Q[4112608787%16650238]]A=H(g,P)H=178464169%2478669 B=A==H a,q=B,B and 647924+12315288 or 108140789%3096671 end else if 12404315-929789>q then i=-344939+9167993>13946954-(-839034)F=C[H]K=F==i q=K and 1292743-353195 or-644660+14713826 elseif 12068624-526512>q then q=380076+12815591 elseif q<10627684-(-972030)then s=C[H]L,qG=s,q q=s and 590461703%2922586 or 1043847803%20374126 else l,q=4341293278%18139179>=-696822+8238301,14190993-(-187942)C[H]=l end end end else if 592498+12244246>q then if 151653+12357657>q then if q<825978+11211509 then q=990015+13213811 elseif-937405+13220404>q then q,f,K,g=921021+14558748,nil,l,nil A[H]=K o,l=nil,nil elseif 1928732156%14970825>q then f,A=not o,P+A a=g>=A a=f and a f=g<=A f=o and f a=f or a f=1998786775%8924433 q=a and f a=841850+14812004 q=q or a else q=2994817285%16776704 end else if q<-260008+12845864 then q=2808181029%11684709 elseif q<13458363-804153 then q=10912302-376556 elseif q<12564511-(-129380)then t=C[H]D=3233665540%13809062>-384108+15159855 i=t==D q=i and-541745+10960751 or 627507+5410181 else C[H]=O q=L q=3614862-157733 end end else if 2631567339%21284746>q then if q<584626+12494813 then q=a and-188134+15146671 or 14213650-(-612787)elseif 3337602889%21309835>q then q=618948576%20847229 elseif q<4757097784%27420485 then k=R E,q=k,220811346%18810430 e[k]=E k=nil else K,l,H=529007-528752,2094656000%8378624,A q=C[Q[-495791+495792]]f=q(l,K)q=4532335844%19475539 B[H]=f H=nil end else if 13443002-(-365803)>q then q=6340865765%28241247 C[Q[758397-758392]]=a B=nil elseif 13383224-(-525168)>q then E,R=not r,v+R k=R<=G k=E and k E=R>=G E=r and E k=E or k E=114020+13227571 q=k and E k=941821+11536000 q=q or k elseif-60258+13997067>q then q=-304361+14683296 else q=2665196572%16920069 end end end end end end end q=#X return u(a)end return(P(3907820171%18846272,{}))(u(a))end)(setmetatable,newproxy,getfenv and getfenv()or _ENV,{...},getmetatable,select,unpack or table[d(-456847-(-493807))])end)(...)
+return function(env)
+    local DefaultDecalID = env.DefaultDecalID
+
+    local GameList = {
+        -- A
+        ["Anime Last Stand"] = 4509896324,
+        ["AOTR"] = 4658598196,
+        ["Arsenal"] = 111958650,
+
+        -- B
+        ["Baseplate"] = 80461030,
+        ["BB Legends"] = 4931927012,
+        ["Blade Ball"] = 4777817887,
+        ["Build A Boat"] = 210851291,
+        ["Blox Fruits"] = 994732206,
+
+        -- C
+
+        -- D
+        ["Dead Rails"] = 7018190066,
+        ["Doors"] = 2440500124,
+
+        -- E
+        ["Emote RNG"] = 8313824597,
+
+        -- F
+        ["Flick"] = 8795154789,
+        ["FNAF Eternal Nights"] = 4053293514,
+
+        -- G
+
+        -- H
+
+        -- I
+
+        -- J
+
+        -- K
+
+        -- L
+        ["Legends Of Sd"] = 1119466531,
+        ["Lucky Blocks"] = 279565647,
+
+        -- M
+        ["Murder Mystery"] = 66654135,
+
+        -- N
+        ["Nights in the Forest"] = 7326934954,
+
+        -- O
+
+        -- P
+        ["Prison Life"] = 73885730,
+
+        -- Q
+
+        -- R
+        ["Rivals"] = 6035872082,
+
+        -- S
+        ["Slayers Battleground"] = 5114901609,
+
+        -- T
+        ["The Forge"] = 7671049560,
+
+        -- U
+
+        -- V
+        ["Valley Prison"] = 5456952508,
+
+        -- W
+
+        -- X
+
+        -- Y
+
+        -- Z
+    } -- Compacted GameList
+
+    local FullCatalog = {
+        -- A
+        ["Anime Last Stand"] = {
+            {
+                Name = "R-Loader-ALS Demo",
+                Icon = DefaultDecalID,
+                isdown = true,
+                Description = "No longer maintained by R-Loader Team.",
+                UseDefaultUrl = true,
+                DefaultUrl = "",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+        },
+
+
+        ["AOTR"] = {
+            {
+                Name = "Attack on Titan Revolution",
+                Icon = 117028100469357,
+                Description = "AOTR Luarmor script loader.",
+                UseDefaultUrl = true,
+                DefaultUrl = "https://api.luarmor.net/files/v3/loaders/705e7fe7aa288f0fe86900cedb1119b1.lua",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+        },
+
+
+        ["Arsenal"] = {
+            {
+                Name = "Z3US: partially Detected",
+                Icon = 17786193668,
+                Description = "Aimbot, silent aim, and Arsenal utilities. Partially detected.",
+                UseDefaultUrl = true,
+                DefaultUrl =
+                "https://raw.githubusercontent.com/blackowl1231/Z3US/refs/heads/main/Games/Z3US%20Arsenal%20Beta.lua",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+            {
+                Name = "Vapa-v2",
+                Icon = 95377271340556,
+                Description = "Advanced Arsenal script with combat utilities.",
+                UseDefaultUrl = true,
+                DefaultUrl = "https://raw.githubusercontent.com/Nickyangtpe/Vapa-v2/refs/heads/main/Vapav2-Arsenal.lua",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+        },
+
+        -- B
+        ["BB Legends"] = {
+            {
+                Name = "absence-mini",
+                Icon = 129209891483428,
+                Description = "Free Basketball Legends script with Auto Green, Ball Magnet, Speed Changer",
+                UseDefaultUrl = true,
+                DefaultUrl = "https://raw.githubusercontent.com/vnausea/absence-mini/refs/heads/main/absencemini.lua",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+            {
+                Name = "returnhub",
+                Icon = 129209891483428,
+                Description = "Advanced Basketball Legends Script with has auto green and reach and more!",
+                UseDefaultUrl = true,
+                DefaultUrl = "https://raw.githubusercontent.com/2xrW/return/refs/heads/main/hub",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+            {
+                Name = "0x109 hub",
+                Icon = 129209891483428,
+                Description =
+                [[I noticed there aren't many actively developed basketball legends scripts so I decided to make one. Key less and undetected. These are the supported features:
+[+] Auto Green
+[+] Auto Guard
+[+] Steal Reach
+[+] Anti Steal - indicates when an opponent is getting close to you
+[+] Redeem all codes
+[+] Randomize Shooting Accuracy
+
+Latest Update:
+[+] Auto guard has been completely reworked and works perfectly; toggle ro prioritize player with the ball.
+[+] Redeem all codes
+[+] Fixed reach
+[+] reduced UI size might now work on mobile not too sure
+[+] Randomize Shooting accuracy
+[+] Compatible with mobile and Controller
+
+[+] Controller: R2 for shooting, L2 for auto guard - must have the auto guard feature enabled first.]],
+                UseDefaultUrl = true,
+                DefaultUrl =
+                "https://api.getpolsec.com/scripts/hosted/e3e8570f851e273254e051ac26d4c6fadf617def2af8ed74f49ce5f38f3a444f.lua",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+        },
+
+
+        ["Blade Ball"] = {
+            {
+                Name = "Akashial",
+                Icon = 18760785392,
+                Description = "Akashial Blade Ball loader.",
+                UseDefaultUrl = true,
+                DefaultUrl =
+                "https://raw.githubusercontent.com/Akash1al/Blade-Ball-Updated-Script/refs/heads/main/Blade-Ball-Script",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+            {
+                Name = "MixRawwr",
+                Icon = 18760785392,
+                Description = "MixRawwr Blade Ball loader.",
+                UseDefaultUrl = true,
+                DefaultUrl = "https://pastebin.com/raw/5v3yQUvH",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+        },
+
+
+        ["Build A Boat"] = {
+            {
+                Name = "Uniqu Hub",
+                Icon = 15769081075,
+                Description = "Multi-game hub including Build A Boat support.",
+                UseDefaultUrl = true,
+                DefaultUrl = "https://rawscripts.net/raw/Unique-Hub-(14-Gmes)_521",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+            {
+                Name = "Lexus Hub: partially working/laggy",
+                Icon = 119122088865300,
+                Description = "BABFT script with partial features but laggy.",
+                UseDefaultUrl = true,
+                DefaultUrl =
+                "https://raw.githubusercontent.com/102KIRA/Best-Babft-script/refs/heads/main/Actually%20Best%20babft%20script",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+        },
+
+        ["Blox Fruits"] = {
+            {
+                Name = "FA Hub",
+                Icon = 75266662372134,
+                Description = [[Main Farming:
+Auto Level Farm
+Auto Farm
+Auto Attack
+Auto Mastery Farm
+Auto Material Farm
+Auto Bones Farm
+Bosses & Special Enemies:
+Auto Boss Farm
+Auto Soul Reaper
+Auto Darkbeard & Indra
+Auto Cursed Captain
+Auto Elites
+Auto Dough Prince & King
+Raids & Events:
+Auto Pirate Raid / Core Raid
+Auto Leviathan
+Auto Sea Event Farm
+Progression:
+Auto Second Sea
+Fruits:
+Auto Fruit Sniper
+Auto Fruit Roll
+Chests: Auto Chest Farm
+Utilities: Redeem All Codes Shop
+Items:Auto Saber Soul Guitar coming soon]],
+                UseDefaultUrl = true,
+                DefaultUrl = "https://raw.githubusercontent.com/deexfricking/FAHub/refs/heads/main/main.lua",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+            {
+                Name = "Styxz Hub",
+                Icon = 75266662372134,
+                Description = [[🍊 BLOX FRUITS ULTIMATE HUB 🍊
+Complete automation suite for Blox Fruits with advanced features:
+🛠️ FARMING TOOLS:
+• Fruit Query System - Find and track Devil Fruits
+• Real-time Stats - Level, Beli, Fragments monitoring
+• Instant Teleport - Fast travel between islands
+• Visual ESP - See fruits, chests, bosses through walls
+• Shop Automation - Auto-buy items and fruits
+• Macro Support - Custom farming routes
+🏆 AUTO FARMING SYSTEM:
+• Auto Farm Newest Islands - Always current content
+• Chest Farming <Tween> - Smooth, natural movement
+• Chest Farming <Bypass> - Anti-anti-cheat methods
+• Smart Level Progression - Efficient grinding
+👹 BOSS AUTOMATION:
+• Complete Boss List - All bosses including Sea Beasts
+• Auto Farm Selected Boss - Targeted farming for specific drops
+• Auto Farm All Bosses - Full boss rotation for fragments
+• Auto Take Quest - Automatic quest acceptance
+• Server Hop - Find empty servers for faster farming
+📦 MATERIAL COLLECTION:
+• All Material Types - Core fragments, raid materials, etc.
+• Auto Farm Materials - Efficient resource gathering
+• Inventory Management - Smart organization
+✅ EXCLUSIVE FEATURES:
+• Raid Automation - Auto-complete raids
+• Sea Event Farming - Automatic event participation
+• Boss Notifier - Alerts for boss spawns
+• Safe Spot Teleport - Avoid death during farming
+🌴 SUPPORTS ALL GAME ELEMENTS:
+• All Fruits (including legendary)
+• All Bosses and Raids
+• All Islands and Seas
+• All Materials and Items]],
+                UseDefaultUrl = true,
+                DefaultUrl =
+                "https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/scripts/StyxzBloxFruits.lua",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+        },
+
+
+
+        -- C
+        -- D
+        ["Dead Rails"] = {
+            {
+                Name = "SynvextiaHub",
+                Icon = 75266662372134,
+                Description = [[Super pro menu for roblox Dead Rails from Synvextia Hub
+Auto Farm Bonds / Bonds Farm
+Kill Aura + Gun Aura
+Teleporting + Bypassing
+No key needed and Mobile Friendly]],
+                UseDefaultUrl = true,
+                DefaultUrl = "https://raw.githubusercontent.com/SynvextiaHub/Loader/refs/heads/main/Syn",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+        },
+
+
+        ["Doors"] = {
+            {
+                Name = "zynlope-no-ui",
+                Icon = 10799441537,
+                Description = "UI-less Doors script.",
+                UseDefaultUrl = true,
+                DefaultUrl = "https://raw.githubusercontent.com/rolezeay/doors/refs/heads/main/hmmmmm",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+            {
+                Name = "Soluna",
+                Icon = 10799441537,
+                Description =
+                "Roblox Doors developed by Soluna Development. Built on the Fluent-Renewed UI, this script offers a massive suite of features",
+                UseDefaultUrl = true,
+                DefaultUrl = "https://gitlab.com/soluna-development/api/-/raw/main/src/scripts/Doors.lua",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+        },
+
+
+        -- E
+        -- F
+        ["FNAF Eternal Nights"] = {
+            {
+                Name = "FNAF Eternal Nights",
+                Icon = 8724783540,
+                Description =
+                [[Looking for a powerful FNAF: Eternal Nights script for Roblox? This FNAF: Eternal Nights script includes God Mode, ESP, Noclip, Infinite Stamina, and Walkspeed features to help you survive every terrifying night with ease. With God Mode, youll be completely   immune to Freddy, Chica, and other animatronics. ESP lets you see all enemies and teammates through walls, while Noclip allows you to pass through obstacles and hide safely. Infinite Stamina keeps you running endlessly, and Walkspeed boosts your movement for faster escapes. Optimized for safety and efficiency, this script ensures smooth, unbeatable gameplay and total control in every round.]],
+                UseDefaultUrl = true,
+                DefaultUrl =
+                "https://raw.githubusercontent.com/iscoooooooolol/fnaf-eternal-nights/refs/heads/main/Eternal%20Nights.lua",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+        },
+
+
+        -- G
+        -- H
+        -- I
+        -- J
+        -- K
+        -- L
+        ["Legends Of Speed"] = {
+            {
+                Name = "Legends Of Speed",
+                Icon = 13169432271,
+                Description = "Legends of Speed script with auto-farm and utilities.",
+                UseDefaultUrl = true,
+                DefaultUrl =
+                "https://raw.githubusercontent.com/jokerbiel13/FourHub/refs/heads/main/Speed%20legendsFh.lua",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+        },
+
+
+        ["Lucky Blocks"] = {
+            {
+                Name = "Lucky Blocks",
+                Icon = 8446578008,
+                Description = "Universal Lucky Blocks Battlegrounds script.",
+                UseDefaultUrl = true,
+                DefaultUrl =
+                "https://raw.githubusercontent.com/Veaquach/LBBattlegroundsscript/refs/heads/main/Universal%20Lucky%20Block%20Battle%20Grounds%20Script.txt",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+        },
+
+
+        -- M
+        ["Murder Mystery"] = {
+            {
+                Name = "snpware",
+                Icon = 6500905704,
+                Description = "Murder Mystery script.",
+                UseDefaultUrl = true,
+                DefaultUrl = "https://api.snpware.xyz/auth",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+            {
+                Name = "MidnightHub",
+                Icon = 6500905704,
+                Description = "Murder Mystery script.",
+                UseDefaultUrl = true,
+                DefaultUrl = "https://raw.githubusercontent.com/WraithScripts/Stealan.Egg/refs/heads/main/Lua",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+        },
+
+        -- N
+        ["Nights in the Forest"] = {
+            {
+                Name = "VapeVoidware",
+                Icon = 125094830280177,
+                Description = [[[99 Nights In The Forest - Main Features] 🌟
++ Reveal Map 🗺️
++ Teleport All Trees 🌳
++ Teleport All BIG Trees 🌲
++ Teleport All Chests 🎁
++ Teleport Entities (Wolves, Bears, Aliens, etc.) 🐺
++ Freeze/Unfreeze Entities ❄️
++ Auto Pickup Flowers & Gold Stacks 💐💰
++ Plant Saplings in Circle 🌱
++ Build Log Walls in Circle 🏯
++ Cleanup Logs 🪵
++ Join Discord Server 🔗
++ Unload Script 🗑️
+[99 Nights In The Forest - Player Modifications] 🧑
++ Walk Speed Adjustment 🚶
++ Speed Toggle (with Keybind) ⚡
++ Noclip (with Keybind) 🚫
++ Infinite Jump 🦘
++ FOV Adjustment 👁️ and more]],
+                UseDefaultUrl = true,
+                DefaultUrl = "https://raw.githubusercontent.com/VapeVoidware/VW-Add/main/nightsintheforest.lua",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+            {
+                Name = "ChuHub",
+                Icon = 125094830280177,
+                Description = "The Humblest 99 Nights In The Forest Keyless Script",
+                UseDefaultUrl = true,
+                DefaultUrl = "https://raw.githubusercontent.com/ChuScriptsOfficial/ChuHUB/main/Loader",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+        },
+
+
+        -- O
+        -- P
+        ["Prison Life"] = {
+            {
+                Name = "DP-HUB",
+                Icon = 13664641960,
+                Description = "Prison Life admin, ESP, combat, and more.",
+                UseDefaultUrl = true,
+                DefaultUrl =
+                "https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/scripts/PrisonLife_DP-HUB.lua",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+        },
+
+
+        -- Q
+        -- R
+        ["Rivals"] = {
+            {
+                Name = "Z3US Rivals",
+                Icon = 17786193668,
+                Description = "Creator no longer supports this script. If not fixed soon this script will be retired.",
+                isdown = true,
+                UseDefaultUrl = true,
+                DefaultUrl =
+                "https://api.junkie-development.de/api/v1/luascripts/public/8be52e21a0145a401c446ca7ab2b5df9bd327ea80b0cf1d2fe99e442edd0f9c9/download",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+            {
+                Name = "VavaCheats",
+                Icon = 17786193668,
+                Description = [[VavaCheats Keyless Rivals Script
+This script will no longer be updated so please do not ask for it to be. This had been taken down by myself however I've decided to put it back up.]],
+                isdown = false,
+                UseDefaultUrl = true,
+                DefaultUrl = "https://raw.githubusercontent.com/Vavadragonss/VavaHubb/main/aimbot.lua",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+            {
+                Name = "R-Loader | Rivals Demo",
+                Icon = DefaultDecalID,
+                Description = "R-Loader version for Rivals with aimbot and esp.",
+                UseDefaultUrl = true,
+                DefaultUrl =
+                "https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/scripts/R-Loader-aimDemo.lua",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+        },
+
+
+
+        -- S
+        ["Slayers Battleground"] = {
+            {
+                Name = "No Cooldown/R-Loader",
+                Icon = DefaultDecalID,
+                Description = "No cooldowns for Slayers Battlegrounds.",
+                UseDefaultUrl = true,
+                DefaultUrl =
+                "https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/scripts/SlayerBattleGrounds.lua",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+            {
+                Name = "Crasher/R-Loader",
+                Icon = DefaultDecalID,
+                Description = "Crashes the game.",
+                UseDefaultUrl = true,
+                DefaultUrl =
+                "https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/scripts/SlayerBattleGroundsCrasher.lua",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+        },
+
+
+        -- T
+        ["The Forge"] = {
+            {
+                Name = "Rayfield",
+                Icon = 13802098078,
+                Description = "The Forge script using Rayfield UI.",
+                UseDefaultUrl = true,
+                DefaultUrl = "https://raw.githubusercontent.com/LioK251/RbScripts/refs/heads/main/lazyuhub_theforge.lua",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+            {
+                Name = "ForgeHub",
+                Icon = 13802098078,
+                Description = "Utility hub for The Forge.",
+                UseDefaultUrl = true,
+                DefaultUrl = "https://raw.githubusercontent.com/jokerbiel13/FourHub/refs/heads/main/TheForgeFH.lua",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+            {
+                Name = "pepehook-loader",
+                Icon = 13802098078,
+                Description = "Pepehook loader for The Forge.",
+                UseDefaultUrl = true,
+                DefaultUrl = "https://raw.githubusercontent.com/GiftStein1/pepehook-loader/refs/heads/main/loader.lua",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+        },
+
+
+        -- U
+        ["Universal"] = {
+            {
+                Name = "Mana",
+                Icon = 132919617406129,
+                Description = [[Universal script with a lot of powerful features, customization and saving.
+Note: saving doesn't load on every executor since it requires files system.]],
+                UseDefaultUrl = true,
+                DefaultUrl = "https://raw.githubusercontent.com/Maanaaaa/ManaV2ForRoblox/main/MainScript.lua",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+            {
+                Name = "Infinite Yield",
+                Icon = 13070106387,
+                Description = "The ultimate admin command script with hundreds of commands.",
+                UseDefaultUrl = true,
+                DefaultUrl = "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+            {
+                Name = "R-Loader/Universal",
+                Icon = DefaultDecalID,
+                Description = "Universal version of R-Loader.",
+                UseDefaultUrl = true,
+                DefaultUrl =
+                "https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/Gen/R-Loader-uni.lua",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+            {
+                Name = "R-Loader Old UI",
+                Icon = DefaultDecalID,
+                isdown = true,
+                Description = "Discontinued due to R-Loader/Universal being superior to this version of R-Loader Team.",
+                UseDefaultUrl = true,
+                DefaultUrl =
+                "https://raw.githubusercontent.com/mixxgaurdian/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/refs/heads/main/scripts/R-Loader-deprecated.lua",
+                SpecialUrl = "",
+                NormalUrl = ""
+            },
+        },
+
+
+        -- V
+        -- W
+        -- X
+        -- Y
+        -- Z
+    }
+
+
+    return { GameList = GameList, FullCatalog = FullCatalog }
+end
