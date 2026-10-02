@@ -1,0 +1,147 @@
+[0m[35mPROMETHEUS: [0mApplying Obfuscation Pipeline to C:/Users/alici/Desktop/R-Loader/9Il1i6U8nh6N6lhWMyXhMl8Lcs8QZ7Z5IvpTf65soIGjgMYO8N/R-Loader/R-Loader.source.lua ...
+[0m[35mPROMETHEUS: [0mParsing ...
+[0m[33mPROMETHEUS: Warning at Position 204:13, the variable "Players" is already defined in that scope[0m
+[0m[33mPROMETHEUS: Warning at Position 205:18, the variable "TweenService" is already defined in that scope[0m
+[0m[33mPROMETHEUS: Warning at Position 207:13, the variable "CoreGui" is already defined in that scope[0m
+[0m[33mPROMETHEUS: Warning at Position 209:22, the variable "UserInputService" is already defined in that scope[0m
+[0m[33mPROMETHEUS: Warning at Position 210:17, the variable "LocalPlayer" is already defined in that scope[0m
+[0m[35mPROMETHEUS: [0mParsing Done in 0.21 seconds
+[0m[35mPROMETHEUS: [0mApplying Step "Encrypt Strings" ...
+[0m[35mPROMETHEUS: [0mStep "Encrypt Strings" Done in 0.08 seconds
+[0m[35mPROMETHEUS: [0mApplying Step "Anti Tamper" ...
+PROMETHEUS DEBUG ANTITAMPER CODE TO PARSE:
+do local valid = 'fX';for i = 0, 3 do
+        if i == 0 then
+            if valid ~= 'fX' then
+                while true do end
+            end
+            valid = true;
+        elseif i == 1 then
+            if valid == true then
+            end
+        elseif i == 2 then
+            valid = true;
+        elseif i == 3 then
+            if valid == true then
+            else
+                while true do end
+            end
+        end
+    end
+do valid = true end
+    local gmatch = string.gmatch;
+    local err = function() error("Tamper Detected!") end;
+
+    local pcallIntact2 = false;
+    local pcallIntact = pcall(function()
+        pcallIntact2 = true;
+    end) and pcallIntact2;
+
+    local random = math.random;
+    local tblconcat = table.concat;
+    local unpkg = table and table.unpack or unpack;
+    local n = random(3, 65);
+    local acc1 = 0;
+    local acc2 = 0;
+    local pcallRet = {pcall(function() local a = 5507753 - "ugJSwGfmexdf5o" ^ 12370810 return "V4i" / a; end)};
+    local origMsg = pcallRet[2];
+    local line = tonumber(gmatch(tostring(origMsg), ':(%d*):')());
+    for i = 1, n do
+        local len = math.random(1, 100);
+        local n2 = random(0, 255);
+        local pos = random(1, len);
+        local shouldErr = random(1, 2) == 1;
+        local msg = origMsg:gsub(':(%d*):', ':' .. tostring(random(0, 10000)) .. ':');
+        local arr = {pcall(function()
+            if random(1, 2) == 1 or i == n then
+                local line2 = tonumber(gmatch(tostring(({pcall(function() local a = 5417638 - "73" ^ 5091484 return "29z2vuTsw" / a; end)})[2]), ':(%d*):')());
+                valid = valid and line == line2;
+            end
+            if shouldErr then
+                error(msg, 0);
+            end
+            local arr = {};
+            for i = 1, len do
+                arr[i] = random(0, 255);
+            end
+            arr[pos] = n2;
+            return unpkg(arr);
+        end)};
+        if shouldErr then
+            valid = valid and arr[1] == false and arr[2] == msg;
+        else
+            valid = valid and arr[1];
+            acc1 = (acc1 + arr[pos + 1]) % 256;
+            acc2 = (acc2 + n2) % 256;
+        end
+    end
+    valid = valid and acc1 == acc2;
+
+    if valid then else
+        repeat
+            return (function()
+                while true do
+                    l1, l2 = l2, l1;
+                    err();
+                end
+            end)();
+        until true;
+        while true do
+            l2 = random(1, 6);
+            if l2 > 2 then
+                l2 = tostring(l1);
+            else
+                l1 = l2;
+            end
+        end
+        return;
+    end
+end
+
+    -- Anti Function Arg Hook
+    local obj = setmetatable({}, {
+        __tostring = err,
+    });
+    obj[math.random(1, 100)] = obj;
+    (function() end)(obj);
+
+    repeat until valid;
+    
+ANTITAMPER PARSER FOUND INF NODE!
+PROMETHEUS DEBUG AFTER STEP Anti Tamper AST HAS BAD NODE VALUE:	-1.#INF
+[0m[35mPROMETHEUS: [0mStep "Anti Tamper" Done in 0.04 seconds
+[0m[35mPROMETHEUS: [0mApplying Step "Vmify" ...
+PROMETHEUS DEBUG AFTER STEP Vmify AST HAS BAD NODE VALUE:	-1.#INF
+[0m[35mPROMETHEUS: [0mStep "Vmify" Done in 0.86 seconds
+[0m[35mPROMETHEUS: [0mApplying Step "Constant Array" ...
+PROMETHEUS DEBUG CONSTANT ARRAY WRAPPER OFFSET:	25607
+PROMETHEUS DEBUG AFTER STEP Constant Array AST HAS BAD NODE VALUE:	-1.#INF
+[0m[35mPROMETHEUS: [0mStep "Constant Array" Done in 0.83 seconds
+[0m[35mPROMETHEUS: [0mApplying Step "Numbers To Expressions" ...
+PROMETHEUS DEBUG FOUND BAD NODE VALUE:	-1.#INF
+PROMETHEUS DEBUG CreateNumberExpression CALLED WITH INF! val:	-1.#INF	depth:	0
+PROMETHEUS DEBUG Addition! val:	-1.#INF	val2:	-851834	diff:	-1.#INF
+PROMETHEUS: attempt to perform arithmetic on a nil value
+stack traceback:
+	...ici\Desktop\R-Loader\projects\Prometheus\src\cli.lua:266: in function <...ici\Desktop\R-Loader\projects\Prometheus\src\cli.lua:265>
+	...etheus\src\prometheus\steps\NumbersToExpressions.lua:74: in function 'generator'
+	...etheus\src\prometheus\steps\NumbersToExpressions.lua:178: in function <...etheus\src\prometheus\steps\NumbersToExpressions.lua:114>
+	(tail call): ?
+	...ader\projects\Prometheus\src\prometheus\visitast.lua:250: in function 'visitExpression'
+	...ader\projects\Prometheus\src\prometheus\visitast.lua:114: in function 'visitStatement'
+	...ader\projects\Prometheus\src\prometheus\visitast.lua:73: in function 'visitBlock'
+	...ader\projects\Prometheus\src\prometheus\visitast.lua:145: in function 'visitStatement'
+	...ader\projects\Prometheus\src\prometheus\visitast.lua:73: in function 'visitBlock'
+	...ader\projects\Prometheus\src\prometheus\visitast.lua:151: in function 'visitStatement'
+	...ader\projects\Prometheus\src\prometheus\visitast.lua:73: in function 'visitBlock'
+	...
+	...ader\projects\Prometheus\src\prometheus\visitast.lua:73: in function 'visitBlock'
+	...ader\projects\Prometheus\src\prometheus\visitast.lua:35: in function 'visitast'
+	...etheus\src\prometheus\steps\NumbersToExpressions.lua:191: in function 'apply'
+	...ader\projects\Prometheus\src\prometheus\pipeline.lua:209: in function 'apply'
+	...ici\Desktop\R-Loader\projects\Prometheus\src\cli.lua:256: in function <...ici\Desktop\R-Loader\projects\Prometheus\src\cli.lua:151>
+	[C]: in function 'xpcall'
+	...ici\Desktop\R-Loader\projects\Prometheus\src\cli.lua:265: in main chunk
+	[C]: in function 'require'
+	...s\alici\Desktop\R-Loader\projects\Prometheus\cli.lua:13: in main chunk
+	[C]: ?
